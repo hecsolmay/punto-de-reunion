@@ -1,4 +1,4 @@
-## "Punto de Reunión - Encuentra todo lo que necesitas en un solo lugar"**
+## Punto de Reunión - Encuentra todo lo que necesitas en un solo lugar
 
 ¡Hola! Bienvenido a Punto de Reunión, la aplicación diseñada para facilitar tu vida estudiantil en la Universidad Tecnológica Metropolitana (UTM). Con Punto de Reunión, la entrega de pedidos se vuelve una experiencia sin complicaciones. Desde alimentos hasta productos esenciales, te conectamos con todo lo que necesitas, directamente en tu campus. Simplifica tu rutina diaria y disfruta de la comodidad de recibir todo en un solo lugar con Punto de Reunión. ¡Descarga la aplicación y haz tu vida universitaria más fácil!
 
