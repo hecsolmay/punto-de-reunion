@@ -1,3 +1,31 @@
 {
-  "extends": "next/core-web-vitals"
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
+    "extends": [
+      "plugin:react/recommended",
+      "standard-with-typescript",
+      "plugin:tailwindcss/recommended"
+    ],
+    "overrides": [
+    ],
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "project": "./tsconfig.json"
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "indent": ["error", 2],
+      "react/react-in-jsx-scope": "off",
+      "no-custom-classname": "off",
+      "tailwindcss/no-custom-classname": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/no-floating-promises": "off"
+    }
 }
