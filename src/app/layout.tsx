@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Punto de Reunion',
-  description: 'Somos la plataforma para entregar y mejorar la interaccion entre los estudiantes para realizar un pedido de una manera sencilla y rapida'
+  description: 'Somos la plataforma para entregar y mejorar la interacción entre los estudiantes para realizar un pedido de una manera sencilla y rápida'
 }
 
 export default function RootLayout ({
@@ -17,7 +17,7 @@ export default function RootLayout ({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.className} bg-white/50 dark:bg-black`}>
+      <body className={`${inter.className} relative bg-white dark:bg-background-dark`}>
         <Providers >
           {children}
         </Providers>
