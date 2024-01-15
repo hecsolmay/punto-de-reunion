@@ -6,7 +6,7 @@ import UserDropDown from '@/components/user-dropdown'
 
 export default function Navbar () {
   return (
-    <header className="sticky left-0 top-0 flex h-20 w-full items-center justify-between gap-6 p-6 px-8 shadow-sm dark:bg-background-dark">
+    <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-6 overflow-hidden bg-white p-6 px-8 shadow-sm dark:bg-background-dark">
       <div className='flex items-center gap-4'>
         <SideBarButton />
         <h1>Logo</h1>
