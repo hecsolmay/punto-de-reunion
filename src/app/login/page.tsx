@@ -3,14 +3,14 @@ import Link from 'next/link'
 
 export default function Login () {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-4 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
 
       <div className="mx-auto flex max-w-sm overflow-hidden rounded-lg bg-white shadow-lg lg:max-w-4xl">
 
-        <div className="min-h-[70vh] w-full px-4 lg:w-1/2">
-          <div className='flex items-center gap-x-3 p-6 '>
+        <div className="min-h-[90vh] w-full px-4 lg:w-1/2">
+          <div className='flex flex-col items-center gap-4 p-6 '>
             <Link href="/">
-              <img className="h-14 object-cover" src="/assets/images/logo.png" alt="" />
+              <img className="h-24 object-cover" src="/assets/images/logo.png" alt="" />
             </Link>
             <h2 className="ml-4 flex-1 text-balance text-3xl font-semibold capitalize text-gray-700">Bienvenido</h2>
           </div>
