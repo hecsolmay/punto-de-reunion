@@ -3,13 +3,16 @@ import SideBarButton from '@/components/buttons/sidebar-button'
 import ThemeButton from '@/components/buttons/theme-button'
 import SearchInput from '@/components/inputs/search-input'
 import UserDropDown from '@/components/user-dropdown'
+import Link from 'next/link'
 
 export default function Navbar () {
   return (
-    <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-6 overflow-hidden bg-white p-6 px-8 shadow-sm dark:bg-background-dark">
-      <div className='flex items-center gap-4'>
+    <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-4 overflow-hidden bg-white p-6 px-8 shadow-sm dark:bg-background-dark md:gap-6">
+      <div className='flex items-center gap-6'>
         <SideBarButton />
-        <h1>Logo</h1>
+        <Link className='hidden md:block' href='/'>
+          <img className='h-10 object-cover dark:invert' src="assets/images/logo.png" alt="Logo de Punto de Reunion" />
+        </Link>
       </div>
 
       <div className='flex flex-1 md:max-w-[40vw]'>
@@ -18,11 +21,13 @@ export default function Navbar () {
 
       <div className="flex items-center justify-end gap-4">
 
-        <ThemeButton />
+        <ThemeButton className='hidden md:block'/>
 
-        <UserDropDown />
+        <div className='hidden md:block'>
+          <UserDropDown />
+        </div>
 
-        <div className="border-l border-contrast pl-4">
+        <div className="md:border-l md:border-contrast md:pl-4">
           <CartButton />
         </div>
 
