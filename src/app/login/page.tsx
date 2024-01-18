@@ -1,7 +1,16 @@
 import SocialButton from '@/components/buttons/social-button'
+import { createServerSupabaseClient } from '@/libs/supabase'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default function Login () {
+export default async function Login () {
+  const supabase = createServerSupabaseClient()
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (session !== null) {
+    redirect('/')
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-4 py-16">
 
@@ -29,7 +38,7 @@ export default function Login () {
             <SocialButton type='google'/>
             <SocialButton type='github'/>
             <SocialButton type='facebook'/>
-            <SocialButton type='microsoft'/>
+            <SocialButton type='azure'/>
 
           </div>
         </div>
