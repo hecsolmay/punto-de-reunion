@@ -1,12 +1,15 @@
-import DropDown from '@/components/dropdown'
+import SignOutButton from '@/components/buttons/signout'
+import DropDown, { DropDownItem } from '@/components/dropdown'
 import UserCircleIcon from '@/components/icons/user-circle'
-import { type Link as LinkType } from '@/types'
+import { type LinkDropdownItem } from '@/types'
+import { type Session } from '@supabase/supabase-js'
 import Link from 'next/link'
+import UserInfoButton from './buttons/user-info'
 
-export default function UserDropDown () {
-  const session = null
-
-  const links: LinkType[] = [
+export default function UserDropDown (
+  { session }: { session: Session | null }
+) {
+  const links: LinkDropdownItem[] = [
     {
       title: 'Mis organizaciones',
       href: '/organizations'
@@ -14,15 +17,10 @@ export default function UserDropDown () {
     {
       title: 'Perfil',
       href: '/profile'
-    },
-    {
-      title: 'Cerrar Sesión',
-      href: '/logout',
-      className: 'text-red-500'
     }
   ]
 
-  if (session == null) {
+  if (session === null) {
     return (
       <Link className='flex items-center gap-2 hover:opacity-80' href="/login" >
         <UserCircleIcon className='size-7'/>
@@ -32,8 +30,21 @@ export default function UserDropDown () {
   }
 
   return (
-    <DropDown links={links}>
-      <UserCircleIcon className='size-7'/>
+    <DropDown dropdownTrigger={<UserInfoButton session={session} />}>
+      {links.map(({ href, title, className, onClick }) => (
+        <DropDownItem key={href} className={className}>
+          <Link
+            onClick={onClick}
+            href={href}
+          >
+            {title}
+          </Link>
+        </DropDownItem>
+      ))}
+
+      <DropDownItem className='p-0 text-red-500' >
+        <SignOutButton className='h-full w-full px-4 py-2 text-start' />
+      </DropDownItem>
     </DropDown>
   )
 }

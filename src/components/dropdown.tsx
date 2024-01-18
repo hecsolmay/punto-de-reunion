@@ -1,11 +1,10 @@
 'use client'
 
-import { type Link as LinkType } from '@/types'
-import Link from 'next/link'
+import { cn } from '@/libs/cn'
 import { useEffect, useRef, useState } from 'react'
 
 export default function DropDown (
-  { children, links = [] }: { children?: React.ReactNode, links?: LinkType[] }
+  { children, dropdownTrigger }: { children?: React.ReactNode, dropdownTrigger?: React.ReactNode }
 ) {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -31,7 +30,7 @@ export default function DropDown (
   return (
     <div ref={dropdownRef} className="relative">
       <div className="cursor-pointer" onClick={toggleDropdown}>
-        {children}
+        {dropdownTrigger}
       </div>
 
       <div className={`absolute right-0 z-10 mt-2 w-44 divide-y divide-gray-100 rounded-lg bg-highlight shadow 
@@ -39,21 +38,19 @@ export default function DropDown (
         ${showDropdown ? 'opacity-100' : 'opacity-0'}
       `}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-          {links.map(({ href, title, className, onClick }) => (
-            <li key={href}>
-              <Link
-                onClick={() => {
-                  onClick !== undefined && onClick()
-                  setShowDropdown(false)
-                }}
-                href={href}
-                className={`block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${className}`}>
-                {title}
-              </Link>
-            </li>
-          ))}
+          {children}
         </ul>
       </div>
     </div>
+  )
+}
+
+export function DropDownItem (
+  { onClick, children, className }: { children?: React.ReactNode, onClick?: () => void, className?: string }
+) {
+  return (
+    <li className={cn('block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white', className)}>
+      {children}
+    </li>
   )
 }
