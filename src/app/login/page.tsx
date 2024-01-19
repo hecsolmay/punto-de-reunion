@@ -13,13 +13,13 @@ export default async function Login () {
   }
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
-      <div className='absolute left-10 top-8 text-black sm:text-white'>
+    <div className="relative min-h-[100dvh] bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
+      <div className='absolute left-6 top-6 text-white md:left-10 md:top-8'>
         <BackArrowButton />
       </div>
-      <div className="mx-auto flex max-w-sm overflow-hidden rounded-lg bg-white shadow-lg lg:max-w-4xl">
+      <div className="mx-auto mt-10 flex max-w-sm overflow-auto rounded-lg bg-white shadow-lg lg:max-w-4xl">
 
-        <div className="min-h-[90vh] w-full px-4 lg:w-1/2">
+        <div className="w-full px-4 pb-8 lg:w-1/2">
           <div className='flex flex-col items-center gap-4 p-6 '>
             <Link href="/">
               <img className="h-24 object-cover" src="/assets/images/logo.png" alt="" />

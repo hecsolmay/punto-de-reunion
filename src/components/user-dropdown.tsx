@@ -24,7 +24,7 @@ export default function UserDropDown (
     return (
       <Link className='flex items-center gap-2 hover:opacity-80' href="/login" >
         <UserCircleIcon className='size-7'/>
-        <span>Iniciar Sesión</span>
+        <span className='hidden md:block'>Iniciar Sesión</span>
       </Link>
     )
   }

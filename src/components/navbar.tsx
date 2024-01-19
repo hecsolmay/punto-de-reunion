@@ -11,7 +11,7 @@ export default async function Navbar () {
   const { data: { session } } = await supabase.auth.getSession()
 
   return (
-    <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-4 bg-white p-6 px-8 shadow-sm dark:bg-background-dark md:gap-6">
+    <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-4 bg-white p-6 px-4 shadow-sm dark:bg-background-dark md:gap-6 md:px-8">
       <div className='flex items-center gap-6'>
         <SideBarButton />
         <Link className='hidden md:block' href='/'>
@@ -27,9 +27,7 @@ export default async function Navbar () {
 
         <ThemeButton className='hidden md:block'/>
 
-        <div className='hidden md:block'>
-          <UserDropDown session={session} />
-        </div>
+        <UserDropDown session={session} />
 
         <div className="md:border-l md:border-contrast md:pl-4">
           <CartButton />
