@@ -1,3 +1,4 @@
+import BackArrowButton from '@/components/back-arrow'
 import SocialButton from '@/components/buttons/social-button'
 import { createServerSupabaseClient } from '@/libs/supabase'
 import Link from 'next/link'
@@ -12,8 +13,10 @@ export default async function Login () {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
-
+    <div className="relative min-h-screen bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
+      <div className='absolute left-10 top-8 text-black sm:text-white'>
+        <BackArrowButton />
+      </div>
       <div className="mx-auto flex max-w-sm overflow-hidden rounded-lg bg-white shadow-lg lg:max-w-4xl">
 
         <div className="min-h-[90vh] w-full px-4 lg:w-1/2">
