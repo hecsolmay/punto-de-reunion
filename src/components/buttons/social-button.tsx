@@ -17,7 +17,7 @@ const BUTTONS_VARIANTS = {
         access_type: 'offline',
         prompt: 'consent'
       },
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback/`
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
     },
     icon: GoogleIcon
   },
@@ -25,7 +25,7 @@ const BUTTONS_VARIANTS = {
     className: 'bg-black/85 hover:black/75 text-white dark:bg-black/85 dark:hover:black/75 dark:text-white',
     text: 'Continuar con Github',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback/`
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
     },
     icon: GitHubIcon
   },
@@ -33,7 +33,8 @@ const BUTTONS_VARIANTS = {
     className: 'bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white',
     text: 'Continuar con Facebook',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback/`
+      scopes: 'email',
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
     },
     icon: FacebookIcon
   },
@@ -42,7 +43,7 @@ const BUTTONS_VARIANTS = {
     text: 'Continuar con Microsoft',
     options: {
       scopes: 'email,profile',
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback/`
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
     },
     icon: MicrosoftIcon
   }
