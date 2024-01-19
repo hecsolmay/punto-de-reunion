@@ -1,7 +1,9 @@
-import ComponentList from '@/components/component-list'
+import HeroSection from '@/components/hero-section'
 
 export default function Home () {
   return (
-    <ComponentList />
+    <main className="p-4 px-3 md:px-10">
+      <HeroSection />
+    </main>
   )
 }
