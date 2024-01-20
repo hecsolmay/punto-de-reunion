@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Users {
+  id             String              @id @db.Uuid
+  username       String              @map("user_name")
+  avatarUrl      String?             @map("avatar_url")
+  phoneNumber    String?             @map("phone_number")
+  email          String?
+  isVerified     Boolean             @default(false) @map("is_verified")
+  hasDebt        Boolean             @default(false) @map("has_debt")
+  createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime            @default(now()) @map("updated_at") @db.Timestamp(6)
+  carts          Carts[]
+  reviewsLikes   ReviewsLikes[]
+  reviewsReports ReviewReports[]
+  reviews        Reviews[]
+  organizations  UserOrganizations[]
+
+  @@map("users")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Organizations {
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  imageUrl        String              @map("image_url")
+  description     String
+  deliveryAllowed Boolean             @default(false) @map("delivery_allowed")
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime            @default(now()) @map("updated_at") @db.Timestamptz(6)
+  products        Products[]
+  users           UserOrganizations[]
+
+  @@map("organizations")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Products {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String
+  price          Decimal              @db.Decimal
+  description    String
+  status         ProductStatus        @default(AVAILABLE)
+  rating         Decimal              @default(0) @db.Decimal
+  reviewCount    Int                  @default(0) @map("review_count")
+  organizationId String               @map("organization_id") @db.Uuid
+  updatedAt      DateTime             @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt      DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  cartItems      CartItems[]
+  categories     ProductsCategories[]
+  extras         ProductsExtras[]
+  organization   Organizations        @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reviews        Reviews[]
+
+  @@map("products")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserOrganizations {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String        @map("user_id") @db.Uuid
+  organizationId String        @map("organization_id") @db.Uuid
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime      @default(now()) @map("updated_at") @db.Timestamp(6)
+  organization   Organizations @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user           Users         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("user_organization")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model CardItemExtras {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cartItemId     String         @map("cart_item_id") @db.Uuid
+  productExtraId String         @map("product_extra_id") @db.Uuid
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime       @default(now()) @map("updated_at") @db.Timestamp(6)
+  cart           CartItems      @relation(fields: [cartItemId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  extra          ProductsExtras @relation(fields: [productExtraId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("cart_item_extras")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model CartItems {
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cartId        String           @map("cart_id") @db.Uuid
+  productId     String           @map("product_id") @db.Uuid
+  quantity      Int              @default(0)
+  originalPrice Decimal          @map("original_price") @db.Decimal
+  instructions  String?
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime         @default(now()) @map("updated_at") @db.Timestamp(6)
+  extras        CardItemExtras[]
+  cart          Carts            @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product       Products         @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("cart_items")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Carts {
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String      @map("user_id") @db.Uuid
+  isPaided     Boolean     @default(false) @map("is_paided")
+  meetingPoint String?     @map("meeting_point")
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime    @default(now()) @map("updated_at") @db.Timestamp(6)
+  items        CartItems[]
+  user         Users       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  order        Orders?
+
+  @@map("carts")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Categories {
+  id            String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  imageUrl      String               @map("image_url")
+  totalProducts Int                  @default(0) @map("total_products")
+  createdAt     DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime             @default(now()) @map("updated_at") @db.Timestamp(6)
+  products      ProductsCategories[]
+
+  @@map("categories")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Orders {
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cartId       String      @unique @map("cart_id") @db.Uuid
+  status       OrderStatus @default(PENDING)
+  deliveryDate DateTime?   @map("delivery_date") @db.Timestamptz(6)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime    @default(now()) @map("updated_at") @db.Timestamp(6)
+  cart         Carts       @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("orders")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ProductsCategories {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId  String     @map("product_id") @db.Uuid
+  categoryId String     @map("category_id") @db.Uuid
+  createdAt  DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime   @default(now()) @map("updated_at") @db.Timestamp(6)
+  category   Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product    Products   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("product_category")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ProductsExtras {
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId       String           @map("product_id") @db.Uuid
+  name            String
+  price           Decimal          @default(0) @db.Decimal
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime         @default(now()) @map("updated_at") @db.Timestamp(6)
+  cartItemsExtras CardItemExtras[]
+  product         Products         @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("product_extras")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ReviewsLikes {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  reviewId  String   @map("review_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  review    Reviews  @relation(fields: [reviewId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("review_likes")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ReviewReports {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reviewId  String   @map("review_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  reason    String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  review    Reviews  @relation(fields: [reviewId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user      Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("review_reports")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Reviews {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String          @map("user_id") @db.Uuid
+  productId     String          @map("product_id") @db.Uuid
+  content       String
+  rating        Decimal         @db.Decimal
+  likes         Int             @default(0) @map("likes_count ")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime        @default(now()) @map("updated_at") @db.Timestamp(6)
+  reports       Int             @default(0) @map("reports_count")
+  reviewLikes   ReviewsLikes[]
+  reviewReports ReviewReports[]
+  product       Products        @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user          Users           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("reviews")
+}
+
+enum ProductStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  DELIVERED
+}
