@@ -1,13 +1,15 @@
-import { type Session } from '@supabase/supabase-js'
+import { type UserSession } from '@/libs/auth'
 
 export default function UserInfoButton (
-  { session }: { session: Session }
+  { session }: { session: UserSession }
 ) {
-  const metadata = session.user.user_metadata
+  if (session === null) {
+    return null
+  }
 
-  const image = metadata?.avatar_url ?? 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
+  const image = session?.avatarUrl ?? 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
 
-  const username = metadata?.user_name ?? metadata?.full_name ?? 'Anónimo'
+  const username = session?.username ?? 'Anónimo'
 
   return (
     <button className='flex items-center gap-2 capitalize'>

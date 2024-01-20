@@ -1,13 +1,13 @@
 import SignOutButton from '@/components/buttons/signout'
 import DropDown, { DropDownItem } from '@/components/dropdown'
 import UserCircleIcon from '@/components/icons/user-circle'
+import { type UserSession } from '@/libs/auth'
 import { type LinkDropdownItem } from '@/types'
-import { type Session } from '@supabase/supabase-js'
 import Link from 'next/link'
 import UserInfoButton from './buttons/user-info'
 
 export default function UserDropDown (
-  { session }: { session: Session | null }
+  { session }: { session: UserSession }
 ) {
   const links: LinkDropdownItem[] = [
     {

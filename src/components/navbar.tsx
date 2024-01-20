@@ -3,12 +3,11 @@ import SideBarButton from '@/components/buttons/sidebar-button'
 import ThemeButton from '@/components/buttons/theme-button'
 import SearchInput from '@/components/inputs/search-input'
 import UserDropDown from '@/components/user-dropdown'
-import { createServerSupabaseClient } from '@/libs/supabase'
+import { getUserSession } from '@/libs/auth'
 import Link from 'next/link'
 
 export default async function Navbar () {
-  const supabase = createServerSupabaseClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const session = await getUserSession()
 
   return (
     <header className="sticky left-0 top-0 z-10 flex h-20 w-full items-center justify-between gap-4 bg-white p-6 px-4 shadow-sm dark:bg-background-dark md:gap-6 md:px-8">
