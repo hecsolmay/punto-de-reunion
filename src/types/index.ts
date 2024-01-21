@@ -10,3 +10,10 @@ export interface ActionDropdownItem {
   className?: string
   children?: React.ReactNode
 }
+
+export interface SearchParams {
+  productId?: string
+  q?: string
+  page?: string
+  limit?: string
+}

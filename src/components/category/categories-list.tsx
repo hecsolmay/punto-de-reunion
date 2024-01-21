@@ -1,14 +1,15 @@
 import CategoryCard from '@/components/category/category-card'
+import { type CategoriesResponse } from '@/types/categories'
 
 export default function CategoryList (
-  { categories }: { categories: Array<{ categoryId: string, imageUrl: string, name: string }> }
+  { categories }: { categories: CategoriesResponse }
 ) {
   return (
     <div className='flex justify-between gap-6 overflow-x-auto md:overflow-x-hidden'>
-      {categories.map(({ categoryId, imageUrl, name }) => (
+      {categories.map(({ id, imageUrl, name }) => (
         <CategoryCard
-          key={categoryId}
-          href={`/category/${categoryId}`}
+          key={id}
+          href={`/categories/${id}`}
           imageUrl={imageUrl}
           name={name}
         />
