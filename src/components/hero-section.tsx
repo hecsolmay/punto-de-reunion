@@ -2,7 +2,7 @@ import LinkButton from '@/components/buttons/link-button'
 
 export default function HeroSection () {
   return (
-    <section className='flex min-h-[80dvh] flex-col gap-x-4 md:flex-row'>
+    <section className='flex max-h-[34rem] min-h-[80dvh] flex-col gap-x-4 md:flex-row'>
       <div className='order-2 w-full py-6 md:order-1 md:w-1/2'>
         <h1 className='mb-6 text-balance text-5xl font-bold text-primary'>
           <span className='dark:text-white'>¡Bienvenido a</span> punto de reunion!
@@ -22,7 +22,7 @@ export default function HeroSection () {
         <LinkButton href='/products'>Explora nuestros productos</LinkButton>
       </div>
 
-      <div className='order-1 h-[35dvh] max-h-[600px] w-full md:order-2 md:h-[80dvh] md:w-1/2'>
+      <div className='order-1 h-[35dvh] max-h-[34rem] w-full md:order-2 md:h-[80dvh] md:w-1/2'>
         <img
           className='h-full w-full rounded-lg object-cover md:p-8'
           src='/assets/images/hero-image.webp'
