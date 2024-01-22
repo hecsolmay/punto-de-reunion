@@ -2,7 +2,7 @@ import LinkButton from '@/components/buttons/link-button'
 
 export default function HeroSection () {
   return (
-    <section className='flex max-h-[34rem] min-h-[80dvh] flex-col gap-x-4 md:flex-row'>
+    <section className='flex min-h-[80dvh] flex-col gap-x-4 md:flex-row'>
       <div className='order-2 w-full py-6 md:order-1 md:w-1/2'>
         <h1 className='mb-6 text-balance text-5xl font-bold text-primary'>
           <span className='dark:text-white'>¡Bienvenido a</span> punto de reunion!
