@@ -14,7 +14,7 @@ export default function UserInfoButton (
   return (
     <button className='flex items-center gap-2 capitalize'>
       <img src={image} alt={username} className='size-7 rounded-full' />
-      <p className='capitalize'>{username.toLowerCase()}</p>
+      <p className='hidden capitalize md:block'>{username.toLowerCase()}</p>
     </button>
   )
 }
