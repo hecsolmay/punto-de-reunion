@@ -20,7 +20,7 @@ export default function RootLayout ({
       <head>
         <link rel="icon" href="/logo.svg" sizes="any" />
       </head>
-      <body className={`${inter.className} relative overflow-y-auto bg-white dark:bg-background-dark`}>
+      <body className={`${inter.className} relative overflow-y-auto scroll-smooth bg-white dark:bg-background-dark`}>
         <Providers >
           {children}
         </Providers>
