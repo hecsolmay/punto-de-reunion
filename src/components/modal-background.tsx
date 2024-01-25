@@ -1,3 +1,7 @@
+'use client'
+
+import { useEffect } from 'react'
+
 interface Props {
   isOpen: boolean
   close: () => void
@@ -6,9 +10,22 @@ interface Props {
 export default function ModalBackground (
   { close, isOpen }: Props
 ) {
+  useEffect(() => {
+    document.querySelector('body')?.classList.add('overflow-y-hidden')
+
+    return () => {
+      document.querySelector('body')?.classList.remove('overflow-y-hidden')
+    }
+  }, [isOpen])
+
+  const handleClose = () => {
+    document.querySelector('body')?.classList.remove('overflow-y-hidden')
+    close()
+  }
+
   return (
     <div
-      onClick={close}
+      onClick={handleClose}
       className={`fixed inset-0 z-40 bg-black/50 transition-opacity ${
         isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
       }`}
