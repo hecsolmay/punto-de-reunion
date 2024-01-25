@@ -17,7 +17,7 @@ export async function getProducts (params: SearchParams = {}) {
     }
   }
 
-  const [products, count] = await Promise.all([
+  const [products, count] = await prisma.$transaction([
     prisma.products.findMany(options),
     prisma.products.count()
   ])
@@ -35,7 +35,11 @@ export async function getProductById (id?: string) {
   try {
     const result = await prisma.products.findFirst({
       include: {
-        categories: true,
+        categories: {
+          include: {
+            category: true
+          }
+        },
         organization: true,
         images: true
       },
