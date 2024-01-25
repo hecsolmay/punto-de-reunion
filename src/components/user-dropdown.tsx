@@ -1,25 +1,14 @@
 import SignOutButton from '@/components/buttons/signout'
+import UserInfoButton from '@/components/buttons/user-info'
 import DropDown, { DropDownItem } from '@/components/dropdown'
 import UserCircleIcon from '@/components/icons/user-circle'
+import { userDropdownLinks } from '@/constants/links'
 import { type UserSession } from '@/libs/auth'
-import { type LinkDropdownItem } from '@/types'
 import Link from 'next/link'
-import UserInfoButton from './buttons/user-info'
 
 export default function UserDropDown (
   { session }: { session: UserSession }
 ) {
-  const links: LinkDropdownItem[] = [
-    {
-      title: 'Mis organizaciones',
-      href: '/organizations'
-    },
-    {
-      title: 'Perfil',
-      href: '/profile'
-    }
-  ]
-
   if (session === null) {
     return (
       <Link className='flex items-center gap-2 hover:opacity-80' href="/login" >
@@ -31,9 +20,10 @@ export default function UserDropDown (
 
   return (
     <DropDown dropdownTrigger={<UserInfoButton session={session} />}>
-      {links.map(({ href, title, className, onClick }) => (
+      {userDropdownLinks.map(({ href, title, className, onClick }) => (
         <DropDownItem key={href} className={className}>
           <Link
+            className='block w-full'
             onClick={onClick}
             href={href}
           >
