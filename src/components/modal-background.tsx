@@ -11,7 +11,9 @@ export default function ModalBackground (
   { close, isOpen }: Props
 ) {
   useEffect(() => {
-    document.querySelector('body')?.classList.add('overflow-y-hidden')
+    if (isOpen) {
+      document.querySelector('body')?.classList.add('overflow-y-hidden')
+    }
 
     return () => {
       document.querySelector('body')?.classList.remove('overflow-y-hidden')
