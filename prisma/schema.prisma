@@ -20,6 +20,7 @@ model Users {
   createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime            @default(now()) @map("updated_at") @db.Timestamp(6)
   role           UserRoles           @default(USER)
+  gender         Gender?
   carts          Carts[]
   reviewsLikes   ReviewsLikes[]
   reviewsReports ReviewReports[]
@@ -255,4 +256,9 @@ enum OrganizationRole {
 enum UserRoles {
   ADMIN
   USER
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }
