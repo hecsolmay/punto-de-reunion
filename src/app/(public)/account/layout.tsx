@@ -27,7 +27,7 @@ export default async function AccountLayout ({
 
           <ul className='mt-2 flex flex-row flex-wrap gap-x-1 md:flex-col'>
             {accountProfileLinks.map(link => (
-              <li key={link.href}>
+              <li key={link.href} className='min-w-fit flex-1'>
                 <LinkClient
                   href={link.href}
                   className='flex w-full items-center gap-4 p-2 py-3 transition-colors hover:bg-slate-300 dark:border-white/90 dark:hover:bg-gray-800 md:border-t md:border-gray-400'
