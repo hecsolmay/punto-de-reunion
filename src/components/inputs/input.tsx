@@ -1,5 +1,6 @@
 import { cn } from '@/libs/cn'
 import { InputPassword } from './input-password'
+import CheckboxInput from './checkbox'
 
 interface CommonInputProps {
   placeholder?: string
@@ -24,7 +25,13 @@ type TextProps = CommonInputProps & {
   type?: 'text' | 'email' | 'number' | 'url' | 'search'
 }
 
-type Props = TextProps | PasswordProps
+export type CheckboxProps = Omit<CommonInputProps, 'min' | 'max' | 'defaultValue'> & {
+  type?: 'checkbox'
+  checked?: boolean
+  defaultChecked?: boolean
+}
+
+type Props = TextProps | PasswordProps | CheckboxProps
 
 export default function Input (
   props: Props
@@ -33,6 +40,10 @@ export default function Input (
 
   if (props.type === 'password' && Boolean(props.allowToggle)) {
     return <InputPassword {...props} />
+  }
+
+  if (props.type === 'checkbox') {
+    return <CheckboxInput {...props}/>
   }
 
   const { className, ...rest } = props
