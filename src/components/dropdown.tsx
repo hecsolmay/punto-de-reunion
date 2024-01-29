@@ -11,15 +11,14 @@ export default function DropDown (
 
   const toggleDropdown = () => { setShowDropdown(!showDropdown) }
 
-  const closeDropdown = (event: MouseEvent) => {
-    const isContained = dropdownRef.current?.contains(event.target as Node) ?? false
-
-    if (!isContained) {
-      setShowDropdown(false)
-    }
-  }
-
   useEffect(() => {
+    const closeDropdown = (event: MouseEvent) => {
+      const isContained = dropdownRef?.current?.contains(event.target as Node) ?? false
+
+      if (!isContained) {
+        setShowDropdown(false)
+      }
+    }
     document.addEventListener('click', closeDropdown)
 
     return () => {
@@ -28,8 +27,8 @@ export default function DropDown (
   }, [])
 
   return (
-    <div ref={dropdownRef} className="relative">
-      <div className="cursor-pointer" onClick={toggleDropdown}>
+    <div className="relative">
+      <div ref={dropdownRef} className="cursor-pointer" onClick={toggleDropdown}>
         {dropdownTrigger}
       </div>
 
