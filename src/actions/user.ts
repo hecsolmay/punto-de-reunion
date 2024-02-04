@@ -1,15 +1,30 @@
 'use server'
 
-export async function updateProfile (userId: string, formData: FormData) {
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  const entries = Object.fromEntries(formData)
+import prisma from '@/libs/prisma'
+import { userSchema, type UserSchema } from '@/schemas/user'
+import { revalidateTag } from 'next/cache'
 
-  console.log({ formData })
-  console.log({ entries })
-  console.log({ userId })
-  // TODO: Implementar Actualizar los datos del usuario
+export async function updateProfile (userId: string, data: UserSchema) {
+  const result = userSchema.safeParse(data)
+
+  if (!result.success) {
+    return {
+      success: false,
+      error: result.error
+    }
+  }
+
+  const updatedData = await prisma.users.update({
+    data: result.data,
+    where: {
+      id: userId
+    }
+  })
+
+  revalidateTag('profile')
 
   return {
-    message: 'Usuario Actualizado'
+    success: true,
+    data: updatedData
   }
 }
