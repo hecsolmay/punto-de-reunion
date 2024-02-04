@@ -15,10 +15,21 @@ const config: Config = {
           '50%': { transform: 'translateX(-3px)' },
           '75%': { transform: 'translateX(3px)' },
           '100%': { transform: 'translateX(0)' }
+        },
+        moveUp: {
+          '0%': {
+            transform: 'translateY(10px)',
+            visibility: 'visible'
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            visibility: 'visible'
+          }
         }
       },
       animation: {
-        shake: 'shake 0.3s ease-in-out'
+        shake: 'shake 0.3s ease-in-out',
+        moveUp: 'moveUp 0.25s ease-in-out'
       },
       colors: {
         primary: {

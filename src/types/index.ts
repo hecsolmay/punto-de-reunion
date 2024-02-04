@@ -17,3 +17,17 @@ export interface SearchParams {
   page?: string
   limit?: string
 }
+
+export type CountryCode = 'MX' | 'US' | 'CA'
+
+export interface Country {
+  name: string
+  code: CountryCode
+  flag: string
+  phoneCode: number
+  regex: RegExp
+  formatRegex: RegExp
+  replace: string
+  placeholder: string
+  phoneNumberLength: number
+}
