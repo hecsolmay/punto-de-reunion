@@ -3,8 +3,14 @@
 import { cn } from '@/libs/cn'
 import { useEffect, useRef, useState } from 'react'
 
+interface DrowDownProps {
+  children?: React.ReactNode
+  dropdownTrigger?: React.ReactNode
+  className?: string
+}
+
 export default function DropDown (
-  { children, dropdownTrigger }: { children?: React.ReactNode, dropdownTrigger?: React.ReactNode }
+  { children, dropdownTrigger, className }: DrowDownProps
 ) {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -32,10 +38,11 @@ export default function DropDown (
         {dropdownTrigger}
       </div>
 
-      <div className={`absolute right-0 z-10 mt-2 w-44 divide-y divide-gray-100 rounded-lg bg-highlight shadow 
-        transition-opacity duration-200 ease-in-out dark:bg-contrast-dark 
-        ${showDropdown ? 'opacity-100' : 'opacity-0'}
-      `}>
+      <div className={cn(
+        'absolute right-0 z-10 mt-2 w-44 divide-y divide-gray-100 rounded-lg bg-highlight shadow dark:bg-contrast-dark',
+        showDropdown ? 'animate-moveUp duration-150' : 'hidden',
+        className
+      )}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
           {children}
         </ul>
@@ -48,7 +55,7 @@ export function DropDownItem (
   { onClick, children, className }: { children?: React.ReactNode, onClick?: () => void, className?: string }
 ) {
   return (
-    <li className={cn('block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white', className)}>
+    <li onClick={onClick} className={cn('block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white', className)}>
       {children}
     </li>
   )
