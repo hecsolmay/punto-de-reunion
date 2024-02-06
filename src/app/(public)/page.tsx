@@ -12,8 +12,10 @@ export default async function Home ({
 }: {
   searchParams: SearchParams
 }) {
-  const categories = await getCategories(searchParams)
-  const { products } = await getProducts(searchParams)
+  const [categoriesResponse, productsResponse] = await Promise.all([
+    getCategories(searchParams),
+    getProducts(searchParams)
+  ])
   const { productId } = searchParams
 
   return (
@@ -21,13 +23,13 @@ export default async function Home ({
       <HeroSection />
 
       <SectionContainer title='Categorías'>
-        <CategoryList categories={categories} />
+        <CategoryList response={categoriesResponse} />
       </SectionContainer>
 
       <ProductInfoModalServer productId={productId} />
 
       <SectionContainer title='Lo mas reciente'>
-        <ProductsList products={products}/>
+        <ProductsList response={productsResponse}/>
       </SectionContainer>
 
     </main>

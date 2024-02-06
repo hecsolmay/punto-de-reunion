@@ -13,7 +13,8 @@ export interface ActionDropdownItem {
 
 export interface SearchParams {
   productId?: string
-  q?: string
+  query?: string
+  search?: string
   page?: string
   limit?: string
 }

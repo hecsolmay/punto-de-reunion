@@ -5,35 +5,47 @@ import { type SearchParams } from '@/types'
 
 export async function getProducts (params: SearchParams = {}) {
   const { limit = 10, page = 1 } = params
-
   const pagination = parsePagination({ limit, page })
 
-  const options = {
+  const productsPromise = prisma.products.findMany({
     skip: pagination.skip,
     take: pagination.limit,
     include: {
       images: true,
       organization: true
     }
-  }
-
-  const [products, count] = await prisma.$transaction([
-    prisma.products.findMany(options),
-    prisma.products.count()
-  ])
-
-  const info = getPaginationInfo({
-    limit: pagination.limit,
-    page: pagination.page,
-    total: count
   })
 
-  return { products, info }
+  const countPromise = prisma.products.count({})
+
+  try {
+    const [products, count] = await prisma.$transaction([
+      productsPromise,
+      countPromise
+    ])
+
+    const info = getPaginationInfo({
+      limit: pagination.limit,
+      page: pagination.page,
+      total: count
+    })
+
+    return {
+      products,
+      info
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      error: 'Something went wrong',
+      status: 500
+    }
+  }
 }
 
 export async function getProductById (id?: string) {
   try {
-    const result = await prisma.products.findFirst({
+    const product = await prisma.products.findFirst({
       include: {
         categories: {
           include: {
@@ -48,7 +60,7 @@ export async function getProductById (id?: string) {
       }
     })
 
-    return result
+    return product
   } catch (error) {
     console.error(error)
     return null

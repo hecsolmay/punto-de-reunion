@@ -1,14 +1,19 @@
-import { type ProductsResponse } from '@/types/products'
 import ProductCard from '@/components/products/card'
-
-type Products = ProductsResponse['products']
+import { type ProductsResponse } from '@/types/response'
 
 export default function ProductsList (
-  { products }: { products: Products }
+  { response }: { response: ProductsResponse }
 ) {
+  if (response?.error !== undefined) {
+    // TODO: handle error
+    return null
+  }
+
+  const { products } = response
+
   return (
     <div className='flex h-auto justify-between gap-6 overflow-x-auto overflow-y-hidden md:overflow-x-hidden'>
-      {products.map(({ id, description, price, rating, name, status, reviewCount, images, organization }) => (
+      {products.map(({ id, description, price, rating, name, status, images, organization }) => (
         <ProductCard
           key={id}
           name={name}
@@ -18,7 +23,6 @@ export default function ProductsList (
           description={description}
           id={id}
           scroll={false}
-          reviewCount={reviewCount}
           status={status}
           rating={rating.toNumber()}
         />
