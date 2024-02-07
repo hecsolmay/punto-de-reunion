@@ -1,14 +1,16 @@
 'use client'
 
+import { cn } from '@/libs/cn'
 import { useEffect } from 'react'
 
 interface Props {
   isOpen: boolean
   close: () => void
+  className?: string
 }
 
 export default function ModalBackground (
-  { close, isOpen }: Props
+  { close, isOpen, className }: Props
 ) {
   useEffect(() => {
     if (isOpen) {
@@ -28,9 +30,11 @@ export default function ModalBackground (
   return (
     <div
       onClick={handleClose}
-      className={`fixed inset-0 z-40 bg-black/50 transition-opacity ${
-        isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
-      }`}
+      className={cn(
+        'fixed inset-0 z-40 bg-black/50 transition-opacity',
+        isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+        className
+      )}
       aria-hidden="true"
     />
   )
