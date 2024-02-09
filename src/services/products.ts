@@ -30,8 +30,16 @@ export async function getProducts (params: SearchParams = {}) {
       total: count
     })
 
+    const mappedProducts = products.map(({ price, rating, ...rest }) => {
+      return {
+        ...rest,
+        price: price.toNumber(),
+        rating: rating.toNumber()
+      }
+    })
+
     return {
-      products,
+      products: mappedProducts,
       info
     }
   } catch (error) {
@@ -60,7 +68,17 @@ export async function getProductById (id?: string) {
       }
     })
 
-    return product
+    if (product === null) return null
+
+    const { price, rating, ...rest } = product
+
+    const mappedProduct = {
+      ...rest,
+      price: price.toNumber(),
+      rating: rating.toNumber()
+    }
+
+    return mappedProduct
   } catch (error) {
     console.error(error)
     return null

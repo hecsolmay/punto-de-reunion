@@ -55,7 +55,7 @@ export default async function ProductInfo ({
               </h3>
             </div>
             <p className='text-start text-base font-bold opacity-85'>
-              {price.toNumber().toLocaleString('es-MX', {
+              {price.toLocaleString('es-MX', {
                 style: 'currency',
                 currency: 'MXN'
               })}
@@ -70,7 +70,7 @@ export default async function ProductInfo ({
             <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>
               {description}
             </p>
-            <RatingInfo rating={rating.toNumber()} count={reviewCount} />
+            <RatingInfo rating={rating} count={reviewCount} />
           </div>
         </div>
       </div>

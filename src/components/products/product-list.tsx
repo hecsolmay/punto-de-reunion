@@ -17,14 +17,14 @@ export default function ProductsList (
         <ProductCard
           key={id}
           name={name}
-          price={price.toNumber()}
+          price={price}
           imageUrl={images[0].imageUrl}
           organization={organization}
           description={description}
           id={id}
           scroll={false}
           status={status}
-          rating={rating.toNumber()}
+          rating={rating}
         />
       ))}
     </div>
