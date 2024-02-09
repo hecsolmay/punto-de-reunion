@@ -53,11 +53,11 @@ export default function Input (
   }
 
   if (props.type === 'checkbox') {
-    return <CheckboxInput {...props}/>
+    return <CheckboxInput {...props} register={register}/>
   }
 
   if (props.type === 'radio') {
-    return <InputRadio {...props}/>
+    return <InputRadio {...props} register={register}/>
   }
 
   const { className, error, ...rest } = props
