@@ -1,7 +1,7 @@
 import CartButton from '@/components/buttons/cart-button'
 import SideBarButton from '@/components/buttons/sidebar-button'
 import ThemeButton from '@/components/buttons/theme-button'
-import SearchInput from '@/components/inputs/search-input'
+import SearchRedirect from '@/components/search-suggestions'
 import UserDropDown from '@/components/user-dropdown'
 import { getUserSession } from '@/libs/auth'
 import Link from 'next/link'
@@ -18,9 +18,7 @@ export default async function Navbar () {
         </Link>
       </div>
 
-      <div className='flex flex-1 md:max-w-[40vw]'>
-        <SearchInput />
-      </div>
+      <SearchRedirect className='flex flex-1 md:max-w-[40vw]' />
 
       <div className="flex items-center justify-end gap-4">
 
