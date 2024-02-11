@@ -1,9 +1,16 @@
 import ProductCard from '@/components/products/card'
-import { type ProductsResponse } from '@/types/response'
+import { getProducts } from '@/services/products'
+import { type SearchParams } from '@/types'
 
-export default function ProductsList (
-  { response }: { response: ProductsResponse }
+interface Props {
+  searchParams?: SearchParams
+}
+
+export default async function ProductsList (
+  { searchParams }: Props
 ) {
+  const response = await getProducts(searchParams)
+
   if (response?.error !== undefined) {
     // TODO: handle error
     return null
@@ -12,7 +19,7 @@ export default function ProductsList (
   const { products } = response
 
   return (
-    <div className='flex h-auto justify-between gap-6 overflow-x-auto overflow-y-hidden md:overflow-x-hidden'>
+    <div className='flex min-h-[20.5rem] justify-start gap-6 overflow-x-auto overflow-y-hidden md:overflow-x-hidden'>
       {products.map(({ id, description, price, rating, name, status, images, organization }) => (
         <ProductCard
           key={id}

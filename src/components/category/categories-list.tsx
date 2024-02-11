@@ -1,9 +1,16 @@
 import CategoryCard from '@/components/category/category-card'
-import { type CategoriesResponse } from '@/types/response'
+import { getCategories } from '@/services/category'
+import { type SearchParams } from '@/types'
 
-export default function CategoryList (
-  { response }: { response: CategoriesResponse }
+interface Props {
+  searchParams?: SearchParams
+}
+
+export default async function CategoryList (
+  { searchParams }: Props
 ) {
+  const response = await getCategories(searchParams)
+
   if (response.error !== undefined) {
     // TODO: handle error
     return null
@@ -12,7 +19,7 @@ export default function CategoryList (
   const { categories } = response
 
   return (
-    <div className='flex justify-between gap-6 overflow-x-auto md:overflow-x-hidden'>
+    <div className='flex justify-start gap-6 overflow-x-auto md:overflow-x-hidden'>
       {categories.map(({ id, imageUrl, name }) => (
         <CategoryCard
           key={id}
