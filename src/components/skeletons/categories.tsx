@@ -25,3 +25,13 @@ export function CategoryListSkeleton () {
     </div>
   )
 }
+
+export function CategoriesGridSkeleton ({ length = 12 }: { length?: number }) {
+  return (
+    <section className='grid grid-cols-[repeat(auto-fill,minmax(288px,1fr))] gap-4'>
+      {Array.from({ length }).map((_, index) => (
+        <CategoryCardSkeleton key={index} />
+      ))}
+    </section>
+  )
+}
