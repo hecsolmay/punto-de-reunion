@@ -15,8 +15,8 @@ export interface SearchParams {
   productId?: string
   query?: string
   search?: string
-  page?: string
-  limit?: string
+  page?: string | number
+  limit?: string | number
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'
