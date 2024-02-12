@@ -5,6 +5,7 @@ import InputSearch from '@/components/inputs/input-search'
 import ModalBackground from '@/components/modal-background'
 import SearchResults from '@/components/search-results'
 import { type ProductsSearch } from '@/types/actions'
+import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -22,6 +23,7 @@ export default function SearchSuggestions (
   const isFirstSearch = useRef(true)
   const [results, setResults] = useState<ProductsSearch[]>([])
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
@@ -50,7 +52,7 @@ export default function SearchSuggestions (
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(`Enviando consulta: ${value}`)
+    router.push(`/products?search=${value}`)
   }
 
   const clearSearch = () => {
