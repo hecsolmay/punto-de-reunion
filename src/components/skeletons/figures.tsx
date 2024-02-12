@@ -15,3 +15,9 @@ export function LineSkeleton ({ className }: Props) {
     <div className={cn('h-3 w-6 rounded-lg bg-gray-300 dark:bg-neutral-100/10 animate-pulse duration-200', className)}></div>
   )
 }
+
+export function CircleSkeleton ({ className }: Props) {
+  return (
+    <div className={cn('size-6 rounded-full bg-gray-300 dark:bg-neutral-100/10 animate-pulse duration-200', className)}></div>
+  )
+}
