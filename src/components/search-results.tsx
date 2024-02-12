@@ -1,9 +1,9 @@
-import { type ProductsSearch } from '@/types/actions'
-import LoadingSpinner from '@/components/loading-spinner'
 import SearchSuggestionsEmptyState from '@/components/empty-states/search-suggestions'
-import Link from 'next/link'
+import SearchIcon from '@/components/icons/search'
+import LoadingSpinner from '@/components/loading-spinner'
 import { cn } from '@/libs/cn'
-import SearchIcon from './icons/search'
+import { type ProductsSearch } from '@/types/actions'
+import Link from 'next/link'
 
 interface Props {
   results: ProductsSearch[]
@@ -31,7 +31,6 @@ export default function SearchResults ({
   }
 
   if (hasNoResults) {
-    // TODO: No results EmptyState
     return (
       <Container className={className} containerClassName='h-96'>
         <SearchSuggestionsEmptyState text='No se encontró ningún producto' />
@@ -39,13 +38,6 @@ export default function SearchResults ({
     )
   }
 
-  results.forEach(product => {
-    console.log({ product })
-    const day = product.createdAt.getDay()
-    console.log({ day })
-  })
-
-  // TODO: Search Results Item
   return (
     <Container className={className}>
       <ul className=''>
