@@ -33,7 +33,9 @@ export default function UserDropDown (
       ))}
 
       <DropDownItem className='p-0 text-red-500' >
-        <SignOutButton className='h-full w-full px-4 py-2 text-start' />
+        <SignOutButton className='h-full w-full px-4 py-2 text-start'>
+          Cerrar Sesión
+        </SignOutButton>
       </DropDownItem>
     </DropDown>
   )

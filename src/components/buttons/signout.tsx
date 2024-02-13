@@ -1,10 +1,16 @@
 'use client'
 
+import { closeSession } from '@/actions/user'
 import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 
+interface Props {
+  className?: string
+  children?: React.ReactNode
+}
+
 export default function SignOutButton (
-  { className }: { className?: string }
+  { className, children }: Props
 ) {
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,13 +23,14 @@ export default function SignOutButton (
     console.error(error)
 
     if (error === null) {
-      router.replace('/login')
+      await closeSession()
+      router.push('/login')
     }
   }
 
   return (
     <button onClick={handleLogout} className={className}>
-      Cerrar Sesión
+      {children}
     </button>
   )
 }

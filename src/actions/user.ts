@@ -28,3 +28,7 @@ export async function updateProfile (userId: string, data: UserSchema) {
     data: updatedData
   }
 }
+
+export async function closeSession () {
+  revalidateTag('session')
+}
