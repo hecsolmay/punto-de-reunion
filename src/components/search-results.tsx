@@ -78,7 +78,7 @@ function Container ({
     <div className={className}>
       <div
         className={cn(
-          'flex h-fit max-h-96 w-screen flex-col overflow-y-auto rounded-md bg-white dark:bg-accent-dark md:w-[75vw] md:scrollbar-thin',
+          'flex h-fit max-h-96 w-screen flex-col overflow-y-auto rounded-md bg-white dark:bg-accent-dark md:w-[75vw]  scrollbar-thin scrollbar-white dark:scrollbar-dark ',
           containerClassName
         )
         }

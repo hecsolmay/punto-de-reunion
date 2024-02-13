@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: [
@@ -56,7 +57,19 @@ const config: Config = {
     }
   },
   plugins: [
-    require('tailwind-scrollbar')
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-thin': {
+          scrollbarWidth: 'thin'
+        },
+        '.scrollbar-white': {
+          scrollbarColor: '#d4d4d4 transparent'
+        },
+        '.scrollbar-dark': {
+          scrollbarColor: '#424242 transparent'
+        }
+      })
+    })
   ],
   darkMode: 'class'
 }

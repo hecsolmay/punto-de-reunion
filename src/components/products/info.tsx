@@ -33,7 +33,7 @@ export default async function ProductInfo ({
   return (
     <ProductInfoContainer>
       <InfoHeader title={name} />
-      <div className='flex flex-1 flex-col gap-6 overflow-y-scroll px-3 py-4 md:flex-row md:px-6 md:scrollbar-thin md:scrollbar-track-transparent md:scrollbar-thumb-slate-300 md:dark:scrollbar-thumb-contrast-dark'>
+      <div className='flex flex-1 flex-col gap-6 overflow-y-scroll px-3 py-4 scrollbar-thin scrollbar-white dark:scrollbar-dark md:flex-row md:px-6'>
         <ImageSelection
           className='flex flex-1 flex-col items-center justify-start gap-6 md:sticky md:inset-0 '
           images={images}
