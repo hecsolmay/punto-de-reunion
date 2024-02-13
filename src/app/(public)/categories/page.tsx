@@ -16,7 +16,7 @@ export default async function CategoriesPage ({
       <h1 className='text-pretty text-3xl font-bold'>
         Conoce Nuestras Categorías
       </h1>
-      <Suspense fallback={<CategoriesGridSkeleton length={12} />}>
+      <Suspense key={page} fallback={<CategoriesGridSkeleton length={12} />}>
         <CategoriesGrid searchParams={{ page }}/>
       </Suspense>
     </MainContainer>
