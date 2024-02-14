@@ -1,3 +1,4 @@
+import Carousel from '@/components/carousel'
 import ProductCard from '@/components/products/card'
 import { getProducts } from '@/services/products'
 import { type SearchParams } from '@/types'
@@ -19,7 +20,7 @@ export default async function ProductsList (
   const { products } = response
 
   return (
-    <div className='flex min-h-[20.5rem] justify-start gap-6 overflow-x-auto overflow-y-hidden md:overflow-x-hidden'>
+    <Carousel drag='x' className='min-h-[20.5rem] gap-8'>
       {products.map(({ id, description, price, rating, name, status, images, organization }) => (
         <ProductCard
           key={id}
@@ -34,6 +35,6 @@ export default async function ProductsList (
           rating={rating}
         />
       ))}
-    </div>
+    </Carousel>
   )
 }
