@@ -47,8 +47,10 @@ export default function SortFilter ({ buttonClassName }: Props) {
           key={item.order}
           onClick={handleSelect(item.order)}
           className={cn(
-            'py-4 cursor-pointer dark:hover:bg-white/10 rounded-t-lg',
-            index !== SortItems.length - 1 ? 'border-b border-black dark:border-white' : 'rounded-b-lg'
+            'py-4 cursor-pointer dark:hover:bg-white/10',
+            index !== SortItems.length - 1 ? 'border-b border-black dark:border-white' : 'rounded-b-lg',
+            index === 0 ? 'rounded-t-lg' : '',
+            sortOrder.order === item.order ? 'bg-black/75 hover:bg-black/75 hover:text-white dark:hover:text-black dark:hover:bg-white/90 text-white dark:bg-white/90 dark:text-black' : 'bg-transparent'
           )}
         >
           {formatOrderText(item.order, orderType)}
