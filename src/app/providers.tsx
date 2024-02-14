@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { AppContextProvider } from '@/context/utils'
 
 export default function Providers ({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +9,9 @@ export default function Providers ({ children }: { children: React.ReactNode }) 
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <AppContextProvider>
+        {children}
+      </AppContextProvider>
     </ThemeProvider>
   )
 }

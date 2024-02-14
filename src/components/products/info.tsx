@@ -1,4 +1,5 @@
 import Badge from '@/components/badge'
+import ProductInfoFallback from '@/components/fallbacks/product-info-fallback'
 import ImageSelection from '@/components/image-selection'
 import ProductInfoContainer from '@/components/products/info-container'
 import InfoEmptyState from '@/components/products/info-empty-state'
@@ -13,6 +14,10 @@ export default async function ProductInfo ({
 }: {
   productId?: string
 }) {
+  if (productId === undefined) {
+    return <ProductInfoFallback />
+  }
+
   const product = await getProductById(productId)
 
   if (product === null) {

@@ -9,15 +9,10 @@ export default function ProductInfoModalServer ({
   productId?: string
 }) {
   return (
-    <>
-      {productId !== undefined && (
-        <>
-          <ProductoInfoModal />
-          <Suspense key={productId} fallback={<ProductInfoFallback />}>
-            <ProductInfo productId={productId} />
-          </Suspense>
-        </>
-      )}
-    </>
+    <ProductoInfoModal>
+      <Suspense key={productId} fallback={<ProductInfoFallback />}>
+        <ProductInfo productId={productId} />
+      </Suspense>
+    </ProductoInfoModal>
   )
 }

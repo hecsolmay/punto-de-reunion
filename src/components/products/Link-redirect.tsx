@@ -1,5 +1,6 @@
 'use client'
 
+import { useAppContext } from '@/context/utils'
 import UseProductParams from '@/hooks/use-value-param'
 import { useRouter } from 'next/navigation'
 
@@ -15,8 +16,10 @@ export default function ProductRedirect (
 ) {
   const router = useRouter()
   const { params, addParam, pathname } = UseProductParams('productId')
+  const { setProductModal } = useAppContext()
 
   const handleClick = () => {
+    setProductModal(true)
     addParam('productId', productId)
     router.push(`${pathname}?${params.toString()}`, {
       scroll
