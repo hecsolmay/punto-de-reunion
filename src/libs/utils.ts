@@ -43,3 +43,28 @@ const OrderKeys = ['asc', 'desc'] as const
 export function getOrderType (order: OrderType = 'desc') {
   return OrderKeys.includes(order) ? order : 'desc'
 }
+
+interface getOrderByParams {
+  sort?: SortOptions
+  order?: OrderType
+}
+
+export function getOrderBy ({ order = 'desc', sort = 'created' }: getOrderByParams) {
+  const sortParse = getSortOption(sort)
+  const orderType = getOrderType(order)
+  const { order: sortOption } = sortParse
+
+  if (sortOption === 'price') {
+    return { price: order }
+  }
+
+  if (sortOption === 'rating') {
+    return { rating: order }
+  }
+
+  if (sortOption === 'name') {
+    return { name: orderType }
+  }
+
+  return { createdAt: order }
+}
