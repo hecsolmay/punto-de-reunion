@@ -33,7 +33,7 @@ export default function ToggleTheme () {
       </label>
       <div className="relative me-5 inline-flex cursor-pointer items-center">
         <input onChange={toggle} checked={theme === 'dark'} id='theme' type="checkbox" value="" className="peer sr-only" />
-        <div className="peer h-5 w-[2.3rem] rounded-full bg-black/80 transition-colors duration-200 after:absolute after:start-[2px] after:top-0.5 after:size-4 after:rounded-full after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-white/90 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-black peer-focus:ring-1 dark:border-gray-600 dark:bg-gray-700  rtl:peer-checked:after:-translate-x-full"></div>
+        <div aria-hidden="true" onClick={toggle} className="peer h-5 w-[2.3rem] rounded-full bg-black/80 transition-colors duration-200 after:absolute after:start-[2px] after:top-0.5 after:size-4 after:rounded-full after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-white/90 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-black peer-focus:ring-1 dark:border-gray-600 dark:bg-gray-700  rtl:peer-checked:after:-translate-x-full"></div>
       </div>
     </div>
   )
