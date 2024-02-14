@@ -36,7 +36,7 @@ export default function SortFilter ({ buttonClassName }: Props) {
 
   return (
     <DropDown
-      className='w-52 bg-white/70 dark:bg-white/15'
+      className='w-52 bg-[#fefffe] dark:bg-[#323332]'
       listClassName='py-0 border rounded-lg border-black dark:border-white'
       dropdownTrigger={
         <Button className={buttonClassName}>{formatOrderText(sortOrder.order, orderType)}</Button>
