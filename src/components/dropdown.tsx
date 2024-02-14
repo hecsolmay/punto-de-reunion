@@ -3,14 +3,15 @@
 import { cn } from '@/libs/cn'
 import { useEffect, useRef, useState } from 'react'
 
-interface DrowDownProps {
+interface DropDownProps {
   children?: React.ReactNode
   dropdownTrigger?: React.ReactNode
   className?: string
+  listClassName?: string
 }
 
 export default function DropDown (
-  { children, dropdownTrigger, className }: DrowDownProps
+  { children, dropdownTrigger, className, listClassName }: DropDownProps
 ) {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
@@ -43,7 +44,7 @@ export default function DropDown (
         showDropdown ? 'animate-moveUp duration-150' : 'hidden',
         className
       )}>
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+        <ul className={cn('py-2 text-sm text-gray-700 dark:text-gray-200', listClassName)} aria-labelledby="dropdownDefaultButton">
           {children}
         </ul>
       </div>

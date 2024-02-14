@@ -1,3 +1,6 @@
+import { SORT_OPTIONS } from '@/constants'
+import { type OrderType, type SortOptions } from '@/types'
+
 export function generatePagination (currentPage: number, totalPages: number) {
   // If the total number of pages is 7 or less,
   // display all pages without any ellipsis.
@@ -30,3 +33,13 @@ export function generatePagination (currentPage: number, totalPages: number) {
     totalPages
   ]
 };
+
+export function getSortOption (sort: SortOptions = 'created') {
+  return SORT_OPTIONS[sort] ?? SORT_OPTIONS.created
+}
+
+const OrderKeys = ['asc', 'desc'] as const
+
+export function getOrderType (order: OrderType = 'desc') {
+  return OrderKeys.includes(order) ? order : 'desc'
+}

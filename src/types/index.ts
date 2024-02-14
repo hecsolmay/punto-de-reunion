@@ -16,6 +16,8 @@ export interface SearchParams {
   search?: string
   page?: string | number
   limit?: string | number
+  sort?: SortOptions
+  order?: OrderType
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'
@@ -31,3 +33,6 @@ export interface Country {
   placeholder: string
   phoneNumberLength: number
 }
+
+export type SortOptions = 'price' | 'name' | 'rating' | 'created'
+export type OrderType = 'asc' | 'desc'
