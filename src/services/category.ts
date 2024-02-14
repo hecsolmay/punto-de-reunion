@@ -4,7 +4,7 @@ import { parsePagination } from '@/libs/validations'
 import { type SearchParams } from '@/types'
 
 export async function getCategories (params: SearchParams = {}) {
-  const { limit = 10, page = 1, query = '' } = params
+  const { limit = 10, page = 1, search = '' } = params
 
   const pagination = parsePagination({ limit, page })
 
@@ -13,7 +13,7 @@ export async function getCategories (params: SearchParams = {}) {
     take: pagination.limit,
     where: {
       name: {
-        startsWith: query,
+        startsWith: search,
         mode: 'insensitive'
       }
     }
@@ -22,7 +22,7 @@ export async function getCategories (params: SearchParams = {}) {
   const countPromise = prisma.categories.count({
     where: {
       name: {
-        startsWith: query,
+        startsWith: search,
         mode: 'insensitive'
       }
     }

@@ -4,7 +4,7 @@ import { parsePagination } from '@/libs/validations'
 import { type SearchParams } from '@/types'
 
 export async function getProducts (params: SearchParams = {}) {
-  const { limit = 10, page = 1 } = params
+  const { limit = 10, page = 1, search = '' } = params
   const pagination = parsePagination({ limit, page })
 
   const productsPromise = prisma.products.findMany({
@@ -13,10 +13,23 @@ export async function getProducts (params: SearchParams = {}) {
     include: {
       images: true,
       organization: true
+    },
+    where: {
+      name: {
+        startsWith: search,
+        mode: 'insensitive'
+      }
     }
   })
 
-  const countPromise = prisma.products.count({})
+  const countPromise = prisma.products.count({
+    where: {
+      name: {
+        startsWith: search,
+        mode: 'insensitive'
+      }
+    }
+  })
 
   try {
     const [products, count] = await prisma.$transaction([
