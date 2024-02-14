@@ -88,3 +88,13 @@ export function ProductInfoSkeleton () {
     </div>
   )
 }
+
+export function ProductsGridSkeleton ({ length = 12 }: { length?: number }) {
+  return (
+    <section className='grid flex-1 grid-cols-[repeat(auto-fill,minmax(288px,1fr))] gap-7 md:gap-4'>
+      {Array.from({ length }).map((_, index) => (
+        <ProductCardSkeleton key={index} />
+      ))}
+    </section>
+  )
+}
