@@ -83,3 +83,86 @@ export default async function ProductInfo ({
     </ProductInfoContainer>
   )
 }
+
+export async function ProductInfoPage ({ productId }: { productId: string }) {
+  const product = await getProductById(productId)
+
+  if (product === null) {
+    return (
+      <section className='grid h-full flex-1 place-content-center gap-4'>
+        <h1 className='text-pretty text-center text-3xl font-bold'>Producto No encontrado</h1>
+        <figure className='grid place-items-center'>
+          <img
+            className='w-1/3 object-cover'
+            src='/assets/images/empty-search.webp'
+            alt='Imagen no encontrada de producto'
+          />
+        </figure>
+        <h2 className='text-balance text-center text-3xl font-light'>
+          No se pudo encontrar el producto
+        </h2>
+      </section>
+    )
+  }
+
+  const {
+    name,
+    images,
+    price,
+    categories,
+    organization,
+    description,
+    rating,
+    reviewCount
+  } = product
+  return (
+    <>
+      <h1 className='text-pretty text-3xl font-bold md:hidden'>{name}</h1>
+
+      <ImageSelection
+        className='flex flex-1 flex-col items-center justify-start gap-6'
+        images={images}
+        name={name}
+      />
+      <div className='flex-1'>
+        <div className='flex flex-col gap-6 px-2 md:gap-4 md:p-0'>
+          <h1 className='hidden text-pretty text-3xl font-bold md:block'>
+            {name}
+          </h1>
+
+          <div className='flex items-center gap-x-2'>
+            <Link href={`/organizations/${organization.id}`}>
+              <img
+                className='size-10 rounded-full object-cover'
+                src={organization.imageUrl}
+                alt={`Logo de la organización ${organization.name}`}
+              />
+            </Link>
+            <h3 className='text-large line-clamp-2'>
+              Publicado por:{' '}
+              <span className='font-bold'>{organization.name}</span>
+            </h3>
+          </div>
+          <p className='text-start text-base font-bold opacity-85'>
+            {price.toLocaleString('es-MX', {
+              style: 'currency',
+              currency: 'MXN'
+            })}
+          </p>
+          <div className='flex flex-wrap gap-3'>
+            {categories.map(({ category: { id, name } }) => (
+              <Link href={`/categories/${id}`} key={id}>
+                <Badge variant='default'>{name}</Badge>
+              </Link>
+            ))}
+          </div>
+          <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>
+            {description}
+          </p>
+          <RatingInfo rating={rating} count={reviewCount} />
+          {/* TODO: Add review */}
+        </div>
+      </div>
+    </>
+  )
+}

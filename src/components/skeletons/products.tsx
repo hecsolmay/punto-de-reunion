@@ -98,3 +98,54 @@ export function ProductsGridSkeleton ({ length = 12 }: { length?: number }) {
     </section>
   )
 }
+
+export function ProductInfoPageSkeleton () {
+  return (
+    <>
+      <LineSkeleton className='block h-3 w-1/2 md:hidden' />
+
+      <div className='flex flex-1 flex-col items-center justify-start gap-6 md:sticky md:inset-0'>
+        <div className='mx-auto grid min-w-full place-items-center'>
+          <RectangleSkeleton className='size-72 rounded-lg' />
+        </div>
+        <ul className='grid grid-cols-4 gap-4'>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <li key={index} className={'cursor-pointer' }>
+              <RectangleSkeleton className='h-14 w-20 rounded-lg' />
+            </li>
+          ))}
+
+        </ul>
+      </div>
+
+      <div className='flex-1'>
+        <div className='flex flex-col gap-6 px-2 md:gap-4 md:p-0'>
+
+          <LineSkeleton className='hidden h-3 w-1/2 md:block' />
+
+          <div className='flex items-center gap-x-2'>
+            <CircleSkeleton className='size-10'/>
+            <LineSkeleton className='h-3 w-48' />
+          </div>
+
+          <LineSkeleton className='mb-4 h-3 w-24' />
+
+          <div className='flex flex-wrap gap-3'>
+            <LineSkeleton className='h-3 w-16' />
+            <LineSkeleton className='h-3 w-16' />
+            <LineSkeleton className='h-3 w-16' />
+            <LineSkeleton className='h-3 w-16' />
+          </div>
+
+          <LineSkeleton className='h-3 w-full' />
+          <LineSkeleton className='h-3 w-full' />
+          <LineSkeleton className='h-3 w-3/4' />
+
+          <LineSkeleton className='mt-4 h-3 w-1/2' />
+
+        </div>
+      </div>
+      {/* TODO: Add review */}
+    </>
+  )
+}
