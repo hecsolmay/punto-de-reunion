@@ -23,7 +23,7 @@ export default async function ProductsGrid ({
     // TODO: PRODUCTS EMPTY STATE
     return (
       <ProductsGridEmptyState
-        text={`No se encontraron resultados para "${search}"`}
+        text={search === undefined ? 'No se encontraron resultados' : `No se encontraron resultados para "${search}"`}
       />
     )
   }
