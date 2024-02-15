@@ -22,6 +22,7 @@ export interface SearchParams {
   limit?: string | number
   sort?: SortOptions
   order?: OrderType
+  categoryId?: string
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'

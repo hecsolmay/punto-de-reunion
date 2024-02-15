@@ -56,3 +56,18 @@ export async function getCategories (params: SearchParams = {}) {
     }
   }
 }
+
+export async function getCategoryById (categoryId: string) {
+  try {
+    const category = await prisma.categories.findUnique({
+      where: {
+        id: categoryId
+      }
+    })
+
+    return category
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
