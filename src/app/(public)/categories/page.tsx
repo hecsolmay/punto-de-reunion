@@ -1,14 +1,12 @@
 import CategoriesGrid from '@/components/category/categories-grid'
 import MainContainer from '@/components/main-container'
 import { CategoriesGridSkeleton } from '@/components/skeletons/categories'
-import { type SearchParams } from '@/types'
+import { type ServerPageProps } from '@/types'
 import { Suspense } from 'react'
 
 export default async function CategoriesPage ({
   searchParams
-}: {
-  searchParams: SearchParams
-}) {
+}: ServerPageProps) {
   const { page = 1 } = searchParams
 
   return (
@@ -17,7 +15,7 @@ export default async function CategoriesPage ({
         Conoce Nuestras Categorías
       </h1>
       <Suspense key={page} fallback={<CategoriesGridSkeleton length={12} />}>
-        <CategoriesGrid searchParams={{ page }}/>
+        <CategoriesGrid searchParams={{ page }} />
       </Suspense>
     </MainContainer>
   )

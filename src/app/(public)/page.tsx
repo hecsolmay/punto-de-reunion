@@ -6,14 +6,10 @@ import ProductsList from '@/components/products/product-list'
 import SectionContainer from '@/components/section-container'
 import { CategoryListSkeleton } from '@/components/skeletons/categories'
 import { ProductsListSkeleton } from '@/components/skeletons/products'
-import { type SearchParams } from '@/types'
+import { type ServerPageProps } from '@/types'
 import { Suspense } from 'react'
 
-export default async function Home ({
-  searchParams
-}: {
-  searchParams: SearchParams
-}) {
+export default async function Home ({ searchParams }: ServerPageProps) {
   const { productId } = searchParams
 
   return (
@@ -33,7 +29,6 @@ export default async function Home ({
           <ProductsList />
         </Suspense>
       </SectionContainer>
-
     </MainContainer>
   )
 }

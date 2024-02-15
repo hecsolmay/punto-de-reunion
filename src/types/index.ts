@@ -11,6 +11,10 @@ export interface ActionDropdownItem {
   children?: React.ReactNode
 }
 
+export interface Params {
+  id: string
+}
+
 export interface SearchParams {
   productId?: string
   search?: string
@@ -36,3 +40,8 @@ export interface Country {
 
 export type SortOptions = 'price' | 'name' | 'rating' | 'created'
 export type OrderType = 'asc' | 'desc'
+
+export interface ServerPageProps {
+  searchParams: SearchParams
+  params: Params
+}
