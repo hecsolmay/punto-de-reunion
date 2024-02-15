@@ -7,12 +7,7 @@ import { type ServerPageProps } from '@/types'
 import { Suspense } from 'react'
 
 export default function ProductsPage ({ searchParams }: ServerPageProps) {
-  const { page, search, order, sort } = searchParams
-
-  const pageString = page ?? '1'
-  const searchString = search ?? ''
-  const orderString = order ?? ''
-  const sortString = sort ?? ''
+  const { page = '1', search = '', order = 'desc', sort = 'created' } = searchParams
 
   return (
     <MainContainer className='flex h-auto min-h-[80vh] flex-col gap-y-8 pb-8'>
@@ -33,7 +28,7 @@ export default function ProductsPage ({ searchParams }: ServerPageProps) {
       </div>
 
       <Suspense
-        key={pageString + searchString + orderString + sortString}
+        key={page + search + order + sort}
         fallback={<ProductsGridSkeleton />}
       >
         <ProductsGrid searchParams={searchParams} />
