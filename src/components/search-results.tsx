@@ -11,6 +11,7 @@ interface Props {
   className?: string
   hasNoResults?: boolean
   searchWord?: string
+  close?: () => void
 }
 
 export default function SearchResults ({
@@ -18,7 +19,8 @@ export default function SearchResults ({
   results,
   className,
   hasNoResults = false,
-  searchWord
+  searchWord,
+  close
 }: Props) {
   if (isLoading) {
     return (
@@ -43,12 +45,12 @@ export default function SearchResults ({
       <ul className=''>
         {results.map(({ id, images, name }) => (
           <li key={id}>
-            <ResultItem href={`/products/${id}`} img={images[0].imageUrl} name={name} />
+            <ResultItem onClick={close} href={`/products/${id}`} img={images[0].imageUrl} name={name} />
           </li>
         ))}
 
         <li>
-          <LinkRedirect href={`/products?search=${searchWord}`}>
+          <LinkRedirect onClick={close} href={`/products?search=${searchWord}`}>
             <div className='grid w-12 place-items-center'>
               <SearchIcon className='size-7'/>
             </div>
@@ -96,12 +98,12 @@ interface ResultItemProps {
   href: string
   img: string
   name: string
-
+  onClick?: () => void
 }
 
-function ResultItem ({ href, img, name }: ResultItemProps) {
+function ResultItem ({ href, img, name, onClick }: ResultItemProps) {
   return (
-    <LinkRedirect href={href}>
+    <LinkRedirect onClick={onClick} href={href}>
       <img src={img} alt={`Imagen de ${name}`} className='size-12 rounded-md object-cover' />
       <p className='line-clamp-1 flex-1 text-pretty font-semibold'>{name}</p>
     </LinkRedirect>
@@ -111,11 +113,12 @@ function ResultItem ({ href, img, name }: ResultItemProps) {
 interface LinkRedirectProps {
   children?: React.ReactNode
   href: string
+  onClick?: () => void
 }
 
-function LinkRedirect ({ children, href }: LinkRedirectProps) {
+function LinkRedirect ({ children, href, onClick }: LinkRedirectProps) {
   return (
-    <Link href={href} className='flex items-center gap-4 px-6 py-2 transition-colors duration-100 hover:bg-gray-100 dark:hover:bg-white/10 md:px-4'>
+    <Link onClick={onClick} href={href} className='flex items-center gap-4 px-6 py-2 transition-colors duration-100 hover:bg-gray-100 dark:hover:bg-white/10 md:px-4'>
       {children}
     </Link>
   )

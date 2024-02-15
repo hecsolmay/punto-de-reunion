@@ -85,6 +85,10 @@ export default function SearchSuggestions (
             isLoading={loading}
             hasNoResults={results.length === 0 && value.trim() !== '' && !isFirstSearch.current}
             searchWord={value.trim()}
+            close={() => {
+              setShow(false)
+              clearSearch()
+            }}
           />
         </>
       )}
