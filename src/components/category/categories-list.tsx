@@ -22,6 +22,7 @@ export default async function CategoryList ({ searchParams }: Props) {
       {categories.map(({ id, imageUrl, name }) => (
         <CategoryCard
           key={id}
+          className='h-full'
           href={`/categories/${id}`}
           imageUrl={imageUrl}
           name={name}
