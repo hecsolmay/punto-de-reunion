@@ -24,8 +24,6 @@ export default function SortFilter ({ buttonClassName }: Props) {
   const sortOrder = getSortOption(sort as any)
   const orderType = getOrderType(order as any)
 
-  console.log({ sort, order, sortOrder, orderType })
-
   const handleSelect = (sort: SortOptions) => () => {
     const params = new URLSearchParams(searchParams)
     params.delete('order')

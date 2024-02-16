@@ -74,8 +74,6 @@ export function getOrderBy ({
   const orderType = getOrderType(order)
   const { order: sortOption } = sortParse
 
-  console.log({ orderType })
-
   if (sortOption === 'price') {
     return { price: orderType }
   }

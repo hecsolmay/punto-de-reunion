@@ -28,5 +28,5 @@ export const SidebarLinks = [
   { href: '/', title: 'Inicio', icon: HomeIcon },
   { href: '/products', title: 'Productos', icon: ShoppingBagIcon },
   { href: '/categories', title: 'Categorías', icon: TagIcon },
-  { href: '/organizations', title: 'Organizaciones', icon: UserGroupIcon }
+  { href: '#', title: 'Organizaciones', icon: UserGroupIcon }
 ]
