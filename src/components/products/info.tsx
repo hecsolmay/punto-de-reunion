@@ -1,6 +1,6 @@
-import Badge from '@/components/badge'
 import ProductInfoFallback from '@/components/fallbacks/product-info-fallback'
 import ImageSelection from '@/components/image-selection'
+import CategoriesBadges from '@/components/products/categories-badges'
 import ProductInfoContainer from '@/components/products/info-container'
 import InfoEmptyState from '@/components/products/info-empty-state'
 import InfoFooter from '@/components/products/info-footer'
@@ -29,11 +29,16 @@ export default async function ProductInfo ({
     description,
     images,
     price,
-    categories,
+    categories: categoriesProducts,
     rating,
     reviewCount,
     organization
   } = product
+
+  const categories = categoriesProducts.map(({ category }) => ({
+    id: category.id,
+    name: category.name
+  }))
 
   return (
     <ProductInfoContainer>
@@ -65,13 +70,7 @@ export default async function ProductInfo ({
                 currency: 'MXN'
               })}
             </p>
-            <div className='flex flex-wrap gap-3'>
-              {categories.map(({ category: { id, name } }) => (
-                <Link href={`/categories/${id}`} key={id}>
-                  <Badge variant='default'>{name}</Badge>
-                </Link>
-              ))}
-            </div>
+            <CategoriesBadges categories={categories} />
             <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>
               {description}
             </p>
@@ -90,7 +89,9 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
   if (product === null) {
     return (
       <section className='grid h-full flex-1 place-content-center gap-4'>
-        <h1 className='text-pretty text-center text-3xl font-bold'>Producto No encontrado</h1>
+        <h1 className='text-pretty text-center text-3xl font-bold'>
+          Producto No encontrado
+        </h1>
         <figure className='grid place-items-center'>
           <img
             className='w-1/3 object-cover'
@@ -107,14 +108,20 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
 
   const {
     name,
+    description,
     images,
     price,
-    categories,
-    organization,
-    description,
+    categories: categoriesProducts,
     rating,
-    reviewCount
+    reviewCount,
+    organization
   } = product
+
+  const categories = categoriesProducts.map(({ category }) => ({
+    id: category.id,
+    name: category.name
+  }))
+
   return (
     <>
       <h1 className='text-pretty text-3xl font-bold md:hidden'>{name}</h1>
@@ -149,13 +156,7 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
               currency: 'MXN'
             })}
           </p>
-          <div className='flex flex-wrap gap-3'>
-            {categories.map(({ category: { id, name } }) => (
-              <Link href={`/categories/${id}`} key={id}>
-                <Badge variant='default'>{name}</Badge>
-              </Link>
-            ))}
-          </div>
+          <CategoriesBadges categories={categories} />
           <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>
             {description}
           </p>
