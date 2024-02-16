@@ -32,7 +32,7 @@ export function generatePagination (currentPage: number, totalPages: number) {
     '...',
     totalPages
   ]
-};
+}
 
 export function getSortOption (sort: SortOptions = 'created') {
   return SORT_OPTIONS[sort] ?? SORT_OPTIONS.created
@@ -40,8 +40,8 @@ export function getSortOption (sort: SortOptions = 'created') {
 
 const OrderKeys = ['asc', 'desc'] as const
 
-export function getOrderType (order: OrderType = 'desc') {
-  return OrderKeys.includes(order) ? order : 'desc'
+export function getOrderType (order: OrderType = 'asc') {
+  return OrderKeys.includes(order) ? order : 'asc'
 }
 
 interface getOrderByParams {
@@ -49,22 +49,60 @@ interface getOrderByParams {
   order?: OrderType
 }
 
-export function getOrderBy ({ order = 'desc', sort = 'created' }: getOrderByParams) {
+type ReturnOrderByCommon =
+  | {
+    createdAt: OrderType
+  }
+  | {
+    name: OrderType
+  }
+
+type ReturnOrderByProducts =
+  | ReturnOrderByCommon
+  | {
+    price: OrderType
+  }
+  | {
+    rating: OrderType
+  }
+
+export function getOrderBy ({
+  order = 'asc',
+  sort = 'created'
+}: getOrderByParams): ReturnOrderByProducts {
   const sortParse = getSortOption(sort)
   const orderType = getOrderType(order)
   const { order: sortOption } = sortParse
 
+  console.log({ orderType })
+
   if (sortOption === 'price') {
-    return { price: order }
+    return { price: orderType }
   }
 
   if (sortOption === 'rating') {
-    return { rating: order }
+    return { rating: orderType }
   }
 
   if (sortOption === 'name') {
     return { name: orderType }
   }
 
-  return { createdAt: order }
+  const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
+  return { createdAt: reverseOrder }
+}
+
+export function getOrderByCategory ({
+  order = 'asc',
+  sort = 'created'
+}: getOrderByParams): ReturnOrderByCommon {
+  const sortParse = getSortOption(sort)
+  const orderType = getOrderType(order)
+  const { order: sortOption } = sortParse
+
+  if (sortOption === 'name') {
+    return { name: orderType }
+  }
+  const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
+  return { createdAt: reverseOrder }
 }

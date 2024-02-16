@@ -18,7 +18,7 @@ export default async function CategoryPage ({
   if (category === null) {
     redirect('/not-found')
   }
-  const { page = '1', search = '', order = 'desc', sort = 'created', productId } = searchParams
+  const { page = '1', search = '', order = 'asc', sort = 'created', productId } = searchParams
 
   return (
     <MainContainer className='flex h-auto min-h-[80vh] flex-col gap-y-8 pb-8'>

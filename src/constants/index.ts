@@ -25,7 +25,7 @@ interface SortOptionsType {
 
 export const SORT_OPTIONS: Record<SortOptions, SortOptionsType> = {
   created: {
-    text: 'Fecha en que se agrego',
+    text: 'Fecha',
     order: 'created'
   },
   name: {

@@ -1,15 +1,15 @@
 import { getPaginationInfo } from '@/libs/pagination'
 import prisma from '@/libs/prisma'
-import { getOrderBy } from '@/libs/utils'
+import { getOrderByCategory } from '@/libs/utils'
 import { parsePagination } from '@/libs/validations'
 import { type SearchParams } from '@/types'
 
 export async function getCategories (params: SearchParams = {}) {
-  const { limit = 10, page = 1, search = '', sort = 'created', order = 'desc' } = params
+  const { limit = 10, page = 1, search = '', sort = 'created', order = 'asc' } = params
 
   const pagination = parsePagination({ limit, page })
 
-  const orderBy = getOrderBy({ order, sort })
+  const orderBy = getOrderByCategory({ order, sort })
 
   const categoriesPromise = prisma.categories.findMany({
     skip: pagination.skip,

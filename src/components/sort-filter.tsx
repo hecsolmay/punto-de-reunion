@@ -24,9 +24,12 @@ export default function SortFilter ({ buttonClassName }: Props) {
   const sortOrder = getSortOption(sort as any)
   const orderType = getOrderType(order as any)
 
+  console.log({ sort, order, sortOrder, orderType })
+
   const handleSelect = (sort: SortOptions) => () => {
     const params = new URLSearchParams(searchParams)
-    if (order !== null || sort === sortOrder.order) {
+    params.delete('order')
+    if (sort === sortOrder.order) {
       params.set('order', orderType === 'desc' ? 'asc' : 'desc')
     }
 
@@ -53,18 +56,18 @@ export default function SortFilter ({ buttonClassName }: Props) {
             sortOrder.order === item.order ? 'bg-black/75 hover:bg-black/75 hover:text-white dark:hover:text-black dark:hover:bg-white/90 text-white dark:bg-white/90 dark:text-black' : 'bg-transparent'
           )}
         >
-          {formatOrderText(item.order, orderType)}
+          {formatOrderText(item.order, sortOrder.order === item.order ? orderType : 'asc')}
         </DropDownItem>
       ))}
     </DropDown>
   )
 }
 
-function formatOrderText (sort: SortOptions, order: OrderType = 'desc') {
+function formatOrderText (sort: SortOptions, order: OrderType = 'asc') {
   const text = SORT_OPTIONS[sort].text
 
   if (sort === 'created') {
-    return `${text} ${order === 'asc' ? '⬆' : '⬇'}`
+    return `${text} ${order === 'asc' ? '(Nuevos)' : '(Antiguos)'}`
   }
 
   if (sort === 'name') {
