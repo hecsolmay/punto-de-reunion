@@ -41,3 +41,5 @@ export const SORT_OPTIONS: Record<SortOptions, SortOptionsType> = {
     order: 'rating'
   }
 }
+
+export const IMAGE_MAX_SIZE = 1024 * 1024 * 3 // 3MB
