@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components/theme-provider'
 import { AppContextProvider } from '@/context/utils'
 import { EdgeStoreProvider } from '@/libs/edgestore'
+import { Toaster } from '@/libs/sonner'
 
 export default function Providers ({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function Providers ({ children }: { children: React.ReactNode }) 
     >
       <EdgeStoreProvider>
         <AppContextProvider>
+          <Toaster position='bottom-right' />
           {children}
         </AppContextProvider>
       </EdgeStoreProvider>
