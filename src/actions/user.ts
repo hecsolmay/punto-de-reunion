@@ -32,3 +32,25 @@ export async function updateProfile (userId: string, data: UserSchema) {
 export async function closeSession () {
   revalidateTag('session')
 }
+
+export async function updateUserProfileImage ({ url, userId }: { url: string, userId?: string }) {
+  try {
+    const updatedData = await prisma.users.update({
+      data: { avatarUrl: url },
+      where: {
+        id: userId
+      }
+    })
+
+    console.log({ updatedData })
+
+    revalidateTag('profile')
+
+    return {
+      success: true,
+      data: updatedData
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}

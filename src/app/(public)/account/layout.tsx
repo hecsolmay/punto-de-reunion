@@ -1,3 +1,4 @@
+import ChangeProfileImage from '@/components/change-profile-image'
 import LinkClient from '@/components/link-client'
 import { accountProfileLinks } from '@/constants/links'
 import { getUserSession } from '@/libs/auth'
@@ -18,7 +19,7 @@ export default async function AccountLayout ({
       <section className='relative flex h-full w-full flex-1 flex-col gap-4 px-3 md:flex-row md:gap-8 md:px-5'>
         <div className='h-auto w-full bg-zinc-100 px-2 py-4 dark:bg-zinc-900 md:h-72 md:w-[30%] lg:w-1/4'>
           <div className='flex w-full items-center justify-end gap-4 border-b border-gray-400 pb-2 dark:border-white/90 md:justify-start md:border-none'>
-            <img className='size-12 rounded-full' src={image} alt={`Foto de perfil de ${username}`} />
+            <ChangeProfileImage profileUrl={image} name={username} userId={session?.id} />
             <div>
               <span className='text-gray-500 dark:text-gray-400'>Mi Perfil</span>
               <h2 className='line-clamp-1 text-nowrap text-xl font-bold'>{username}</h2>

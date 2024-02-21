@@ -90,6 +90,7 @@ interface SingleImageDropzoneProps {
   saveImage?: (url: string) => Promise<void> | void
   className?: string
   buttonClassName?: string
+  buttonText?: string
 }
 export function SingleImageDropzoneUsage ({
   path,
@@ -97,7 +98,8 @@ export function SingleImageDropzoneUsage ({
   className,
   buttonClassName,
   height = 200,
-  width = 200
+  width = 200,
+  buttonText = 'Subir Imagen'
 }: SingleImageDropzoneProps) {
   const [file, setFile] = useState<File>()
   const [progressbar, setProgressbar] = useState(0)
@@ -130,9 +132,6 @@ export function SingleImageDropzoneUsage ({
                 input: {
                   type: path
                 },
-                options: {
-                  temporary: true
-                },
                 file,
                 onProgressChange: progress => {
                   // you can use this to show a progress bar
@@ -150,7 +149,7 @@ export function SingleImageDropzoneUsage ({
           }
         }}
       >
-        Upload {isUploading && `${progressbar}%`}
+        {buttonText} {isUploading && `${progressbar}%`}
       </Button>
     </>
   )
