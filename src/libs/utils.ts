@@ -104,3 +104,18 @@ export function getOrderByCategory ({
   const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
   return { createdAt: reverseOrder }
 }
+
+export function getOrderByOrganization ({
+  order = 'asc',
+  sort = 'created'
+}: getOrderByParams): ReturnOrderByCommon {
+  const sortParse = getSortOption(sort)
+  const orderType = getOrderType(order)
+  const { order: sortOption } = sortParse
+
+  if (sortOption === 'name') {
+    return { name: orderType }
+  }
+  const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
+  return { createdAt: reverseOrder }
+}
