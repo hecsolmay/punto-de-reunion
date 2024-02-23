@@ -23,6 +23,7 @@ export interface SearchParams {
   sort?: SortOptions
   order?: OrderType
   categoryId?: string
+  userId?: string
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'

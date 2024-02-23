@@ -33,7 +33,7 @@ export async function closeSession () {
   revalidateTag('session')
 }
 
-export async function updateUserProfileImage ({ url, userId }: { url: string, userId?: string }) {
+export async function updateUserProfileImage ({ url, userId }: { url?: string, userId?: string }) {
   try {
     const updatedData = await prisma.users.update({
       data: { avatarUrl: url },
