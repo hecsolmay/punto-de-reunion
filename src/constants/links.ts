@@ -10,7 +10,7 @@ import { type LinkDropdownItem } from '@/types'
 export const userDropdownLinks: LinkDropdownItem[] = [
   {
     title: 'Mis organizaciones',
-    href: '/account/organizations'
+    href: '/my-organizations'
   },
   {
     title: 'Mi cuenta',

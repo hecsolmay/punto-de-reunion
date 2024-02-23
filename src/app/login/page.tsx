@@ -4,13 +4,21 @@ import { createServerSupabaseClient } from '@/libs/supabase'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-export default async function Login () {
+interface LoginServerProps {
+  searchParams: {
+    next?: string
+  }
+}
+
+export default async function Login ({ searchParams }: LoginServerProps) {
   const supabase = createServerSupabaseClient()
   const { data: { session } } = await supabase.auth.getSession()
 
   if (session !== null) {
     redirect('/')
   }
+
+  const { next = '/' } = searchParams
 
   return (
     <div className="relative min-h-[100dvh] bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
@@ -38,10 +46,10 @@ export default async function Login () {
 
           <div className='flex flex-col gap-4 px-6'>
 
-            <SocialButton type='google'/>
-            <SocialButton type='github'/>
-            <SocialButton type='facebook'/>
-            <SocialButton type='azure'/>
+            <SocialButton redirectTo={next} type='google'/>
+            <SocialButton redirectTo={next} type='github'/>
+            <SocialButton redirectTo={next} type='facebook'/>
+            <SocialButton redirectTo={next} type='azure'/>
 
           </div>
         </div>
