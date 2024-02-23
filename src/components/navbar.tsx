@@ -14,7 +14,7 @@ export default async function Navbar () {
       <div className='flex items-center gap-6'>
         <SideBarButton session={session} />
         <Link className='hidden md:block' href='/'>
-          <img className='h-10 object-cover dark:invert' src="assets/images/logo.png" alt="Logo de Punto de Reunion" />
+          <img className='h-10 object-cover dark:invert' src="/assets/images/logo.png" alt="Logo de Punto de Reunion" />
         </Link>
       </div>
 
