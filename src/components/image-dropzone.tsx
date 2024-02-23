@@ -1,6 +1,5 @@
 'use client'
 
-import Button from '@/components/buttons/button'
 import {
   MultiImageDropzone,
   type FileState
@@ -86,71 +85,30 @@ export function MultiImageDropzoneUsage ({
 interface SingleImageDropzoneProps {
   width?: string | number
   height?: string | number
-  path: 'profile' | 'category' | 'brand' | 'organization'
-  saveImage?: (url: string) => Promise<void> | void
+  onChange?: (file: File | undefined) => void
+  value?: string | File
   className?: string
-  buttonClassName?: string
-  buttonText?: string
+  disabled?: boolean
 }
 export function SingleImageDropzoneUsage ({
-  path,
-  saveImage,
   className,
-  buttonClassName,
+  value,
+  onChange,
+  disabled,
   height = 200,
-  width = 200,
-  buttonText = 'Subir Imagen'
+  width = 200
 }: SingleImageDropzoneProps) {
-  const [file, setFile] = useState<File>()
-  const [progressbar, setProgressbar] = useState(0)
-  const [isUploading, setIsUploading] = useState(false)
-  const { edgestore } = useEdgeStore()
   return (
-    <>
-      <SingleImageDropzone
-        width={width}
-        height={height}
-        value={file}
-        disabled={isUploading}
-        className={className}
-        dropzoneOptions={{
-          maxSize: IMAGE_MAX_SIZE
-        }}
-        onChange={file => {
-          setFile(file)
-        }}
-      />
-      <Button
-        type='button'
-        className={buttonClassName}
-        disabled={isUploading}
-        onClick={async () => {
-          if (file !== undefined) {
-            setIsUploading(true)
-            try {
-              const res = await edgestore.publicFiles.upload({
-                input: {
-                  type: path
-                },
-                file,
-                onProgressChange: progress => {
-                  // you can use this to show a progress bar
-                  setProgressbar(progress)
-                }
-              })
-              // you can run some server action or api here
-              // to add the necessary data to your database
-              await saveImage?.(res.url)
-            } catch (err) {
-              setIsUploading(false)
-            } finally {
-              setIsUploading(false)
-            }
-          }
-        }}
-      >
-        {buttonText} {isUploading && `${progressbar}%`}
-      </Button>
-    </>
+    <SingleImageDropzone
+      width={width}
+      height={height}
+      value={value}
+      disabled={disabled}
+      className={className}
+      dropzoneOptions={{
+        maxSize: IMAGE_MAX_SIZE
+      }}
+      onChange={onChange}
+    />
   )
 }
