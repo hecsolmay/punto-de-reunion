@@ -4,7 +4,7 @@ import { cn } from '@/libs/cn'
 export default function CheckboxInput (
   { className, error, register, placeholder, ...props }: CheckboxProps
 ) {
-  const idCheckbox = register.name ?? props.name ?? 'checkbox'
+  const idCheckbox = register?.name ?? props?.name ?? 'checkbox'
 
   return (
     <div className={cn('inline-flex gap-2 items-center', className)}>

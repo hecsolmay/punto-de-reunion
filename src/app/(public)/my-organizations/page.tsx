@@ -1,5 +1,6 @@
 import { MyOrganizationsEmptyState } from '@/components/empty-states/organizations'
 import MainContainer from '@/components/main-container'
+import { CreateOrganizationButton } from '@/components/organizations/button'
 import { getUserSession } from '@/libs/auth'
 import { getOrganizations } from '@/services/organizations'
 import { type ServerPageProps } from '@/types'
@@ -16,6 +17,7 @@ export default async function MyOrganizationsPage ({ searchParams }: ServerPageP
   }
 
   const { organizations } = organizationsResponse
+  console.log(organizationsResponse)
 
   if (organizations.length === 0) {
     return (
@@ -27,7 +29,10 @@ export default async function MyOrganizationsPage ({ searchParams }: ServerPageP
 
   return (
     <MainContainer className='flex h-auto min-h-[80vh] flex-col gap-y-8 px-4 pb-8 md:px-8'>
-      <h1 className='text-pretty text-3xl font-bold text-black dark:text-white'>Mis Organizaciones</h1>
+      <div className='flex flex-col justify-between gap-6 md:flex-row'>
+        <h1 className='text-pretty text-3xl font-bold text-black dark:text-white'>Mis Organizaciones</h1>
+        <CreateOrganizationButton organizationsCount={organizations.length}/>
+      </div>
     </MainContainer>
   )
 }
