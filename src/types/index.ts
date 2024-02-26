@@ -24,6 +24,7 @@ export interface SearchParams {
   order?: OrderType
   categoryId?: string
   userId?: string
+  organizationId?: string
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'
