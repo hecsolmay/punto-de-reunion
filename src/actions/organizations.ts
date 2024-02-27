@@ -1,5 +1,6 @@
 'use server'
 
+import { backendClient } from '@/libs/edgestore-server'
 import prisma from '@/libs/prisma'
 import { type OrganizationSchema } from '@/schemas/organization'
 import { revalidateTag } from 'next/cache'
@@ -14,6 +15,13 @@ interface OrganizationCreate extends Organization {
 
 export async function createOrganization (data: OrganizationCreate) {
   const { userId = '', ...organization } = data
+
+  try {
+    await backendClient.publicFiles.confirmUpload({
+      url: data.imageUrl
+    })
+  } catch (error) {
+  }
 
   try {
     const organizations = await prisma.organizations.create({

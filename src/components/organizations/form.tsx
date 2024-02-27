@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function CreateOrganizationForm ({ close, userId }: Props) {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<OrganizationSchema>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<OrganizationSchema>({
     resolver: zodResolver(organizationSchema)
   })
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
@@ -30,15 +30,41 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
 
   const onSubmit = async (data: OrganizationSchema) => {
     try {
-      await createOrganization({ ...data, userId, imageUrl: '' })
-      console.log({ ...data, imageUrl, userId })
+      if (imageUrl === undefined || file === undefined) {
+        toast.error('Por favor, selecciona una imagen')
+        return
+      }
+
+      await createOrganization({ ...data, userId, imageUrl })
+      toast.success('Organización Creada')
+      resetStates()
     } catch (error) {
       console.error(error)
+      toast.error('Ocurrio un error al crear la organización')
     }
   }
 
+  const handleChange = async (file?: File) => {
+    try {
+      const res = await uploadFile(file, { type: 'organization', temporary: true })
+
+      if (res === undefined) return
+
+      setImageUrl(res.url)
+    } catch (error) {
+      console.error(error)
+      toast.error('Ocurrio un error al subir el archivo')
+    }
+  }
+
+  const resetStates = () => {
+    setImageUrl(undefined)
+    setFile(undefined)
+    reset()
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='fixed inset-0 z-50 m-auto flex h-[90dvh] w-[85dvw] animate-moveUp flex-col  bg-white transition-all duration-500 dark:bg-accent-dark md:h-[90dvh] md:w-[75vw] lg:w-[75vw]'>
+    <form onSubmit={handleSubmit(onSubmit)} className='fixed inset-0 z-50 m-auto flex h-[90dvh] w-[85dvw] max-w-3xl animate-moveUp  flex-col bg-white transition-all duration-500 dark:bg-accent-dark md:h-[90dvh] md:w-[75vw] lg:w-[75vw]'>
       <header className="flex h-16 items-center justify-between border-b border-gray-400 px-6 dark:border-white md:px-4">
         <h1 className="text-2xl font-bold">Crear Organización</h1>
         <button onClick={close}><XMarkIcon /></button>
@@ -46,20 +72,14 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
       <main className="flex flex-1 flex-col gap-3 overflow-y-scroll px-6 pb-10 pt-6 scrollbar-thin scrollbar-white dark:scrollbar-dark md:px-4 lg:gap-5">
 
         <FormItem htmlFor='image' label='Imagen de la organización'>
-          <SingleImageDropzoneUsage value={file} onChange={async file => {
-            try {
-              setFile(file)
-              const res = await uploadFile({ type: 'organization', temporary: true })
-              if (res === undefined) {
-                throw new Error('Error al subir el archivo')
-              }
-
-              setImageUrl(res.url)
-            } catch (error) {
-              console.error(error)
-              toast.error('Ocurrio un error al subir el archivo')
-            }
-          }}width={'100%'} />
+          <div className='grid place-items-center'>
+            <SingleImageDropzoneUsage disabled={isUploading} value={file} onChange={handleChange} width={'100%'} />
+            {isUploading && (
+              <div className='mt-2 h-2 w-full overflow-hidden rounded-md border'>
+                <div className='trasnition-all h-full bg-accent-dark duration-150 dark:bg-white' style={{ width: `${progress}%` }}/>
+              </div>
+            )}
+          </div>
         </FormItem>
 
         <FormItem htmlFor='name' label='Nombre'>

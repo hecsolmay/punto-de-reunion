@@ -45,7 +45,7 @@ export default function ChangeProfileImage ({ className, name, profileUrl, userI
                 disabled={isUploading}
                 onClick={async () => {
                   try {
-                    const res = await uploadFile({ type: 'profile', temporary: false })
+                    const res = await uploadFile(file, { type: 'profile', temporary: false })
 
                     if (res === undefined) return
 

@@ -12,7 +12,8 @@ export default function useFileUpload (defaultValue?: File) {
   const [progress, setProgress] = useState(0)
   const { edgestore } = useEdgeStore()
 
-  const uploadFile = async (options: UploadOptions = { type: 'profile', temporary: undefined }) => {
+  const uploadFile = async (file?: File, options: UploadOptions = { type: 'profile', temporary: undefined }) => {
+    setFile(file)
     if (file === undefined) return
 
     setIsUploading(true)
