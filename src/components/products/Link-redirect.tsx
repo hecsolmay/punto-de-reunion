@@ -2,6 +2,7 @@
 
 import { useAppContext } from '@/context/utils'
 import UseProductParams from '@/hooks/use-value-param'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 interface Props {
@@ -30,5 +31,29 @@ export default function ProductRedirect (
     <div className={className} onClick={handleClick}>
       {children}
     </div>
+  )
+}
+
+interface OrganizationLinkProps {
+  organizationId: string
+  imageUrl: string
+  name: string
+}
+
+export function OrganizationLink ({ imageUrl, name, organizationId }: OrganizationLinkProps) {
+  const { setProductModal } = useAppContext()
+
+  const handleClick = () => {
+    setProductModal(false)
+  }
+
+  return (
+    <Link onClick={handleClick} href={`/organizations/${organizationId}`}>
+      <img
+        className='size-10 rounded-full object-cover'
+        src={imageUrl}
+        alt={`Logo de la organización ${name}`}
+      />
+    </Link>
   )
 }

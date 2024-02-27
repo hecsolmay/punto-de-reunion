@@ -8,6 +8,7 @@ import InfoHeader from '@/components/products/info-header'
 import RatingInfo from '@/components/rating-info'
 import { getProductById } from '@/services/products'
 import Link from 'next/link'
+import { OrganizationLink } from './Link-redirect'
 
 export default async function ProductInfo ({
   productId
@@ -52,13 +53,11 @@ export default async function ProductInfo ({
         <div className='flex-1'>
           <div className='flex flex-col gap-6 px-2 md:gap-4 md:p-0'>
             <div className='flex items-center gap-x-2'>
-              <Link href={`/organizations/${organization.id}`}>
-                <img
-                  className='size-10 rounded-full object-cover'
-                  src={organization.imageUrl}
-                  alt={`Logo de la organización ${organization.name}`}
-                />
-              </Link>
+              <OrganizationLink
+                imageUrl={organization.imageUrl}
+                name={organization.name}
+                organizationId={organization.id}
+              />
               <h3 className='text-large line-clamp-2'>
                 Publicado por:{' '}
                 <span className='font-bold'>{organization.name}</span>
