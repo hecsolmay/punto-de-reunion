@@ -6,10 +6,13 @@ import { revalidateTag } from 'next/cache'
 
 interface Organization extends OrganizationSchema {
   imageUrl: string
+}
+
+interface OrganizationCreate extends Organization {
   userId?: string
 }
 
-export async function createOrganization (data: Organization) {
+export async function createOrganization (data: OrganizationCreate) {
   const { userId = '', ...organization } = data
 
   try {
@@ -30,6 +33,57 @@ export async function createOrganization (data: Organization) {
     console.error(error)
     return {
       error: 'Error al crear la organización',
+      status: 500
+    }
+  }
+}
+
+type OrganizationUpdate = Partial<Organization>
+
+export async function updateOrganization (organizationId: string, data: OrganizationUpdate) {
+  try {
+    const updatedOrganization = await prisma.organizations.update({
+      data,
+      where: {
+        id: organizationId
+      }
+    })
+
+    revalidateTag('organizations')
+
+    return {
+      data: updatedOrganization,
+      success: true
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      error: 'Error al actualizar la organización',
+      status: 500
+    }
+  }
+}
+
+export async function deleteOrganization (organizationId?: string) {
+  try {
+    const updatedOrganization = await prisma.organizations.update({
+      data: {},
+      where: {
+        id: organizationId
+      }
+    })
+
+    revalidateTag('organizations')
+
+    return {
+      data: updatedOrganization,
+      success: true,
+      status: 200
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      error: 'Error al borrar la organización',
       status: 500
     }
   }

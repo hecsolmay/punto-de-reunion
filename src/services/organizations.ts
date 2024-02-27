@@ -57,3 +57,18 @@ export async function getOrganizations (params: SearchParams = {}) {
     }
   }
 }
+
+export async function getOrganizationById (organizationId?: string) {
+  try {
+    const organization = await prisma.organizations.findUnique({
+      where: {
+        id: organizationId
+      }
+    })
+
+    return organization
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}

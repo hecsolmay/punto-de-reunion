@@ -34,3 +34,26 @@ export async function searchProducts ({ limit = 10, search = '' }: FilterProduct
 
   return mappedProducts
 }
+
+export async function deleteProduct (productId: string) {
+  try {
+    // TODO: HANDLE DELETE
+    const productUpdated = await prisma.products.update({
+      data: {},
+      where: {
+        id: productId
+      }
+    })
+
+    return {
+      data: productUpdated,
+      success: true
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      error: 'Error al eliminar el producto',
+      status: 500
+    }
+  }
+}
