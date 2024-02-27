@@ -50,6 +50,13 @@ type OrganizationUpdate = Partial<Organization>
 
 export async function updateOrganization (organizationId: string, data: OrganizationUpdate) {
   try {
+    await backendClient.publicFiles.confirmUpload({
+      url: data.imageUrl
+    })
+  } catch (error) {
+  }
+
+  try {
     const updatedOrganization = await prisma.organizations.update({
       data,
       where: {
