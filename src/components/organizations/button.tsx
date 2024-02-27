@@ -13,7 +13,7 @@ interface Props {
   userId?: string
 }
 
-export function CreateOrganizationButton ({ organizationsCount = 0 }: Props) {
+export function CreateOrganizationButton ({ organizationsCount = 0, userId }: Props) {
   const { isOpen, close, open } = useModal(false)
 
   const handleClick = () => {
@@ -32,7 +32,7 @@ export function CreateOrganizationButton ({ organizationsCount = 0 }: Props) {
         Crear Organización
       </Button>
       { isOpen && <ModalBackground close={close} isOpen={isOpen} /> }
-      { isOpen && <CreateOrganizationForm close={close} />}
+      { isOpen && <CreateOrganizationForm close={close} userId='' />}
     </>
   )
 }

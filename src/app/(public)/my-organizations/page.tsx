@@ -31,7 +31,7 @@ export default async function MyOrganizationsPage ({ searchParams }: ServerPageP
     <MainContainer className='flex h-auto min-h-[80vh] flex-col gap-y-8 px-4 pb-8 md:px-8'>
       <div className='flex flex-col justify-between gap-6 md:flex-row'>
         <h1 className='text-pretty text-3xl font-bold text-black dark:text-white'>Mis Organizaciones</h1>
-        <CreateOrganizationButton organizationsCount={organizations.length}/>
+        <CreateOrganizationButton organizationsCount={organizations.length} userId={session?.id ?? ''}/>
       </div>
     </MainContainer>
   )
