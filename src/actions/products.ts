@@ -20,7 +20,11 @@ export async function searchProducts ({ limit = 10, search = '' }: FilterProduct
       name: {
         contains: search,
         mode: 'insensitive'
-      }
+      },
+      organization: {
+        deletedAt: null
+      },
+      deletedAt: null
     }
   })
 
@@ -39,7 +43,9 @@ export async function deleteProduct (productId: string) {
   try {
     // TODO: HANDLE DELETE
     const productUpdated = await prisma.products.update({
-      data: {},
+      data: {
+        deletedAt: new Date()
+      },
       where: {
         id: productId
       }

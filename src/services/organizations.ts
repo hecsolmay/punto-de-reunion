@@ -14,6 +14,7 @@ export async function getOrganizations (params: SearchParams = {}) {
     name: {
       startsWith: search
     },
+    deletedAt: null,
     users: {
       some: {
         userId
@@ -62,7 +63,8 @@ export async function getOrganizationById (organizationId?: string) {
   try {
     const organization = await prisma.organizations.findUnique({
       where: {
-        id: organizationId
+        id: organizationId,
+        deletedAt: null
       }
     })
 

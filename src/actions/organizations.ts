@@ -82,7 +82,9 @@ export async function updateOrganization (organizationId: string, data: Organiza
 export async function deleteOrganization (organizationId?: string) {
   try {
     const updatedOrganization = await prisma.organizations.update({
-      data: {},
+      data: {
+        deletedAt: new Date()
+      },
       where: {
         id: organizationId
       }

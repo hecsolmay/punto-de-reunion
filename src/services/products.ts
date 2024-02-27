@@ -33,7 +33,11 @@ export async function getProducts (params: SearchParams = {}) {
           categoryId
         }
       },
-      organizationId
+      organizationId,
+      organization: {
+        deletedAt: null
+      },
+      deletedAt: null
     }
   })
 
@@ -92,7 +96,11 @@ export async function getProductById (id?: string) {
         images: true
       },
       where: {
-        id
+        id,
+        organization: {
+          deletedAt: null
+        },
+        deletedAt: null
       }
     })
 
