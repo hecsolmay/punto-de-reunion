@@ -51,7 +51,7 @@ type OrganizationUpdate = Partial<Organization>
 export async function updateOrganization (organizationId: string, data: OrganizationUpdate) {
   try {
     await backendClient.publicFiles.confirmUpload({
-      url: data.imageUrl
+      url: data?.imageUrl ?? ''
     })
   } catch (error) {
   }
