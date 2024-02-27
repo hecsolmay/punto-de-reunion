@@ -2,19 +2,17 @@ import {
   DeleteOrganizationButton,
   EditOrganizationButton
 } from '@/components/organizations/button'
+import { type Organizations } from '@prisma/client'
 import Link from 'next/link'
 
 interface MyOrganizationCardProps {
-  organizationId: string
-  name: string
-  description: string
-  imageUrl: string
+  organization: Organizations
 }
 
 export function MyOrganizationCard ({
-  ...organization
+  organization
 }: MyOrganizationCardProps) {
-  const { name, description, imageUrl, organizationId } = organization
+  const { name, description, imageUrl, id: organizationId } = organization
 
   return (
     <div className='group relative h-52 w-72'>
@@ -40,11 +38,12 @@ export function MyOrganizationCard ({
       <div className='absolute bottom-3 right-3 flex w-full justify-end gap-3'>
         <EditOrganizationButton
           className='h-8 px-3 opacity-100 transition-opacity duration-150 group-hover:opacity-100 md:opacity-0'
-          {...organization}
+          organization={organization}
         />
         <DeleteOrganizationButton
           className='h-8 px-3 opacity-100 transition-opacity duration-150 group-hover:opacity-100 md:opacity-0'
-          {...organization}
+          name={name}
+          organizationId={organizationId}
         />
       </div>
     </div>

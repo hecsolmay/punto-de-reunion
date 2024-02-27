@@ -5,11 +5,12 @@ import { deleteProduct } from '@/actions/products'
 import AlertDialog from '@/components/alert-dialog'
 import Button from '@/components/buttons/button'
 import ModalBackground from '@/components/modal-background'
-import { CreateOrganizationForm } from '@/components/organizations/form'
+import { CreateOrganizationForm, UpdateOrganizationForm } from '@/components/organizations/form'
 import { MAX_ORGANIZATIONS_NUMBER } from '@/constants'
 import useModal from '@/hooks/use-modal'
 import { toast } from '@/libs/sonner'
 import { type ProductResponse } from '@/types/response'
+import { type Organizations } from '@prisma/client'
 import { Edit, EditIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useState } from 'react'
 
@@ -46,15 +47,12 @@ export function CreateOrganizationButton ({ organizationsCount = 0, userId }: Pr
 
 interface EditOrganizationButtonProps {
   className?: string
-  organizationId: string
-  name: string
-  description: string
-  imageUrl: string
+  organization: Organizations
 }
 
 export function EditOrganizationButton ({
   className,
-  ...organization
+  organization
 }: EditOrganizationButtonProps) {
   const { open, close, isOpen } = useModal(false)
 
@@ -68,8 +66,7 @@ export function EditOrganizationButton ({
         <EditIcon className='size-4' />
       </Button>
       {isOpen && <ModalBackground close={close} isOpen={isOpen} />}
-      {/* TODO: ADD UPDATE ORGANIZATION FORM */}
-      {isOpen && <CreateOrganizationForm close={close} userId='' />}
+      {isOpen && <UpdateOrganizationForm close={close} defaultValues={organization} />}
     </>
   )
 }

@@ -41,13 +41,10 @@ export default async function MyOrganizationsPage ({
       </div>
 
       <section className='grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 xl:grid-cols-4'>
-        {organizations.map(({ id, name, description, imageUrl }) => (
+        {organizations.map((organization) => (
           <MyOrganizationCard
-            description={description}
-            imageUrl={imageUrl}
-            key={id}
-            name={name}
-            organizationId={id}
+            key={organization.id}
+            organization={organization}
           />
         ))}
       </section>
