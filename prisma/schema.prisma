@@ -19,6 +19,7 @@ model Users {
   hasDebt        Boolean             @default(false) @map("has_debt")
   createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime            @default(now()) @map("updated_at") @db.Timestamp(6)
+  deletedAt      DateTime?           @map("deleted_at") @db.Timestamptz(6)
   role           UserRoles           @default(USER)
   gender         Gender?
   carts          Carts[]
@@ -32,37 +33,41 @@ model Users {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Organizations {
-  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name            String
-  imageUrl        String              @map("image_url")
+  imageUrl        String    @map("image_url")
   description     String
-  deliveryAllowed Boolean             @default(false) @map("delivery_allowed")
-  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime            @default(now()) @map("updated_at") @db.Timestamptz(6)
-  products        Products[]
-  users           UserOrganizations[]
+  deliveryAllowed Boolean   @default(false) @map("delivery_allowed")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @default(now()) @map("updated_at") @db.Timestamptz(6)
+  deletedAt       DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  products Products[]
+  users    UserOrganizations[]
 
   @@map("organizations")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Products {
-  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name           String
-  price          Decimal              @db.Decimal
+  price          Decimal       @db.Decimal
   description    String
-  status         ProductStatus        @default(AVAILABLE)
-  rating         Decimal              @default(0) @db.Decimal
-  reviewCount    Int                  @default(0) @map("review_count")
-  organizationId String               @map("organization_id") @db.Uuid
-  updatedAt      DateTime             @default(now()) @map("updated_at") @db.Timestamptz(6)
-  createdAt      DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
-  cartItems      CartItems[]
-  categories     ProductsCategories[]
-  extras         ProductsExtras[]
-  images         ProductImages[]
-  organization   Organizations        @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  reviews        Reviews[]
+  status         ProductStatus @default(AVAILABLE)
+  rating         Decimal       @default(0) @db.Decimal
+  reviewCount    Int           @default(0) @map("review_count")
+  organizationId String        @map("organization_id") @db.Uuid
+  updatedAt      DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt      DateTime?     @map("deleted_at") @db.Timestamptz(6)
+
+  cartItems    CartItems[]
+  categories   ProductsCategories[]
+  extras       ProductsExtras[]
+  images       ProductImages[]
+  organization Organizations        @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reviews      Reviews[]
 
   @@map("products")
 }
@@ -173,6 +178,7 @@ model ProductsExtras {
   price           Decimal          @default(0) @db.Decimal
   createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime         @default(now()) @map("updated_at") @db.Timestamp(6)
+  deletedAt       DateTime?        @map("deleted_at") @db.Timestamptz(6)
   cartItemsExtras CardItemExtras[]
   product         Products         @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
