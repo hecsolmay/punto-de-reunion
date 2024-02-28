@@ -1,5 +1,5 @@
 import { SORT_OPTIONS } from '@/constants'
-import { type OrderType, type SortOptions } from '@/types'
+import { type SearchParams, type OrderType, type SortOptions } from '@/types'
 
 export function generatePagination (currentPage: number, totalPages: number) {
   // If the total number of pages is 7 or less,
@@ -118,4 +118,31 @@ export function getOrderByOrganization ({
   }
   const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
   return { createdAt: reverseOrder }
+}
+
+type SearchParamsKeys = keyof SearchParams
+
+export function parseSearchParams (urlSearch: URLSearchParams): SearchParams {
+  const keyMapping: Record<string, SearchParamsKeys> = {
+    page: 'page',
+    search: 'search',
+    order: 'order',
+    sort: 'sort',
+    productId: 'productId',
+    organizationId: 'organizationId',
+    categoryId: 'categoryId',
+    userId: 'userId',
+    limit: 'limit'
+  }
+
+  const query: SearchParams = {}
+
+  urlSearch.forEach((value, key) => {
+    const mappedKey = keyMapping[key]
+    if (mappedKey !== undefined) {
+      query[mappedKey] = value as any
+    }
+  })
+
+  return query
 }

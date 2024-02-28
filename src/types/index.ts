@@ -48,3 +48,7 @@ export interface ServerPageProps {
   searchParams: SearchParams
   params: Params
 }
+
+export interface ServerContext {
+  params: Params
+}
