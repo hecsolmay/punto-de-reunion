@@ -5,6 +5,7 @@ import {
 } from '@/components/products/buttons'
 import { getProducts } from '@/services/products'
 import { type SearchParams } from '@/types'
+import { type Category } from '@/types/actions'
 import { type ProductResponse } from '@/types/response'
 import Link from 'next/link'
 
@@ -12,12 +13,14 @@ interface Props {
   className?: string
   organizationId: string
   searchParams?: SearchParams
+  allCategories?: Category[]
 }
 
 export default async function ProductList ({
   organizationId,
   className,
-  searchParams
+  searchParams,
+  allCategories
 }: Props) {
   const response = await getProducts({ ...searchParams, organizationId })
 
@@ -31,7 +34,7 @@ export default async function ProductList ({
   return (
     <section className='grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] place-items-center gap-4 xl:grid-cols-4'>
       {products.map(product => (
-        <ProductCard product={product} key={product.id} />
+        <ProductCard product={product} key={product.id} allCategories={allCategories} />
       ))}
     </section>
   )
@@ -39,10 +42,11 @@ export default async function ProductList ({
 
 interface CardProps {
   product: ProductResponse
+  allCategories?: Category[]
 }
 
-function ProductCard ({ product }: CardProps) {
-  const { description, id, images, name, price, rating } = product
+function ProductCard ({ product, allCategories }: CardProps) {
+  const { description, id, images, name, price, rating, organizationId } = product
 
   return (
     <div className='group relative h-80 max-h-[20rem] w-72 cursor-pointer rounded-xl bg-white shadow-md dark:bg-accent-dark'>
@@ -51,6 +55,8 @@ function ProductCard ({ product }: CardProps) {
           className='p-3 opacity-100 transition-opacity duration-200 hover:opacity-95 group-hover:opacity-100 md:opacity-0'
           defaultProduct={product}
           productId={id}
+          organizationId={organizationId}
+          allCategories={allCategories}
         />
         <DeleteProductButton
           productId={id}

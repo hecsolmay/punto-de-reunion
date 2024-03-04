@@ -4,17 +4,22 @@ import { deleteProduct } from '@/actions/products'
 import AlertDialog from '@/components/alert-dialog'
 import Button from '@/components/buttons/button'
 import ModalBackground from '@/components/modal-background'
+import { ProductForm } from '@/components/products/form'
 import useModal from '@/hooks/use-modal'
 import { toast } from '@/libs/sonner'
+import { type Category } from '@/types/actions'
 import { type ProductResponse } from '@/types/response'
 import { Edit, PlusIcon, TrashIcon } from 'lucide-react'
 import { useState } from 'react'
 
 interface CreateProductButtonProps {
   organizationId: string
+  allCategories?: Category[]
 }
 
-export function CreateProductButton ({ organizationId }: CreateProductButtonProps) {
+export function CreateProductButton ({
+  organizationId, allCategories = []
+}: CreateProductButtonProps) {
   const { isOpen, close, open } = useModal(false)
 
   const handleClick = () => {
@@ -28,7 +33,7 @@ export function CreateProductButton ({ organizationId }: CreateProductButtonProp
         Crear Producto
       </Button>
       {isOpen && <ModalBackground close={close} isOpen={isOpen} />}
-      {/* {isOpen && <CreateOrganizationForm close={close} userId={userId} />} */}
+      {isOpen && <ProductForm close={close} organizationId={organizationId} allCategories={allCategories} />}
     </>
   )
 }
@@ -39,7 +44,11 @@ interface DeleteProductButtonProps {
   name: string
 }
 
-export function DeleteProductButton ({ name, className, productId }: DeleteProductButtonProps) {
+export function DeleteProductButton ({
+  name,
+  className,
+  productId
+}: DeleteProductButtonProps) {
   const { open, close, isOpen } = useModal(false)
   const [isSending, setIsSending] = useState(false)
 
@@ -77,7 +86,7 @@ export function DeleteProductButton ({ name, className, productId }: DeleteProdu
       {isOpen && <ModalBackground close={close} isOpen={isOpen} />}
       {isOpen && (
         <AlertDialog
-          title='¿Deseas desactivar este product?'
+          title='¿Deseas desactivar este producto?'
           description='Al Desactivar el producto, no podra ser visto de forma publica.'
           showCancel
           onCancel={close}
@@ -94,10 +103,17 @@ export function DeleteProductButton ({ name, className, productId }: DeleteProdu
 interface EditProductButtonProps {
   defaultProduct: ProductResponse
   className?: string
-  productId?: string
+  organizationId: string
+  productId: string
+  allCategories?: Category[]
 }
 
-export function EditProductButton ({ defaultProduct, className, productId }: EditProductButtonProps) {
+export function EditProductButton ({
+  defaultProduct,
+  className,
+  organizationId,
+  allCategories = []
+}: EditProductButtonProps) {
   const { open, close, isOpen } = useModal(false)
 
   const handleClick = () => {
@@ -106,7 +122,6 @@ export function EditProductButton ({ defaultProduct, className, productId }: Edi
 
   return (
     <>
-      {isOpen && <ModalBackground close={close} isOpen={isOpen} />}
       <Button
         onClick={handleClick}
         title='Editar Producto'
@@ -115,6 +130,17 @@ export function EditProductButton ({ defaultProduct, className, productId }: Edi
       >
         <Edit className='size-3.5' />
       </Button>
+      {isOpen && <ModalBackground close={close} isOpen={isOpen} />}
+      {isOpen && (
+        <ProductForm
+          close={close}
+          organizationId={organizationId}
+          type='update'
+          defaultProduct={defaultProduct}
+          productId={defaultProduct.id}
+          allCategories={allCategories}
+        />
+      )}
     </>
   )
 }
