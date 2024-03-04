@@ -6,6 +6,7 @@ import {
 } from '@/components/multi-image-dropzone'
 import { SingleImageDropzone } from '@/components/single-image-dropzone'
 import { IMAGE_MAX_SIZE } from '@/constants'
+import { cn } from '@/libs/cn'
 import { useEdgeStore } from '@/libs/edgestore'
 import { useState } from 'react'
 
@@ -13,12 +14,14 @@ interface Props {
   path: 'product'
   saveImage?: (url: string) => Promise<void> | void
   maxFiles?: number
+  className?: string
 }
 
 export function MultiImageDropzoneUsage ({
   path,
   saveImage,
-  maxFiles = 4
+  maxFiles = 4,
+  className
 }: Props) {
   const [fileStates, setFileStates] = useState<FileState[]>([])
   const { edgestore } = useEdgeStore()
@@ -38,6 +41,7 @@ export function MultiImageDropzoneUsage ({
     <div>
       <MultiImageDropzone
         value={fileStates}
+        className={cn(className, fileStates.length === 0 && 'col-span-2')}
         dropzoneOptions={{
           maxFiles,
           maxSize: IMAGE_MAX_SIZE
