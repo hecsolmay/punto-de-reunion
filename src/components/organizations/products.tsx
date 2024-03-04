@@ -2,7 +2,7 @@ import StarIcon from '@/components/icons/star'
 import {
   DeleteProductButton,
   EditProductButton
-} from '@/components/organizations/button'
+} from '@/components/products/buttons'
 import { getProducts } from '@/services/products'
 import { type SearchParams } from '@/types'
 import { type ProductResponse } from '@/types/response'
