@@ -8,22 +8,29 @@ import { SingleImageDropzone } from '@/components/single-image-dropzone'
 import { IMAGE_MAX_SIZE } from '@/constants'
 import { cn } from '@/libs/cn'
 import { useEdgeStore } from '@/libs/edgestore'
-import { useState } from 'react'
+import { type SetStateAction } from 'react'
 
 interface Props {
   path: 'product'
-  saveImage?: (url: string) => Promise<void> | void
+  saveImages?: (urls: string[]) => Promise<void> | void
   maxFiles?: number
   className?: string
+  setIsLoading?: (isLoading: boolean) => void
+  temporary?: boolean
+  fileStates: FileState[]
+  setFileStates: (fileStates: SetStateAction<FileState[]>) => void
 }
 
 export function MultiImageDropzoneUsage ({
   path,
-  saveImage,
+  saveImages,
+  setIsLoading,
   maxFiles = 4,
-  className
+  className,
+  temporary = false,
+  fileStates,
+  setFileStates
 }: Props) {
-  const [fileStates, setFileStates] = useState<FileState[]>([])
   const { edgestore } = useEdgeStore()
 
   function updateFileProgress (key: string, progress: FileState['progress']) {
@@ -41,7 +48,7 @@ export function MultiImageDropzoneUsage ({
     <div>
       <MultiImageDropzone
         value={fileStates}
-        className={cn(className, fileStates.length === 0 && 'col-span-2')}
+        className={cn(className, fileStates.length === 0 && 'col-span-2 md:col-span-3')}
         dropzoneOptions={{
           maxFiles,
           maxSize: IMAGE_MAX_SIZE
@@ -51,7 +58,8 @@ export function MultiImageDropzoneUsage ({
         }}
         onFilesAdded={async addedFiles => {
           setFileStates([...fileStates, ...addedFiles])
-          await Promise.all(
+          setIsLoading?.(true)
+          const images = await Promise.all(
             addedFiles.map(async addedFileState => {
               try {
                 if (typeof addedFileState.file === 'string') return
@@ -59,7 +67,7 @@ export function MultiImageDropzoneUsage ({
                 const res = await edgestore.publicFiles.upload({
                   file: addedFileState.file,
                   options: {
-                    temporary: true
+                    temporary
                   },
                   input: {
                     type: path
@@ -74,12 +82,15 @@ export function MultiImageDropzoneUsage ({
                     }
                   }
                 })
-                await saveImage?.(res.url)
+                return res.url
               } catch (err) {
                 updateFileProgress(addedFileState.key, 'ERROR')
               }
             })
           )
+
+          await saveImages?.(images.filter(img => img !== undefined) as string[])
+          setIsLoading?.(false)
         }}
       />
     </div>
