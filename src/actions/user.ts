@@ -42,8 +42,6 @@ export async function updateUserProfileImage ({ url, userId }: { url?: string, u
       }
     })
 
-    console.log({ updatedData })
-
     revalidateTag('profile')
 
     return {

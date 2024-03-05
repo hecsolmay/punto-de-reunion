@@ -56,11 +56,6 @@ export async function middleware (request: NextRequest) {
 
   const session = await supabase.auth.getUser()
 
-  console.log('--------------------- Getting Session On Middleware ---------------------')
-  console.log({ session })
-  console.log(request.nextUrl.pathname)
-  console.log('-------------------------------------------------------------------------')
-
   const { pathname } = request.nextUrl
 
   if (session.data.user === null) {

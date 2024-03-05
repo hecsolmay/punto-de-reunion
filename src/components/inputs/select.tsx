@@ -30,16 +30,11 @@ export function MultiSelect ({
   const listRef = useRef<HTMLDivElement | null>(null)
   const [show, setShow] = useState(false)
 
-  console.log({ options, selectedOptions })
-
   useEffect(() => {
     const handler = (event: MouseEvent) => {
       if (divRef.current === null || listRef.current === null) return
 
       if (divRef.current.contains(event.target as Node)) return
-
-      console.log(listRef.current)
-      console.log(listRef.current.contains(event.target as Node))
 
       if (listRef.current.contains(event.target as Node)) return
 
@@ -76,7 +71,14 @@ export function MultiSelect ({
 
   const handleSelect = (option: OptionType) => (event: React.MouseEvent) => {
     event.stopPropagation()
-    setSelected?.([...selectedOptions, option])
+    const newSelectedOptions = [...selectedOptions, option]
+    setSelected?.(newSelectedOptions)
+
+    if (newSelectedOptions.length === options.length) {
+      setShow(false)
+      return
+    }
+
     setShow(true)
   }
 
@@ -130,9 +132,9 @@ export function MultiSelect ({
         </button>
       </div>
 
-      <div ref={listRef} className={cn('absolute left-0 z-10  top-10 ease-in-out w-full duration-300 transition-all overflow-y-auto bg-gray-300  dark:bg-[#2f2f2f] rounded-lg scrollbar-thin scrollbar-white dark:scrollbar-dark', show ? 'h-48' : 'h-0')}>
+      <div ref={listRef} className={cn('absolute left-0 z-10 top-10 ease-in-out w-full duration-300 transition-all overflow-y-auto bg-gray-200 dark:bg-[#2f2f2f] rounded-lg scrollbar-thin scrollbar-white dark:scrollbar-dark', show ? 'h-fit max-h-48 px-1 py-2' : 'h-0 p-0')}>
         {unselectedOptions.map(({ label, value }) => (
-          <div key={value} className='cursor-pointer p-2 hover:bg-gray-300 dark:hover:bg-[#2f2f2f]' onClick={handleSelect({ label, value })}>
+          <div key={value} className='cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-[#3e3e3e]' onClick={handleSelect({ label, value })}>
             {label}
           </div>
         ))}
