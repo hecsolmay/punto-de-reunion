@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form'
 
 interface Props {
   close: () => void
-  userId?: string
+  userId: string
 }
 
 export function CreateOrganizationForm ({ close, userId }: Props) {
@@ -37,12 +37,17 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
         return
       }
 
-      await createOrganization({ ...data, userId, imageUrl })
+      const res = await createOrganization({ ...data, userId, imageUrl })
+
+      if ('error' in res) {
+        throw new Error('Ocurrió un error al crear la organización')
+      }
+
       toast.success('Organización Creada')
       resetStates()
     } catch (error) {
       console.error(error)
-      toast.error('Ocurrio un error al crear la organización')
+      toast.error('Ocurrió un error al crear la organización')
     }
   }
 
@@ -55,7 +60,7 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
       setImageUrl(res.url)
     } catch (error) {
       console.error(error)
-      toast.error('Ocurrio un error al subir el archivo')
+      toast.error('Ocurrió un error al subir el archivo')
     }
   }
 
@@ -78,7 +83,7 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
             <SingleImageDropzoneUsage disabled={isUploading} value={file} onChange={handleChange} width={'100%'} />
             {isUploading && (
               <div className='mt-2 h-2 w-full overflow-hidden rounded-md border'>
-                <div className='trasnition-all h-full bg-accent-dark duration-150 dark:bg-white' style={{ width: `${progress}%` }}/>
+                <div className='h-full bg-accent-dark transition-all duration-150 dark:bg-white' style={{ width: `${progress}%` }}/>
               </div>
             )}
           </div>
@@ -137,7 +142,7 @@ export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganiza
       resetStates()
     } catch (error) {
       console.error(error)
-      toast.error('Ocurrio un error al actualizar la organización')
+      toast.error('Ocurrió un error al actualizar la organización')
     }
   }
 
@@ -150,7 +155,7 @@ export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganiza
       setImageUrl(res.url)
     } catch (error) {
       console.error(error)
-      toast.error('Ocurrio un error al subir el archivo')
+      toast.error('Ocurrió un error al subir el archivo')
     }
   }
 
@@ -171,7 +176,7 @@ export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganiza
             <InputImageFile url={imageUrl} onChange={handleChange} />
             {isUploading && (
               <div className='mt-2 h-2 w-full overflow-hidden rounded-md border'>
-                <div className='trasnition-all h-full bg-accent-dark duration-150 dark:bg-white' style={{ width: `${progress}%` }}/>
+                <div className='h-full bg-accent-dark transition-all duration-150 dark:bg-white' style={{ width: `${progress}%` }}/>
               </div>
             )}
           </div>

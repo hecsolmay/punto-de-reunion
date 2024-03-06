@@ -14,7 +14,7 @@ import { useState } from 'react'
 
 interface Props {
   organizationsCount?: number
-  userId?: string
+  userId: string
 }
 
 export function CreateOrganizationButton ({ organizationsCount = 0, userId }: Props) {

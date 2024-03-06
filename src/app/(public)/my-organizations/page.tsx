@@ -5,15 +5,20 @@ import { MyOrganizationCard } from '@/components/organizations/card'
 import { getUserSession } from '@/libs/auth'
 import { getOrganizations } from '@/services/organizations'
 import { type ServerPageProps } from '@/types'
+import { redirect } from 'next/navigation'
 
 export default async function MyOrganizationsPage ({
   searchParams
 }: ServerPageProps) {
   const session = await getUserSession()
 
+  if (session === null) {
+    redirect('/login?next=/my-organizations')
+  }
+
   const organizationsResponse = await getOrganizations({
     limit: 20,
-    userId: session?.id
+    userId: session.id
   })
 
   if (organizationsResponse.error !== undefined) {
@@ -26,7 +31,7 @@ export default async function MyOrganizationsPage ({
   if (organizations.length === 0) {
     return (
       <MainContainer className='grid h-full min-h-[80dvh] w-full place-content-center gap-4'>
-        <MyOrganizationsEmptyState />
+        <MyOrganizationsEmptyState userId={session.id} />
       </MainContainer>
     )
   }
@@ -37,7 +42,7 @@ export default async function MyOrganizationsPage ({
         <h1 className='text-pretty text-3xl font-bold text-black dark:text-white'>
           Mis Organizaciones
         </h1>
-        <CreateOrganizationButton organizationsCount={organizations.length} userId={session?.id ?? ''} />
+        <CreateOrganizationButton organizationsCount={organizations.length} userId={session.id} />
       </div>
 
       <section className='grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 xl:grid-cols-4'>
