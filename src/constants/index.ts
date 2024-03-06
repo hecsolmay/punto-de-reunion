@@ -44,3 +44,4 @@ export const SORT_OPTIONS: Record<SortOptions, SortOptionsType> = {
 
 export const IMAGE_MAX_SIZE = 1024 * 1024 * 3 // 3MB
 export const MAX_ORGANIZATIONS_NUMBER = 8
+export const MAX_QUANTITY_ADD_TO_CART = 10

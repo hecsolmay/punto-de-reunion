@@ -10,7 +10,7 @@ export default function InfoEmptyState () {
         <img className='w-1/3 object-cover' src="/assets/images/empty-search.webp" alt="" />
         <h2 className='text-balance text-3xl font-bold'>No se pudo encontrar el producto</h2>
       </div>
-      <InfoFooter />
+      <InfoFooter disabled />
     </ProductInfoContainer>
   )
 }
