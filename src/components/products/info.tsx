@@ -127,7 +127,7 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
       <h1 className='text-pretty text-3xl font-bold md:hidden'>{name}</h1>
 
       <ImageSelection
-        className='flex flex-1 flex-col items-center justify-start gap-6'
+        className='flex flex-1 flex-col items-center justify-start gap-6 pl-2 md:pl-4'
         images={images}
         name={name}
       />
