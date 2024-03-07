@@ -2,7 +2,7 @@
 
 import { backendClient } from '@/libs/edgestore-server'
 import prisma from '@/libs/prisma'
-import { type OrganizationSchema } from '@/schemas/organization'
+import { organizationSchema, type OrganizationSchema } from '@/schemas/organization'
 import { revalidateTag } from 'next/cache'
 
 interface Organization extends OrganizationSchema {
@@ -14,11 +14,20 @@ interface OrganizationCreate extends Organization {
 }
 
 export async function createOrganization (data: OrganizationCreate) {
-  const { userId = '', ...organization } = data
+  const { userId = '', imageUrl, ...rest } = data
+
+  const result = organizationSchema.safeParse(rest)
+
+  if (!result.success) {
+    console.error(result.error.toString())
+    throw new Error('Error al crear la organización')
+  }
+
+  const organization = result.data
 
   try {
     await backendClient.publicFiles.confirmUpload({
-      url: data.imageUrl
+      url: imageUrl
     })
   } catch (error) {
   }
@@ -27,6 +36,7 @@ export async function createOrganization (data: OrganizationCreate) {
     const organizations = await prisma.organizations.create({
       data: {
         ...organization,
+        imageUrl,
         users: {
           create: {
             userId
@@ -49,11 +59,20 @@ export async function createOrganization (data: OrganizationCreate) {
 type OrganizationUpdate = Partial<Organization>
 
 export async function updateOrganization (organizationId: string, data: OrganizationUpdate) {
+  const { imageUrl, ...rest } = data
+
   try {
     await backendClient.publicFiles.confirmUpload({
       url: data?.imageUrl ?? ''
     })
   } catch (error) {
+  }
+
+  const result = organizationSchema.safeParse(rest)
+
+  if (!result.success) {
+    console.error(result.error.toString())
+    throw new Error('Error al actualizar la organización')
   }
 
   try {
