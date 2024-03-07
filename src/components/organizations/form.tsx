@@ -74,7 +74,7 @@ export function CreateOrganizationForm ({ close, userId }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className='fixed inset-0 z-50 m-auto flex h-[90dvh] w-[85dvw] max-w-3xl animate-moveUp  flex-col bg-white transition-all duration-500 dark:bg-accent-dark md:h-[90dvh] md:w-[75vw] lg:w-[75vw]'>
       <header className="flex h-16 items-center justify-between border-b border-gray-400 px-6 dark:border-white md:px-4">
         <h1 className="text-2xl font-bold">Crear Organización</h1>
-        <button onClick={close}><XMarkIcon /></button>
+        <button type='button' onClick={close}><XMarkIcon /></button>
       </header>
       <main className="flex flex-1 flex-col gap-3 overflow-y-scroll px-6 pb-10 pt-6 scrollbar-thin scrollbar-white dark:scrollbar-dark md:px-4 lg:gap-5">
 
@@ -117,7 +117,7 @@ interface UpdateOrganizationFormProps {
 }
 
 export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganizationFormProps) {
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<OrganizationSchema>({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<OrganizationSchema>({
     resolver: zodResolver(organizationSchema),
     defaultValues: {
       ...defaultValues
@@ -125,21 +125,25 @@ export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganiza
   })
   const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues.imageUrl)
 
-  const { uploadFile, isUploading, file, progress } = useFileUpload()
+  const { uploadFile, isUploading, progress } = useFileUpload()
 
   const onSubmit = async (data: OrganizationSchema) => {
     try {
-      if (imageUrl === undefined || file === undefined) {
+      if (imageUrl === undefined) {
         toast.error('Por favor, selecciona una imagen')
         return
       }
 
-      await updateOrganization(defaultValues.id, {
+      const res = await updateOrganization(defaultValues.id, {
         ...data,
         imageUrl
       })
+
+      if (res.error !== undefined) {
+        throw new Error('Error al actualizar la organización')
+      }
+
       toast.success('Organización Actualizada')
-      resetStates()
     } catch (error) {
       console.error(error)
       toast.error('Ocurrió un error al actualizar la organización')
@@ -159,15 +163,11 @@ export function UpdateOrganizationForm ({ close, defaultValues }: UpdateOrganiza
     }
   }
 
-  const resetStates = () => {
-    reset()
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='fixed inset-0 z-50 m-auto flex h-[90dvh] w-[85dvw] max-w-3xl animate-moveUp  flex-col bg-white transition-all duration-500 dark:bg-accent-dark md:h-[90dvh] md:w-[75vw] lg:w-[75vw]'>
       <header className="flex h-16 items-center justify-between border-b border-gray-400 px-6 dark:border-white md:px-4">
         <h1 className="text-2xl font-bold">Actualizar Organización</h1>
-        <button onClick={close}><XMarkIcon /></button>
+        <button type='button' onClick={close}><XMarkIcon /></button>
       </header>
       <main className="flex flex-1 flex-col gap-3 overflow-y-scroll px-6 pb-10 pt-6 scrollbar-thin scrollbar-white dark:scrollbar-dark md:px-4 lg:gap-5">
 

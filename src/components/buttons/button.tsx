@@ -7,13 +7,13 @@ interface Props {
   title?: string
   disabled?: boolean
   loading?: boolean
-  type?: 'button' | 'submit'
+  type?: 'button' | 'submit' | 'reset'
   variant?: VariantKey
   children?: React.ReactNode
 }
 
 export default function Button (
-  { className, loading, variant = 'default', children, ...props }: Props
+  { className, loading, variant = 'default', children, type = 'button', ...props }: Props
 ) {
   const variantClassName = getVariantClassName(variant)
 
@@ -30,6 +30,7 @@ export default function Button (
         variantClassName,
         className
       )}
+      type={type}
       {...props}
       >
         {children}
