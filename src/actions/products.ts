@@ -107,9 +107,9 @@ export async function createProduct (newProduct: CreateProduct) {
     })
 
     const categoriesResponse = await Promise.all(categoriesPromise)
-    const noNulleableCategories = categoriesResponse.filter((category) => category !== null)
+    const noNullableCategories = categoriesResponse.filter((category) => category !== null)
 
-    if (noNulleableCategories.length !== noRepeatedCategories.length) {
+    if (noNullableCategories.length !== noRepeatedCategories.length) {
       return {
         success: false,
         error: 'Category not found'
@@ -117,7 +117,7 @@ export async function createProduct (newProduct: CreateProduct) {
     }
 
     const imageResponse = await confirmUploadImages(images)
-    const noNulleableImages = imageResponse ?? []
+    const noNullableImages = imageResponse ?? []
 
     const { available, ...data } = result.data
 
@@ -127,10 +127,10 @@ export async function createProduct (newProduct: CreateProduct) {
         status: available ? 'AVAILABLE' : 'UNAVAILABLE',
         organizationId,
         categories: {
-          create: noNulleableCategories.map(c => ({ categoryId: c?.id ?? '' }))
+          create: noNullableCategories.map(c => ({ categoryId: c?.id ?? '' }))
         },
         images: {
-          create: noNulleableImages.map(image => ({ imageUrl: image ?? '' }))
+          create: noNullableImages.map(image => ({ imageUrl: image ?? '' }))
         }
       }
     })
@@ -185,9 +185,9 @@ export async function updateProduct (productId: string, updateProduct: UpdatePro
 
     const categoriesResponse = await Promise.all(categoriesPromise)
 
-    const noNulleableCategories = categoriesResponse.filter((category) => category !== null)
+    const noNullableCategories = categoriesResponse.filter((category) => category !== null)
 
-    if (noNulleableCategories.length !== noRepeatedCategories.length) {
+    if (noNullableCategories.length !== noRepeatedCategories.length) {
       return {
         success: false,
         error: 'Category not found'
@@ -195,11 +195,11 @@ export async function updateProduct (productId: string, updateProduct: UpdatePro
     }
 
     const deletedImages = prevProduct.images.filter(image => !images.includes(image.imageUrl))
-    const deletedCategories = prevProduct.categories.filter(category => !noNulleableCategories.some(c => c?.id === category.categoryId))
+    const deletedCategories = prevProduct.categories.filter(category => !noNullableCategories.some(c => c?.id === category.categoryId))
 
     const newImages = images.filter(image => !prevProduct.images.some(i => i.imageUrl === image))
     await confirmUploadImages(newImages)
-    const newCategories = noNulleableCategories.filter(category => !prevProduct.categories.some(c => c.categoryId === category?.id))
+    const newCategories = noNullableCategories.filter(category => !prevProduct.categories.some(c => c.categoryId === category?.id))
 
     const deleteImagePromise = prisma.productImages.deleteMany({
       where: {
