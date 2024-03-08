@@ -9,7 +9,7 @@ export default function BackArrowButton (
   const router = useRouter()
 
   const handleClick = () => {
-    router.replace('/')
+    router.back()
   }
   return (
     <button className={className} onClick={handleClick}>
