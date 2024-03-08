@@ -3,9 +3,10 @@ import prisma from '@/libs/prisma'
 import { getOrderByCategory } from '@/libs/utils'
 import { parsePagination } from '@/libs/validations'
 import { type SearchParams } from '@/types'
+import { type getCategoriesType } from '@/types/services'
 import { type Prisma } from '@prisma/client'
 
-export async function getCategories (params: SearchParams = {}) {
+export async function getCategories (params: SearchParams = {}): Promise<getCategoriesType> {
   const { limit = 10, page = 1, search = '', sort = 'created', order = 'asc' } = params
 
   const pagination = parsePagination({ limit, page })
@@ -43,14 +44,19 @@ export async function getCategories (params: SearchParams = {}) {
     })
 
     return {
-      categories,
-      info
+      success: true,
+      data: {
+        categories,
+        info
+      }
     }
   } catch (error) {
     console.error(error)
     return {
+      success: false,
       error: 'Error al obtener las categorías',
-      status: 500
+      status: 'internalServerError',
+      code: 500
     }
   }
 }

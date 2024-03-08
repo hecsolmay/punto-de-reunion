@@ -14,12 +14,12 @@ export default async function CategoriesGrid ({ searchParams }: Props) {
 
   const response = await getCategories({ page, limit })
 
-  if (response.error !== undefined) {
+  if (!response.success) {
     // TODO: handle error
     return null
   }
 
-  const { categories, info } = response
+  const { categories, info } = response.data
 
   return (
     <>

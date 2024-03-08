@@ -9,14 +9,14 @@ export async function GET (req: NextRequest) {
   try {
     const response = await getCategories(searchParams)
 
-    if (response.error !== undefined) {
+    if (!response.success) {
       console.error(response.error)
       return NextResponse.json({ message: 'Something went wrong', success: false }, {
         status: 500
       })
     }
 
-    const { categories, info } = response
+    const { categories, info } = response.data
 
     return NextResponse.json({ success: true, info, categories }, {
       status: 200

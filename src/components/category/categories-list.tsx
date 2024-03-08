@@ -10,12 +10,12 @@ interface Props {
 export default async function CategoryList ({ searchParams }: Props) {
   const response = await getCategories(searchParams)
 
-  if (response.error !== undefined) {
+  if (!response.success) {
     // TODO: handle error
     return null
   }
 
-  const { categories } = response
+  const { categories } = response.data
 
   return (
     <Carousel drag='x'>

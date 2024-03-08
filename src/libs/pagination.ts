@@ -12,3 +12,5 @@ export function getPaginationInfo (
     hasPrev: page > 1
   }
 }
+
+export type Info = ReturnType<typeof getPaginationInfo>
