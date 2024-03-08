@@ -1,5 +1,7 @@
 import { SORT_OPTIONS } from '@/constants'
 import { type SearchParams, type OrderType, type SortOptions } from '@/types'
+import { type StatusResponse, type ErrorResponse, type StatusCode } from '@/types/response'
+import { type Prisma } from '@prisma/client'
 
 export function generatePagination (currentPage: number, totalPages: number) {
   // If the total number of pages is 7 or less,
@@ -145,4 +147,42 @@ export function parseSearchParams (urlSearch: URLSearchParams): SearchParams {
   })
 
   return query
+}
+
+const STATUS_RECORD: Record<StatusCode, StatusResponse> = {
+  200: 'ok',
+  201: 'created',
+  204: 'noContent',
+  400: 'badRequest',
+  401: 'unauthorized',
+  403: 'forbidden',
+  404: 'notFound',
+  500: 'internalServerError'
+} as const
+
+export function generateErrorResponse (code: StatusCode, error?: string): ErrorResponse {
+  const status = STATUS_RECORD[code] ?? STATUS_RECORD[500]
+
+  return {
+    success: false,
+    status,
+    code,
+    error: error ?? 'Something went wrong'
+  }
+}
+
+export function getOrderByCarts ({
+  order = 'asc',
+  sort = 'created'
+}: getOrderByParams): Prisma.CartsOrderByWithRelationInput {
+  const sortParse = getSortOption(sort)
+  const orderType = getOrderType(order)
+  const { order: sortOption } = sortParse
+  const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
+
+  if (sortOption === 'created') {
+    return { createdAt: reverseOrder }
+  }
+
+  return { createdAt: reverseOrder }
 }
