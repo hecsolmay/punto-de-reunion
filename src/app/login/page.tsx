@@ -46,10 +46,10 @@ export default async function Login ({ searchParams }: LoginServerProps) {
 
           <div className='flex flex-col gap-4 px-6'>
 
-            <SocialButton redirectTo={next} type='google'/>
-            <SocialButton redirectTo={next} type='github'/>
-            <SocialButton redirectTo={next} type='facebook'/>
-            <SocialButton redirectTo={next} type='azure'/>
+            <SocialButton redirectTo={encodeURIComponent(next)} type='google'/>
+            <SocialButton redirectTo={encodeURIComponent(next)} type='github'/>
+            <SocialButton redirectTo={encodeURIComponent(next)} type='facebook'/>
+            <SocialButton redirectTo={encodeURIComponent(next)} type='azure'/>
 
           </div>
         </div>

@@ -3,6 +3,7 @@
 import SignOutButton from '@/components/buttons/signout'
 import ExitDoorIcon from '@/components/icons/exit-door'
 import XMarkIcon from '@/components/icons/xmark'
+import LoginLink from '@/components/login-link'
 import ToggleTheme from '@/components/toggle-theme'
 import { SidebarLinks } from '@/constants/links'
 import { type UserSession } from '@/libs/auth'
@@ -67,10 +68,10 @@ export default function Sidebar ({ isOpen = false, onClose, session }: Props) {
 
       <footer className='flex h-auto flex-col gap-3 border-t border-gray-300 px-2 py-3 dark:border-white'>
         {session == null
-          ? (<p className={DEFAULT_ITEM_CLASSNAME}>
+          ? (<LoginLink className={DEFAULT_ITEM_CLASSNAME}>
             <ExitDoorIcon className='size-6 rotate-180'/>
             Iniciar Session
-          </p>)
+          </LoginLink>)
           : (<SignOutButton className={DEFAULT_ITEM_CLASSNAME}>
             <ExitDoorIcon />
             Cerrar Sesión

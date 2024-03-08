@@ -2,6 +2,7 @@ import SignOutButton from '@/components/buttons/signout'
 import UserInfoButton from '@/components/buttons/user-info'
 import DropDown, { DropDownItem } from '@/components/dropdown'
 import UserCircleIcon from '@/components/icons/user-circle'
+import LoginLink from '@/components/login-link'
 import { userDropdownLinks } from '@/constants/links'
 import { type UserSession } from '@/libs/auth'
 import Link from 'next/link'
@@ -11,10 +12,10 @@ export default function UserDropDown (
 ) {
   if (session === null) {
     return (
-      <Link className='flex items-center gap-2 hover:opacity-80' href="/login" >
+      <LoginLink className='flex items-center gap-2 hover:opacity-80' >
         <UserCircleIcon className='size-7'/>
         <span className='hidden md:block'>Iniciar Sesión</span>
-      </Link>
+      </LoginLink>
     )
   }
 
