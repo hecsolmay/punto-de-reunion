@@ -52,7 +52,7 @@ export default function InfoFooter ({
       return
     }
 
-    toast.error('No se puede agregar mas de ' + maxQuantity + ' productos', {
+    toast.error('No se puede agregar mas de ' + maxQuantity + ' productos por carrito', {
       duration: 1500
     })
   }

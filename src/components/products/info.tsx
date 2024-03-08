@@ -1,16 +1,16 @@
 import ProductInfoFallback from '@/components/fallbacks/product-info-fallback'
 import ImageSelection from '@/components/image-selection'
+import { OrganizationLink } from '@/components/products/Link-redirect'
 import CategoriesBadges from '@/components/products/categories-badges'
 import ProductInfoContainer from '@/components/products/info-container'
 import InfoEmptyState from '@/components/products/info-empty-state'
 import InfoFooter from '@/components/products/info-footer'
 import InfoHeader from '@/components/products/info-header'
 import RatingInfo from '@/components/rating-info'
-import { getProductById } from '@/services/products'
-import Link from 'next/link'
-import { OrganizationLink } from './Link-redirect'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import { getUserSession } from '@/libs/auth'
+import { getProductById } from '@/services/products'
+import Link from 'next/link'
 
 export default async function ProductInfo ({
   productId
@@ -21,7 +21,10 @@ export default async function ProductInfo ({
     return <ProductInfoFallback />
   }
 
-  const [product, session] = await Promise.all([getProductById(productId), getUserSession()])
+  const [product, session] = await Promise.all([
+    getProductById(productId),
+    getUserSession()
+  ])
 
   if (product === null) {
     return <InfoEmptyState />
@@ -35,7 +38,8 @@ export default async function ProductInfo ({
     categories: categoriesProducts,
     rating,
     reviewCount,
-    organization
+    organization,
+    maxQuantityByCart
   } = product
 
   const categories = categoriesProducts.map(({ category }) => ({
@@ -79,7 +83,12 @@ export default async function ProductInfo ({
           </div>
         </div>
       </div>
-      <InfoFooter userId={session?.id} productId={productId} maxQuantity={MAX_QUANTITY_ADD_TO_CART} price={price} />
+      <InfoFooter
+        userId={session?.id}
+        productId={productId}
+        maxQuantity={maxQuantityByCart ?? MAX_QUANTITY_ADD_TO_CART}
+        price={price}
+      />
     </ProductInfoContainer>
   )
 }
