@@ -10,6 +10,7 @@ import { getProductById } from '@/services/products'
 import Link from 'next/link'
 import { OrganizationLink } from './Link-redirect'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
+import { getUserSession } from '@/libs/auth'
 
 export default async function ProductInfo ({
   productId
@@ -20,7 +21,7 @@ export default async function ProductInfo ({
     return <ProductInfoFallback />
   }
 
-  const product = await getProductById(productId)
+  const [product, session] = await Promise.all([getProductById(productId), getUserSession()])
 
   if (product === null) {
     return <InfoEmptyState />
@@ -78,7 +79,7 @@ export default async function ProductInfo ({
           </div>
         </div>
       </div>
-      <InfoFooter productId={productId} maxQuantity={MAX_QUANTITY_ADD_TO_CART} price={price} />
+      <InfoFooter userId={session?.id} productId={productId} maxQuantity={MAX_QUANTITY_ADD_TO_CART} price={price} />
     </ProductInfoContainer>
   )
 }

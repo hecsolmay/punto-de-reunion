@@ -1,10 +1,12 @@
 'use client'
 
 import Button from '@/components/buttons/button'
+import LinkButton from '@/components/buttons/link-button'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import useModalProduct from '@/hooks/use-modal-product'
 import { toast } from '@/libs/sonner'
 import { Minus, Plus } from 'lucide-react'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 interface Props {
@@ -12,14 +14,33 @@ interface Props {
   productId?: string
   maxQuantity?: number
   price?: number
+  userId?: string
 }
 
 export default function InfoFooter ({
   disabled = false,
   maxQuantity = MAX_QUANTITY_ADD_TO_CART,
   price = 0,
-  productId = ''
+  productId = '',
+  userId
 }: Props) {
+  const searchParams = useSearchParams()
+  const pathName = usePathname()
+
+  if (userId === undefined) {
+    const href = `/login?next=${encodeURIComponent(`${pathName}?${searchParams.toString()}`)}`
+
+    return (
+      <footer className='flex h-20 flex-row items-center justify-end gap-4 border-t border-slate-300 p-5 px-4 dark:border-slate-700'>
+        <div>
+          <LinkButton href={href} className='h-11 w-fit py-2 font-medium'>
+            Inicia Session para agregar al carrito
+          </LinkButton>
+        </div>
+      </footer>
+    )
+  }
+
   const [count, setCount] = useState(0)
   const { close } = useModalProduct()
 
