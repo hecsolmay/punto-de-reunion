@@ -7,17 +7,17 @@ export type CategoriesResponse = Awaited<ReturnType <typeof getCategories>>
 export type CategoryByIdResponse = Awaited<ReturnType <typeof getCategoryById>>
 export type ProductResponse = NonNullable<ProductByIdResponse>
 
-interface SuccessResponse<T = undefined> {
+export interface SuccessResponse<T = undefined> {
   success: true
   code?: StatusCode
   message?: string
   data: T
 }
 
-type StatusResponse = 'badRequest' | 'unauthorized' | 'forbidden' | 'notFound' | 'internalServerError'
-type StatusCode = 200 | 201 | 204 | 400 | 401 | 403 | 404 | 500
+export type StatusResponse = 'badRequest' | 'unauthorized' | 'forbidden' | 'notFound' | 'internalServerError' | 'ok' | 'created' | 'noContent'
+export type StatusCode = 200 | 201 | 204 | 400 | 401 | 403 | 404 | 500
 
-interface ErrorResponse {
+export interface ErrorResponse {
   success: false
   error: string
   status?: StatusResponse
