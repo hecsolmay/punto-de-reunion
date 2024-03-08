@@ -72,7 +72,8 @@ export function ProductForm ({
       available: defaultProduct?.status === 'AVAILABLE' ?? true,
       description: defaultProduct?.description ?? '',
       name: defaultProduct?.name ?? '',
-      price: defaultProduct?.price
+      price: defaultProduct?.price,
+      maxQuantityByCart: defaultProduct?.maxQuantityByCart ?? 0
     }
   })
 
@@ -197,7 +198,7 @@ export function ProductForm ({
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='flex flex-1 flex-col gap-3 overflow-y-scroll px-6 pb-10 pt-6 scrollbar-thin scrollbar-white dark:scrollbar-dark md:px-4 lg:gap-5'>
-          <FormItem htmlFor='images' label='Imagenes del producto'>
+          <FormItem htmlFor='images' label='Imágenes del producto'>
             <div
               className={cn(
                 'grid place-items-center min-h-52',
@@ -266,17 +267,26 @@ export function ProductForm ({
 
           <FormItem htmlFor='price' label='Precio'>
             <Input
+              step={0.5}
               register={register('price', { valueAsNumber: true })}
               type='number'
               error={errors.price?.message}
             />
           </FormItem>
 
-          <FormItem htmlFor='categories' label='Categorias'>
+          <FormItem htmlFor='categories' label='Categorías'>
             <MultiSelect
               options={categories}
               setSelected={handleSelect}
               selectedOptions={selectedCategories}
+            />
+          </FormItem>
+
+          <FormItem htmlFor='maxQuantityByCart' label='Cantidad Maxima por carrito'>
+            <Input
+              register={register('maxQuantityByCart', { valueAsNumber: true })}
+              type='number'
+              error={errors.maxQuantityByCart?.message}
             />
           </FormItem>
 

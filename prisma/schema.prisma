@@ -51,17 +51,18 @@ model Organizations {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Products {
-  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name           String
-  price          Decimal       @db.Decimal
-  description    String
-  status         ProductStatus @default(AVAILABLE)
-  rating         Decimal       @default(0) @db.Decimal
-  reviewCount    Int           @default(0) @map("review_count")
-  organizationId String        @map("organization_id") @db.Uuid
-  updatedAt      DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
-  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
-  deletedAt      DateTime?     @map("deleted_at") @db.Timestamptz(6)
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  price             Decimal       @db.Decimal
+  description       String
+  status            ProductStatus @default(AVAILABLE)
+  rating            Decimal       @default(0) @db.Decimal
+  reviewCount       Int           @default(0) @map("review_count")
+  organizationId    String        @map("organization_id") @db.Uuid
+  maxQuantityByCart Int           @default(0) @map("max_quantity_by_cart")
+  updatedAt         DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt         DateTime?     @map("deleted_at") @db.Timestamptz(6)
 
   cartItems    CartItems[]
   categories   ProductsCategories[]

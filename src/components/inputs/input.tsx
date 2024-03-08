@@ -17,6 +17,7 @@ interface CommonInputProps {
   max?: string | number
   pattern?: string
   register?: any
+  step?: string | number
 }
 
 export type PasswordProps = CommonInputProps & {
