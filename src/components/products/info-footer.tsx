@@ -1,9 +1,11 @@
 'use client'
 
+import { addToCart } from '@/actions/cart'
 import Button from '@/components/buttons/button'
 import LinkButton from '@/components/buttons/link-button'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import useModalProduct from '@/hooks/use-modal-product'
+import { cn } from '@/libs/cn'
 import { toast } from '@/libs/sonner'
 import { Minus, Plus } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -15,6 +17,7 @@ interface Props {
   maxQuantity?: number
   price?: number
   userId?: string
+  className?: string
 }
 
 export default function InfoFooter ({
@@ -22,7 +25,8 @@ export default function InfoFooter ({
   maxQuantity = MAX_QUANTITY_ADD_TO_CART,
   price = 0,
   productId = '',
-  userId
+  userId,
+  className
 }: Props) {
   const searchParams = useSearchParams()
   const pathName = usePathname()
@@ -31,7 +35,7 @@ export default function InfoFooter ({
     const href = `/login?next=${encodeURIComponent(`${pathName}?${searchParams.toString()}`)}`
 
     return (
-      <footer className='flex h-20 flex-row items-center justify-end gap-4 border-t border-slate-300 p-5 px-4 dark:border-slate-700'>
+      <footer className={cn('flex h-20 flex-row items-center justify-end gap-4', className)}>
         <div>
           <LinkButton href={href} className='h-11 w-fit py-2 font-medium'>
             Inicia Session para agregar al carrito
@@ -42,6 +46,7 @@ export default function InfoFooter ({
   }
 
   const [count, setCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
   const { close } = useModalProduct()
 
   const handleAdd = () => {
@@ -73,22 +78,29 @@ export default function InfoFooter ({
     currency: 'MXN'
   })
 
-  // TODO: ADD HANDLE ADD TO CART
+  const handleAddToCart = async () => {
+    if (disabled || count === 0 || isLoading) return
 
-  const handleAddToCart = () => {
-    if (disabled || count === 0) return
+    setIsLoading(true)
+    try {
+      const response = await addToCart({ productId, quantity: count })
 
-    close({ scroll: false })
-  }
+      if (!response.success) {
+        toast.error(response.error)
+        return
+      }
 
-  const handleAddAndPay = () => {
-    if (disabled || count === 0) return
-
-    close({ scroll: false })
+      toast.success('Agregado al carrito')
+      close({ scroll: false })
+    } catch (error) {
+      toast.error('Error al agregar al carrito')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <footer className='flex h-20 flex-row items-center justify-between gap-4 border-t border-slate-300 p-5 px-4 dark:border-slate-700'>
+    <footer className={cn('flex h-20 flex-row items-center justify-end gap-4', className)}>
       {/* COUNTER */}
       <div className='flex items-center gap-2 rounded-lg border border-neutral-400 p-2 text-accent-dark dark:border-white dark:text-white '>
         <button onClick={handleRemove} className='px-0.5 md:px-1' type='button'>
@@ -101,15 +113,8 @@ export default function InfoFooter ({
       </div>
 
       <div className='flex flex-1 flex-row items-center justify-end gap-4'>
-        <Button onClick={handleAddToCart} disabled={count === 0} className='hidden h-11 py-2 font-medium md:block'>
-          Agregar y seguir comprando
-        </Button>
-        <Button onClick={handleAddAndPay} disabled={count === 0} className='hidden h-11 py-2 font-medium md:block'>
-          Agregar e ir a pagar <span className='inline-block min-w-14'>{formattedTotalToPay}</span>
-        </Button>
-
-        <Button onClick={handleAddToCart} disabled={count === 0} className='inline-flex h-11 w-full flex-1 justify-between py-2 font-medium md:hidden'>
-          <span className='inline-block'>Agregar</span>
+        <Button loading={isLoading} onClick={handleAddToCart} disabled={count === 0} className='inline-flex h-11 w-full flex-1 justify-between py-2 font-medium md:w-fit md:flex-none'>
+          <span className='inline-block'>Agregar <span className='mr-3 hidden md:inline'>al carrito</span></span>
           <span className='inline-block'>{formattedTotalToPay}</span>
         </Button>
       </div>

@@ -8,7 +8,7 @@ import InfoFooter from '@/components/products/info-footer'
 import InfoHeader from '@/components/products/info-header'
 import RatingInfo from '@/components/rating-info'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
-import { getUserSession } from '@/libs/auth'
+import { type UserSession, getUserSession } from '@/libs/auth'
 import { getProductById } from '@/services/products'
 import Link from 'next/link'
 
@@ -88,12 +88,21 @@ export default async function ProductInfo ({
         productId={productId}
         maxQuantity={maxQuantityByCart ?? MAX_QUANTITY_ADD_TO_CART}
         price={price}
+        className='border-t border-slate-300 p-5 px-4 dark:border-slate-700'
       />
     </ProductInfoContainer>
   )
 }
 
-export async function ProductInfoPage ({ productId }: { productId: string }) {
+interface ProductInfoPageProps {
+  productId: string
+  session?: UserSession
+}
+
+export async function ProductInfoPage ({
+  productId,
+  session
+}: ProductInfoPageProps) {
   const product = await getProductById(productId)
 
   if (product === null) {
@@ -124,7 +133,8 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
     categories: categoriesProducts,
     rating,
     reviewCount,
-    organization
+    organization,
+    maxQuantityByCart
   } = product
 
   const categories = categoriesProducts.map(({ category }) => ({
@@ -142,7 +152,7 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
         name={name}
       />
       <div className='flex-1'>
-        <div className='flex flex-col gap-6 px-2 md:gap-4 md:p-0'>
+        <section className='flex flex-col gap-6 px-2 md:gap-4 md:p-0'>
           <h1 className='hidden text-pretty text-3xl font-bold md:block'>
             {name}
           </h1>
@@ -171,8 +181,15 @@ export async function ProductInfoPage ({ productId }: { productId: string }) {
             {description}
           </p>
           <RatingInfo rating={rating} count={reviewCount} />
+          <InfoFooter
+            productId={productId}
+            maxQuantity={maxQuantityByCart}
+            price={price}
+            userId={session?.id}
+            className='fixed bottom-0 left-0 z-[9] mt-2 w-full bg-white px-4 py-2 dark:bg-accent-dark md:relative md:w-fit md:bg-transparent md:p-0 md:dark:bg-transparent'
+          />
           {/* TODO: Add review */}
-        </div>
+        </section>
       </div>
     </>
   )
