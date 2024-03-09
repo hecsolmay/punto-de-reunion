@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function Button (
-  { className, loading, variant = 'default', children, type = 'button', ...props }: Props
+  { className, loading = false, variant = 'default', children, type = 'button', ...props }: Props
 ) {
   const variantClassName = getVariantClassName(variant)
 
@@ -28,6 +28,7 @@ export default function Button (
         focus-visible:outline-none focus-visible:ring-1 
         disabled:pointer-events-none disabled:opacity-50`,
         variantClassName,
+        loading && 'cursor-progress opacity-70 hover:opacity-70',
         className
       )}
       type={type}
