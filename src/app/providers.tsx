@@ -6,14 +6,19 @@ import { Toaster } from '@/libs/sonner'
 export default function Providers ({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
+      attribute='class'
+      defaultTheme='system'
       enableSystem
       disableTransitionOnChange
     >
       <EdgeStoreProvider>
         <AppContextProvider>
-          <Toaster position='bottom-right' />
+          <Toaster
+            position='bottom-right'
+            expand
+            visibleToasts={2}
+            closeButton
+          />
           {children}
         </AppContextProvider>
       </EdgeStoreProvider>
