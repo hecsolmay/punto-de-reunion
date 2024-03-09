@@ -6,14 +6,28 @@ import { type SearchParams } from '@/types'
 import { type getCartsType } from '@/types/services'
 import { type Prisma } from '@prisma/client'
 
-interface Params extends Omit<SearchParams, 'categoryId' | 'search' | 'productId'> {
+interface Params
+  extends Omit<SearchParams, 'categoryId' | 'search' | 'productId'> {
   userId?: string
   isAlreadyPaid?: boolean
   organizationId?: string
 }
 
+const DEFAULT_INCLUDE: Prisma.CartsInclude = {
+  organization: true,
+  items: true
+}
+
 export async function getCarts (params: Params): Promise<getCartsType> {
-  const { limit = 10, page = 1, sort = 'created', order = 'asc', userId, isAlreadyPaid, organizationId } = params
+  const {
+    limit = 10,
+    page = 1,
+    sort = 'created',
+    order = 'asc',
+    userId,
+    isAlreadyPaid,
+    organizationId
+  } = params
   const pagination = parsePagination({ limit, page })
 
   const orderBy = getOrderByCarts({ order, sort })
@@ -29,8 +43,7 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       where,
       orderBy,
       include: {
-        organization: true,
-        items: true
+        ...DEFAULT_INCLUDE
       },
       skip: pagination.skip,
       take: pagination.limit
@@ -41,7 +54,11 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       prisma.carts.count({ where })
     ])
 
-    const info = getPaginationInfo({ total: count, limit: pagination.limit, page: pagination.page })
+    const info = getPaginationInfo({
+      total: count,
+      limit: pagination.limit,
+      page: pagination.page
+    })
 
     return {
       success: true,
@@ -56,11 +73,89 @@ export async function getCarts (params: Params): Promise<getCartsType> {
   }
 }
 
+type GetOneCartParams = Prisma.CartsWhereInput
+
+export async function getOneCart (where: GetOneCartParams) {
+  try {
+    const cart = await prisma.carts.findFirst({
+      include: {
+        ...DEFAULT_INCLUDE
+      },
+      where
+    })
+
+    return cart
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
 export async function findManyCarts () {
   return await prisma.carts.findMany({
     include: {
-      organization: true,
-      items: true
+      ...DEFAULT_INCLUDE
+    }
+  })
+}
+
+interface CreateCartParams {
+  userId: string
+  organizationId: string
+  productId: string
+  quantity: number
+  originalPrice?: number
+}
+
+export async function createCart (data: CreateCartParams) {
+  const { userId, organizationId, productId, quantity, originalPrice = 0 } = data
+
+  const cartCreated = await prisma.carts.create({
+    data: {
+      userId,
+      organizationId,
+      items: {
+        create: {
+          productId,
+          quantity,
+          originalPrice
+        }
+      }
+    }
+  })
+
+  return cartCreated
+}
+
+interface CartItem extends Omit<CreateCartParams, 'userId' | 'organizationId'> {
+  cartId: string
+}
+
+export async function createCartItem ({ cartId, productId, quantity, originalPrice = 0 }: CartItem) {
+  return await prisma.cartItems.create({
+    data: {
+      cartId,
+      productId,
+      quantity,
+      originalPrice
+    }
+  })
+}
+
+interface UpdateCartItem extends Omit<CartItem, 'cartId'> {
+  itemId: string
+  quantity: number
+}
+
+export async function updateCartItem ({ itemId, quantity, productId, originalPrice }: Partial<UpdateCartItem>) {
+  return await prisma.cartItems.update({
+    data: {
+      quantity,
+      productId,
+      originalPrice
+    },
+    where: {
+      id: itemId
     }
   })
 }
