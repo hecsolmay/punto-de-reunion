@@ -59,7 +59,7 @@ model Products {
   rating            Decimal       @default(0) @db.Decimal
   reviewCount       Int           @default(0) @map("review_count")
   organizationId    String        @map("organization_id") @db.Uuid
-  maxQuantityByCart Int           @default(0) @map("max_quantity_by_cart")
+  maxQuantityByCart Int           @default(10) @map("max_quantity_by_cart")
   updatedAt         DateTime      @default(now()) @map("updated_at") @db.Timestamptz(6)
   createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
   deletedAt         DateTime?     @map("deleted_at") @db.Timestamptz(6)
