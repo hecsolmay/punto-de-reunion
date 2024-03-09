@@ -12,6 +12,7 @@ import Input from '@/components/inputs/input'
 import { MultiSelect, type OptionType } from '@/components/inputs/select'
 import TextArea from '@/components/inputs/textarea'
 import { type FileState } from '@/components/multi-image-dropzone'
+import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import useFileUpload from '@/hooks/use-file-upload'
 import { cn } from '@/libs/cn'
 import { toast } from '@/libs/sonner'
@@ -73,7 +74,7 @@ export function ProductForm ({
       description: defaultProduct?.description ?? '',
       name: defaultProduct?.name ?? '',
       price: defaultProduct?.price,
-      maxQuantityByCart: defaultProduct?.maxQuantityByCart ?? 0
+      maxQuantityByCart: defaultProduct?.maxQuantityByCart ?? MAX_QUANTITY_ADD_TO_CART
     }
   })
 

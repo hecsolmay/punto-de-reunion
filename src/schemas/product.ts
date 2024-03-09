@@ -1,3 +1,4 @@
+import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import { z } from 'zod'
 
 export const productSchema = z.object({
@@ -23,7 +24,7 @@ export const productSchema = z.object({
     })
     .int('La cantidad maxima por carrito debe ser un valor entero')
     .positive('La cantidad maxima por carrito debe ser positiva')
-    .default(0),
+    .default(MAX_QUANTITY_ADD_TO_CART),
   available: z.boolean().default(true)
 })
 
