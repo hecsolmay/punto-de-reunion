@@ -28,7 +28,7 @@ export default function CartButton ({ children, showCount = false, count = 0, ti
     <>
       <button onClick={open} className='relative size-7'>
         {showCount && (
-          <span className='absolute -top-1 right-0 rounded-full bg-contrast px-1 text-xs text-background dark:bg-contrast-dark'>
+          <span className='absolute -top-1 right-0 animate-zoom-in rounded-full bg-contrast px-1 text-xs text-background animate-duration-150 dark:bg-contrast-dark'>
             {count}
           </span>
         )}
