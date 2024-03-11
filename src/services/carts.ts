@@ -15,7 +15,11 @@ interface Params
 
 const DEFAULT_INCLUDE: Prisma.CartsInclude = {
   organization: true,
-  items: true
+  items: {
+    include: {
+      product: true
+    }
+  }
 }
 
 export async function getCarts (params: Params): Promise<getCartsType> {
@@ -43,7 +47,12 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       where,
       orderBy,
       include: {
-        ...DEFAULT_INCLUDE
+        organization: true,
+        items: {
+          include: {
+            product: true
+          }
+        }
       },
       skip: pagination.skip,
       take: pagination.limit
@@ -60,10 +69,34 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       page: pagination.page
     })
 
+    const mappedCarts = carts.map((cart) => {
+      const { items, ...rest } = cart
+
+      const mappedItems = items.map((item) => {
+        const { product, ...rest } = item
+
+        const mappedProduct = {
+          ...product,
+          price: product.price.toNumber(),
+          rating: product.rating.toNumber()
+        }
+
+        return {
+          ...rest,
+          product: mappedProduct
+        }
+      })
+
+      return {
+        ...rest,
+        items: mappedItems
+      }
+    })
+
     return {
       success: true,
       data: {
-        carts,
+        carts: mappedCarts,
         info
       }
     }
@@ -92,11 +125,42 @@ export async function getOneCart (where: GetOneCartParams) {
 }
 
 export async function findManyCarts () {
-  return await prisma.carts.findMany({
+  const carts = await prisma.carts.findMany({
     include: {
-      ...DEFAULT_INCLUDE
+      organization: true,
+      items: {
+        include: {
+          product: true
+        }
+      }
     }
   })
+
+  const mappedCarts = carts.map((cart) => {
+    const { items, ...rest } = cart
+
+    const mappedItems = items.map((item) => {
+      const { product, ...rest } = item
+
+      const mappedProduct = {
+        ...product,
+        price: product.price.toNumber(),
+        rating: product.rating.toNumber()
+      }
+
+      return {
+        ...rest,
+        product: mappedProduct
+      }
+    })
+
+    return {
+      ...rest,
+      items: mappedItems
+    }
+  })
+
+  return mappedCarts
 }
 
 interface CreateCartParams {
@@ -108,7 +172,13 @@ interface CreateCartParams {
 }
 
 export async function createCart (data: CreateCartParams) {
-  const { userId, organizationId, productId, quantity, originalPrice = 0 } = data
+  const {
+    userId,
+    organizationId,
+    productId,
+    quantity,
+    originalPrice = 0
+  } = data
 
   const cartCreated = await prisma.carts.create({
     data: {
@@ -131,7 +201,12 @@ interface CartItem extends Omit<CreateCartParams, 'userId' | 'organizationId'> {
   cartId: string
 }
 
-export async function createCartItem ({ cartId, productId, quantity, originalPrice = 0 }: CartItem) {
+export async function createCartItem ({
+  cartId,
+  productId,
+  quantity,
+  originalPrice = 0
+}: CartItem) {
   return await prisma.cartItems.create({
     data: {
       cartId,
@@ -147,7 +222,12 @@ interface UpdateCartItem extends Omit<CartItem, 'cartId'> {
   quantity: number
 }
 
-export async function updateCartItem ({ itemId, quantity, productId, originalPrice }: Partial<UpdateCartItem>) {
+export async function updateCartItem ({
+  itemId,
+  quantity,
+  productId,
+  originalPrice
+}: Partial<UpdateCartItem>) {
   return await prisma.cartItems.update({
     data: {
       quantity,
