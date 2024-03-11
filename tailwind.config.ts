@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
+// @ts-expect-error midudev tailwind animations plugin is not typed
+import animations from '@midudev/tailwind-animations'
 
 const config: Config = {
   content: [
@@ -69,7 +71,8 @@ const config: Config = {
           scrollbarColor: '#424242 transparent'
         }
       })
-    })
+    }),
+    animations
   ],
   darkMode: 'class'
 }
