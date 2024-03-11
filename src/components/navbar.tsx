@@ -1,10 +1,12 @@
-import CartButton from '@/components/buttons/cart-button'
 import SideBarButton from '@/components/buttons/sidebar-button'
 import ThemeButton from '@/components/buttons/theme-button'
+import CartSideBar from '@/components/carts/cart'
+import CartButtonFallback from '@/components/fallbacks/cart-button'
 import SearchRedirect from '@/components/search-suggestions'
 import UserDropDown from '@/components/user-dropdown'
 import { getUserSession } from '@/libs/auth'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 export default async function Navbar () {
   const session = await getUserSession()
@@ -27,7 +29,9 @@ export default async function Navbar () {
         <UserDropDown session={session} />
 
         <div className="md:border-l md:border-contrast md:pl-4">
-          <CartButton />
+          <Suspense fallback={<CartButtonFallback />}>
+            <CartSideBar />
+          </Suspense>
         </div>
 
       </div>
