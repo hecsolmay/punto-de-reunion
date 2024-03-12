@@ -1,4 +1,5 @@
 import CartButton from '@/components/carts/cart-button'
+import ListOfCarts from '@/components/carts/list'
 import { EmptySidebarCart } from '@/components/empty-states/carts'
 import { CardSidebarLink } from '@/components/links'
 import { getUserSession } from '@/libs/auth'
@@ -11,7 +12,13 @@ export default async function CartSideBar () {
     return (
       <CartButton>
         <EmptySidebarCart text='Inicia Sesión para ver tu carrito'>
-          <CardSidebarLink className='w-52 text-center' href='/login' defaultButtonStyle='alternative'>Iniciar Sesión</CardSidebarLink>
+          <CardSidebarLink
+            className='w-52 text-center'
+            href='/login'
+            defaultButtonStyle='alternative'
+          >
+            Iniciar Sesión
+          </CardSidebarLink>
         </EmptySidebarCart>
       </CartButton>
     )
@@ -24,7 +31,12 @@ export default async function CartSideBar () {
     return (
       <CartButton>
         <EmptySidebarCart text='Ocurrió error al procesar tu solicitud'>
-          <CardSidebarLink className='w-52 text-center' defaultButtonStyle='alternative'>Inténtalo de nuevo reiniciando la pagina</CardSidebarLink>
+          <CardSidebarLink
+            className='w-52 text-center'
+            defaultButtonStyle='alternative'
+          >
+            Inténtalo de nuevo reiniciando la pagina
+          </CardSidebarLink>
         </EmptySidebarCart>
       </CartButton>
     )
@@ -36,21 +48,26 @@ export default async function CartSideBar () {
     return (
       <CartButton>
         <EmptySidebarCart text='Aún no tienes productos en tu canasta'>
-          <CardSidebarLink className='w-52 text-center' defaultButtonStyle='alternative'>Comenzar a comprar</CardSidebarLink>
+          <CardSidebarLink
+            className='w-52 text-center'
+            defaultButtonStyle='alternative'
+          >
+            Comenzar a comprar
+          </CardSidebarLink>
         </EmptySidebarCart>
       </CartButton>
     )
   }
 
-  const flatItems = carts.flatMap((cart) => cart.items)
+  const flatItems = carts.flatMap(cart => cart.items)
   const totalItems = flatItems.reduce((acc, item) => acc + item.quantity, 0)
 
   const count = totalItems > 99 ? '+99' : totalItems
 
   return (
     <CartButton showCount count={count}>
-      <main className='flex-1 flex-col gap-4 overflow-y-auto overflow-x-clip px-4 scrollbar-thin scrollbar-white dark:scrollbar-dark'>
-        <p>{JSON.stringify(carts, null, 2)} </p>
+      <main className='flex-1 flex-col justify-between overflow-y-auto overflow-x-clip py-4 scrollbar-thin scrollbar-white dark:scrollbar-dark'>
+        <ListOfCarts className='flex-1' carts={carts} />
       </main>
     </CartButton>
   )
