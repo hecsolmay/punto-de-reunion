@@ -95,5 +95,5 @@ export async function addToCart ({ productId, quantity }: addToCartParams): Prom
 }
 
 function getIsMaxQuantityReached (currentQuantity: number, maxQuantity: number) {
-  return currentQuantity >= maxQuantity
+  return currentQuantity > maxQuantity
 }
