@@ -3,6 +3,8 @@ import type { Info } from '@/libs/pagination'
 import { type Response } from '@/types/response'
 import { type findManyCarts } from '@/services/carts'
 
+type ElementType<T extends Iterable<any>> = T extends Iterable<infer E> ? E : never
+
 export interface CategoriesResponse {
   categories: Categories[]
   info: Info
@@ -17,3 +19,4 @@ export interface CartsResponse {
 }
 
 export type getCartsType = Response<CartsResponse>
+export type CartItem = ElementType<FindManyCarts>

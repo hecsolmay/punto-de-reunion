@@ -73,7 +73,7 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       const { items, ...rest } = cart
 
       const mappedItems = items.map((item) => {
-        const { product, ...rest } = item
+        const { product, originalPrice, ...rest } = item
 
         const mappedProduct = {
           ...product,
@@ -83,6 +83,7 @@ export async function getCarts (params: Params): Promise<getCartsType> {
 
         return {
           ...rest,
+          originalPrice: originalPrice.toNumber(),
           product: mappedProduct
         }
       })
@@ -140,7 +141,7 @@ export async function findManyCarts () {
     const { items, ...rest } = cart
 
     const mappedItems = items.map((item) => {
-      const { product, ...rest } = item
+      const { product, originalPrice, ...rest } = item
 
       const mappedProduct = {
         ...product,
@@ -150,6 +151,7 @@ export async function findManyCarts () {
 
       return {
         ...rest,
+        originalPrice: originalPrice.toNumber(),
         product: mappedProduct
       }
     })
