@@ -9,7 +9,7 @@ import { cn } from '@/libs/cn'
 interface Props {
   children?: React.ReactNode
   showCount?: boolean
-  count?: number
+  count?: number | string
   title?: string
 }
 
