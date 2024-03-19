@@ -92,9 +92,17 @@ export async function getCarts (params: Params): Promise<getCartsType> {
         }
       })
 
+      // Sort items By localCompare
+      const sortedItems = mappedItems.sort((a, b) => {
+        const { name: nameB } = b.product
+        const { name: nameA } = a.product
+
+        return nameA.localeCompare(nameB)
+      })
+
       return {
         ...rest,
-        items: mappedItems
+        items: sortedItems
       }
     })
 
@@ -164,9 +172,16 @@ export async function findManyCarts () {
       }
     })
 
+    const sortedItems = mappedItems.sort((a, b) => {
+      const { name: nameB } = b.product
+      const { name: nameA } = a.product
+
+      return nameA.localeCompare(nameB)
+    })
+
     return {
       ...rest,
-      items: mappedItems
+      items: sortedItems
     }
   })
 
@@ -248,4 +263,28 @@ export async function updateCartItem ({
       id: itemId
     }
   })
+}
+
+export async function deleteCart (cartId: string) {
+  const deletedCart = await prisma.carts.delete({
+    where: {
+      id: cartId
+    }
+  })
+
+  return deletedCart
+}
+
+interface DeleteCartItemParams {
+  userId?: string
+}
+
+export async function deletedManyCarts ({ userId }: DeleteCartItemParams) {
+  const deletedCarts = await prisma.carts.deleteMany({
+    where: {
+      userId
+    }
+  })
+
+  return deletedCarts.count
 }
