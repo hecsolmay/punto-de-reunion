@@ -8,6 +8,8 @@ interface AppContextType {
   setProductModal: (value: boolean) => void
   showCartSidebar: boolean
   setShowCartSidebar: (value: boolean) => void
+  isCartActionLoading: boolean
+  setIsCartActionLoading: (value: boolean) => void
 }
 
 const DEFAULT_APP_CONTEXT: AppContextType = {
@@ -15,7 +17,9 @@ const DEFAULT_APP_CONTEXT: AppContextType = {
   toggleProductModal: Function,
   setProductModal: () => {},
   showCartSidebar: false,
-  setShowCartSidebar: () => {}
+  setShowCartSidebar: () => {},
+  isCartActionLoading: false,
+  setIsCartActionLoading: () => {}
 }
 
 const AppContext = createContext<AppContextType>(DEFAULT_APP_CONTEXT)
@@ -27,6 +31,7 @@ interface Props {
 export function AppContextProvider ({ children }: Props) {
   const [showProductModal, setShowProductModal] = useState(false)
   const [showCartSidebar, setShowCartSidebar] = useState(false)
+  const [isCartActionLoading, setIsCartActionLoading] = useState(false)
 
   const toggleProductModal = () => {
     setShowProductModal(!showProductModal)
@@ -40,6 +45,10 @@ export function AppContextProvider ({ children }: Props) {
     setShowCartSidebar(value)
   }
 
+  const changeCartActionLoading = (value: boolean) => {
+    setIsCartActionLoading(value)
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -47,7 +56,9 @@ export function AppContextProvider ({ children }: Props) {
         toggleProductModal,
         setProductModal: changeProductModal,
         showCartSidebar,
-        setShowCartSidebar: changeCartSidebar
+        setShowCartSidebar: changeCartSidebar,
+        isCartActionLoading,
+        setIsCartActionLoading: changeCartActionLoading
       }}
     >
       {children}
