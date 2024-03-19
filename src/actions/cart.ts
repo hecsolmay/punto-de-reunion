@@ -4,7 +4,7 @@ import { getUserSession } from '@/libs/auth'
 import { generateErrorResponse } from '@/libs/utils'
 import * as services from '@/services/carts'
 import { getProductById } from '@/services/products'
-import { type DeleteManyCartItemResponse, type AddToCartResponse } from '@/types/actions'
+import { type DeleteManyCartItemResponse, type AddToCartResponse, type DeleteOneCartResponse } from '@/types/actions'
 import { revalidateTag } from 'next/cache'
 
 interface addToCartParams {
@@ -113,6 +113,35 @@ export async function deletedAllCarts (): Promise<DeleteManyCartItemResponse> {
       data: deletedCartsCount,
       code: 204,
       message: `${deletedCartsCount} carritos eliminados`
+    }
+  } catch (error) {
+    return generateErrorResponse(500, 'Something went wrong')
+  }
+}
+
+export async function deleteCartById (cartId: string): Promise<DeleteOneCartResponse> {
+  try {
+    const session = await getUserSession()
+
+    if (session === null) {
+      return generateErrorResponse(401, 'Error de autenticación')
+    }
+
+    const existedCart = await services.getOneCart({ userId: session.id, id: cartId, isAlreadyPaid: false })
+
+    if (existedCart === null) {
+      return generateErrorResponse(404, 'Cart not found')
+    }
+
+    const deletedCart = await services.deleteCart(existedCart.id)
+
+    revalidateTag('carts')
+
+    return {
+      success: true,
+      data: deletedCart,
+      code: 204,
+      message: 'Cart deleted'
     }
   } catch (error) {
     return generateErrorResponse(500, 'Something went wrong')
