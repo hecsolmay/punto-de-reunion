@@ -50,7 +50,11 @@ export async function getCarts (params: Params): Promise<getCartsType> {
         organization: true,
         items: {
           include: {
-            product: true
+            product: {
+              include: {
+                images: true
+              }
+            }
           }
         }
       },
@@ -131,7 +135,11 @@ export async function findManyCarts () {
       organization: true,
       items: {
         include: {
-          product: true
+          product: {
+            include: {
+              images: true
+            }
+          }
         }
       }
     }

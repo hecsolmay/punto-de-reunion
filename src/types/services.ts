@@ -20,3 +20,4 @@ export interface CartsResponse {
 
 export type getCartsType = Response<CartsResponse>
 export type CartItem = ElementType<FindManyCarts>
+export type ProductCartType = CartItem['items'][0]['product']
