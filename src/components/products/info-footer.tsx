@@ -90,7 +90,6 @@ export default function InfoFooter ({
         return
       }
 
-      toast.success('Agregado al carrito')
       close({ scroll: false })
     } catch (error) {
       toast.error('Error al agregar al carrito')
