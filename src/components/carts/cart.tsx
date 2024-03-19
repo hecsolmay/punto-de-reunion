@@ -69,9 +69,7 @@ export default async function CartSideBar () {
 
   return (
     <CartButton showCount count={count}>
-      <main className='flex-1 flex-col justify-between overflow-y-auto overflow-x-clip py-4 scrollbar-thin scrollbar-white dark:scrollbar-dark'>
-        <ListOfCarts key={listOfCartsKey + itemsKey} className='flex-1' carts={carts} />
-      </main>
+      <ListOfCarts key={listOfCartsKey + itemsKey} className='flex-1' carts={carts} />
     </CartButton>
   )
 }

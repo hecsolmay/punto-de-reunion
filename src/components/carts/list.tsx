@@ -2,6 +2,8 @@
 
 import { CleanCartButton } from '@/components/carts/actions'
 import { CartItem } from '@/components/carts/item'
+import { EmptySidebarCart } from '@/components/empty-states/carts'
+import { CardSidebarLink } from '@/components/links'
 import { useAppContext } from '@/context/utils'
 import { cn } from '@/libs/cn'
 import { type CartItem as CartItemType } from '@/types/services'
@@ -107,8 +109,21 @@ export default function ListOfCarts ({ carts, className }: Props) {
     setCartsState([])
   }
 
+  if (cartsState.length === 0) {
+    return (
+      <EmptySidebarCart text='Aún no tienes productos en tu canasta'>
+        <CardSidebarLink
+          className='w-52 text-center'
+          defaultButtonStyle='alternative'
+        >
+            Comenzar a comprar
+        </CardSidebarLink>
+      </EmptySidebarCart>
+    )
+  }
+
   return (
-    <>
+    <main className='flex-1 flex-col justify-between overflow-y-auto overflow-x-clip py-4 scrollbar-thin scrollbar-white dark:scrollbar-dark'>
       <div className={cn('flex flex-col gap-4', className)}>
         {cartsState.map(cart => (
           <CartItem
@@ -131,6 +146,6 @@ export default function ListOfCarts ({ carts, className }: Props) {
           <Trash className='size-[1.25rem]' /> Vaciar toda la canasta
         </CleanCartButton>
       </div>
-    </>
+    </main>
   )
 }
