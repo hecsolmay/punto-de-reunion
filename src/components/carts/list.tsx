@@ -17,7 +17,7 @@ interface Props {
 
 export default function ListOfCarts ({ carts, className }: Props) {
   const [cartsState, setCartsState] = useState(carts)
-  const { isCartActionLoading, setIsCartActionLoading } = useAppContext()
+  const { isCartActionLoading } = useAppContext()
   const initialState = useRef(carts)
 
   useEffect(() => {
@@ -25,23 +25,9 @@ export default function ListOfCarts ({ carts, className }: Props) {
     initialState.current = carts
   }, [carts])
 
-  const handleRemove = (cartId: string) => async () => {
-    if (isCartActionLoading) return
-
-    setIsCartActionLoading(true)
+  const handleRemove = (cartId: string) => () => {
     const newCarts = cartsState.filter(cart => cart.id !== cartId)
-
-    // if (timesRemoved > 0) {
-    //   setCartsState(newCarts)
-    //   await new Promise(resolve => setTimeout(resolve, 2000))
-    //   toast.error('No se puede borrar dos cartas a la vez')
-    //   setCartsState(initialState.current)
-    //   return
-    // }
-
     setCartsState(newCarts)
-    initialState.current = newCarts
-    setIsCartActionLoading(false)
   }
 
   const changeQuantityItem = ({
@@ -130,6 +116,7 @@ export default function ListOfCarts ({ carts, className }: Props) {
             disabled={isCartActionLoading}
             handleRemove={handleRemove(cart.id)}
             key={cart.id}
+            cartId={cart.id}
             item={cart}
             changeCartQuantity={changeQuantityItem}
             resetInitialState={resetInitialState}
@@ -137,7 +124,7 @@ export default function ListOfCarts ({ carts, className }: Props) {
           />
         ))}
       </div>
-      <div className='px-4'>
+      <div className='mt-2 px-4'>
         <CleanCartButton
           disabled={isCartActionLoading}
           cleanCart={cleanCart}

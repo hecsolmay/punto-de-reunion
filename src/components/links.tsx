@@ -10,6 +10,7 @@ interface Props {
   href?: string
   children?: React.ReactNode
   defaultButtonStyle?: VariantKey
+  disabled?: boolean
 }
 
 const DEFAULT_BUTTON_CLASSNAME = `focus-visible:ring-ring inline-flex h-9 
@@ -26,16 +27,17 @@ function getButtonClassName (variant?: VariantKey) {
   return cn(DEFAULT_BUTTON_CLASSNAME, BUTTON_VARIANTS[variant])
 }
 
-export function CardSidebarLink ({ className, href, children, defaultButtonStyle }: Props) {
+export function CardSidebarLink ({ className, href, children, defaultButtonStyle, disabled = false }: Props) {
   const { setShowCartSidebar } = useAppContext()
 
   const handleClick = () => {
+    if (disabled) return
     setShowCartSidebar(false)
   }
 
-  if (href === undefined) {
+  if (href === undefined || disabled) {
     return (
-      <button className={cn(getButtonClassName(defaultButtonStyle), className)} onClick={handleClick}>
+      <button disabled={disabled} className={cn(getButtonClassName(defaultButtonStyle), className)} onClick={handleClick}>
         {children}
       </button>
     )
