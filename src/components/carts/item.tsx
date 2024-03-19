@@ -10,9 +10,28 @@ import { ProductCartItem } from '@/components/carts/product'
 interface CartItemProps {
   item: CartItemType
   handleRemove?: () => void
+  disabled?: boolean
+  changeCartQuantity: ({
+    cartId,
+    quantity,
+    itemId
+  }: {
+    cartId: string
+    quantity: number
+    itemId: string
+  }) => void
+  resetInitialState: () => void
+  removeCartItem: (cartId: string, itemId: string) => void
 }
 
-export function CartItem ({ item, handleRemove }: CartItemProps) {
+export function CartItem ({
+  item,
+  handleRemove,
+  disabled = false,
+  changeCartQuantity,
+  resetInitialState,
+  removeCartItem
+}: CartItemProps) {
   const [isOpen, setIsOpen] = useState(true)
 
   const { organization, items } = item
@@ -83,6 +102,20 @@ export function CartItem ({ item, handleRemove }: CartItemProps) {
             product={item.product}
             quantity={item.quantity}
             itemId={item.id}
+            disabled={disabled}
+            onQuantityChange={quantity => {
+              changeCartQuantity({
+                cartId: item.cartId,
+                quantity,
+                itemId: item.id
+              })
+            }}
+            onError={() => {
+              resetInitialState()
+            }}
+            onDelete={() => {
+              removeCartItem(item.cartId, item.id)
+            }}
           />
         ))}
       </div>

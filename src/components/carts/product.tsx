@@ -1,29 +1,59 @@
 'use client'
 
+import { deleteCartItem, updateCartItemQuantity } from '@/actions/items'
+import { useAppContext } from '@/context/utils'
+import { cn } from '@/libs/cn'
 import { toast } from '@/libs/sonner'
 import { type ProductCartType } from '@/types/services'
 import { Minus, Plus, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
 interface Props {
   product: ProductCartType
   quantity: number
   itemId: string
+  disabled?: boolean
+  onQuantityChange?: (quantity: number) => void
+  onError?: () => void
+  onDelete?: (itemId: string) => void
 }
 
-export function ProductCartItem ({ product, quantity, itemId }: Props) {
+const WAIT_DELAY_TIME = 500
+
+export function ProductCartItem ({
+  product,
+  quantity,
+  itemId,
+  disabled = false,
+  onQuantityChange,
+  onError,
+  onDelete
+}: Props) {
   const { name, price, images } = product
   const [currentQuantity, setCurrentQuantity] = useState(quantity)
+  const { isCartActionLoading, setIsCartActionLoading } = useAppContext()
 
   useEffect(() => {
     setCurrentQuantity(quantity)
   }, [quantity])
 
-  const handleClick = (type: 'increase' | 'decrease') => () => {
-    const newQuantity = type === 'increase' ? currentQuantity + 1 : currentQuantity - 1
+  const handleClick = (type: 'increase' | 'decrease' | 'delete') => () => {
+    if (isCartActionLoading) return
+
+    if (type === 'delete') {
+      handleDelete()
+      handleUpdate(0)
+      return
+    }
+
+    const newQuantity =
+      type === 'increase' ? currentQuantity + 1 : currentQuantity - 1
 
     if (newQuantity > product.maxQuantityByCart) {
-      toast.error(`No se puede agregar más de ${product.maxQuantityByCart} unidades a la vez`)
+      toast.error(
+        `No se puede agregar más de ${product.maxQuantityByCart} unidades a la vez`
+      )
       return
     }
 
@@ -36,11 +66,54 @@ export function ProductCartItem ({ product, quantity, itemId }: Props) {
     } else if (type === 'decrease') {
       setCurrentQuantity(prev => prev - 1)
     }
+
+    handleUpdate(newQuantity)
+    onQuantityChange?.(newQuantity)
   }
 
-  const handleDelete = () => {
-    // TODO: delete product from cart
-    // itemId
+  const handleUpdate = useDebouncedCallback(async (newQuantity: number) => {
+    if (isCartActionLoading) return
+
+    if (newQuantity < 1) {
+      return
+    }
+
+    setIsCartActionLoading(true)
+    onQuantityChange?.(newQuantity)
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      const response = await updateCartItemQuantity(itemId, newQuantity)
+
+      if (!response.success) {
+        toast.error('Error al actualizar la cantidad')
+        onError?.()
+      }
+    } catch (error) {
+      toast.error('Error al actualizar la cantidad')
+      onError?.()
+    } finally {
+      setIsCartActionLoading(false)
+    }
+  }, WAIT_DELAY_TIME)
+
+  const handleDelete = async () => {
+    if (isCartActionLoading) return
+    setIsCartActionLoading(true)
+    onDelete?.(itemId)
+
+    try {
+      const response = await deleteCartItem(itemId)
+
+      if (!response.success) {
+        toast.error('Error al actualizar la cantidad')
+        onError?.()
+      }
+    } catch (error) {
+      toast.error('Error al actualizar la cantidad')
+      onError?.()
+    } finally {
+      setIsCartActionLoading(false)
+    }
   }
 
   const quantityText = currentQuantity > 99 ? '+99 U' : `${currentQuantity} U`
@@ -78,20 +151,37 @@ export function ProductCartItem ({ product, quantity, itemId }: Props) {
 
           <div className='flex h-full items-center gap-1.5 rounded-xl border border-gray-200 px-2 py-1 dark:border-white/90'>
             {currentQuantity > 1 && (
-              <button onClick={handleClick('decrease')}>
+              <button
+                disabled={disabled}
+                className={'disabled:pointer-events-none disabled:opacity-50'}
+                onClick={handleClick('decrease')}
+              >
                 <Minus className='size-5' />
               </button>
             )}
 
             {currentQuantity === 1 && (
-              <button onClick={handleDelete} >
+              <button
+                disabled={disabled}
+                className={'disabled:pointer-events-none disabled:opacity-50'}
+                onClick={handleClick('delete')}
+              >
                 <Trash className='size-5' />
               </button>
             )}
-            <span className='min-w-[4ch] text-center text-base font-medium'>
+            <span
+              className={cn(
+                'min-w-[4ch] text-center text-base font-medium',
+                disabled && 'opacity-50 select-none'
+              )}
+            >
               {quantityText}
             </span>
-            <button onClick={handleClick('increase')}>
+            <button
+              disabled={disabled}
+              className={'disabled:pointer-events-none disabled:opacity-50'}
+              onClick={handleClick('increase')}
+            >
               <Plus className='size-5' />
             </button>
           </div>

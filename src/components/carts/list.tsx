@@ -2,6 +2,7 @@
 
 import { CleanCartButton } from '@/components/carts/actions'
 import { CartItem } from '@/components/carts/item'
+import { useAppContext } from '@/context/utils'
 import { cn } from '@/libs/cn'
 import { type CartItem as CartItemType } from '@/types/services'
 import { Trash } from 'lucide-react'
@@ -14,7 +15,7 @@ interface Props {
 
 export default function ListOfCarts ({ carts, className }: Props) {
   const [cartsState, setCartsState] = useState(carts)
-  const [isLoading, setIsLoading] = useState(false)
+  const { isCartActionLoading, setIsCartActionLoading } = useAppContext()
   const initialState = useRef(carts)
 
   useEffect(() => {
@@ -23,7 +24,9 @@ export default function ListOfCarts ({ carts, className }: Props) {
   }, [carts])
 
   const handleRemove = (cartId: string) => async () => {
-    setIsLoading(true)
+    if (isCartActionLoading) return
+
+    setIsCartActionLoading(true)
     const newCarts = cartsState.filter(cart => cart.id !== cartId)
 
     // if (timesRemoved > 0) {
@@ -36,18 +39,95 @@ export default function ListOfCarts ({ carts, className }: Props) {
 
     setCartsState(newCarts)
     initialState.current = newCarts
-    setIsLoading(false)
+    setIsCartActionLoading(false)
+  }
+
+  const changeQuantityItem = ({
+    cartId,
+    quantity,
+    itemId
+  }: {
+    cartId: string
+    quantity: number
+    itemId: string
+  }) => {
+    const newCarts = cartsState.map(cart => {
+      if (cart.id === cartId) {
+        return {
+          ...cart,
+          items: cart.items.map(item => {
+            if (item.id === itemId) {
+              return {
+                ...item,
+                quantity
+              }
+            }
+            return item
+          })
+        }
+      }
+      return cart
+    })
+    setCartsState(newCarts)
+  }
+
+  const resetInitialState = () => {
+    setCartsState(initialState.current)
+  }
+
+  const removeCartItem = (cartId: string, itemId: string) => {
+    const cart = cartsState.find(cart => cart.id === cartId)
+
+    if (cart === undefined) return
+
+    const item = cart.items.find(item => item.id === itemId)
+
+    if (item === undefined) return
+
+    const newCarts = cartsState.map(cart => {
+      if (cart.id === cartId) {
+        const newItems = cart.items.filter(item => item.id !== itemId)
+
+        if (newItems.length === 0) {
+          return null
+        }
+
+        return {
+          ...cart,
+          items: cart.items.filter(item => item.id !== itemId)
+        }
+      }
+      return cart
+    })
+
+    setCartsState(newCarts.filter(Boolean) as CartItemType[])
+  }
+
+  const cleanCart = () => {
+    setCartsState([])
   }
 
   return (
     <>
       <div className={cn('flex flex-col gap-4', className)}>
         {cartsState.map(cart => (
-          <CartItem handleRemove={handleRemove(cart.id)} key={cart.id} item={cart} />
+          <CartItem
+            disabled={isCartActionLoading}
+            handleRemove={handleRemove(cart.id)}
+            key={cart.id}
+            item={cart}
+            changeCartQuantity={changeQuantityItem}
+            resetInitialState={resetInitialState}
+            removeCartItem={removeCartItem}
+          />
         ))}
       </div>
       <div className='px-4'>
-        <CleanCartButton disabled={isLoading} className='mt-4 w-full gap-2'>
+        <CleanCartButton
+          disabled={isCartActionLoading}
+          cleanCart={cleanCart}
+          className='mt-4 w-full gap-2'
+        >
           <Trash className='size-[1.25rem]' /> Vaciar toda la canasta
         </CleanCartButton>
       </div>
