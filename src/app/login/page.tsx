@@ -1,5 +1,6 @@
-import BackArrowButton from '@/components/back-arrow'
+import RouterBackButton from '@/components/back-arrow'
 import SocialButton from '@/components/buttons/social-button'
+import Arrow from '@/components/icons/arrow'
 import { createServerSupabaseClient } from '@/libs/supabase'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -23,7 +24,9 @@ export default async function Login ({ searchParams }: LoginServerProps) {
   return (
     <div className="relative min-h-[100dvh] bg-gradient-to-br from-[#0F2027] via-[#203A43] to-[#2C5364] p-7">
       <div className='absolute left-6 top-6 text-white md:left-10 md:top-8'>
-        <BackArrowButton />
+        <RouterBackButton>
+          <Arrow />
+        </RouterBackButton>
       </div>
       <div className="mx-auto mt-10 flex max-w-sm overflow-auto rounded-lg bg-white shadow-lg lg:max-w-4xl">
 

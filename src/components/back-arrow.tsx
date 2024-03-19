@@ -1,10 +1,14 @@
 'use client'
 
-import Arrow from '@/components/icons/arrow'
 import { useRouter } from 'next/navigation'
 
-export default function BackArrowButton (
-  { className }: { className?: string }
+interface Props {
+  className?: string
+  children?: React.ReactNode
+}
+
+export default function RouterBackButton (
+  { className, children }: Props
 ) {
   const router = useRouter()
 
@@ -13,7 +17,7 @@ export default function BackArrowButton (
   }
   return (
     <button className={className} onClick={handleClick}>
-      <Arrow />
+      {children}
     </button>
   )
 }
