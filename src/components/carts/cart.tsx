@@ -64,10 +64,13 @@ export default async function CartSideBar () {
 
   const count = totalItems > 99 ? '+99' : totalItems
 
+  const listOfCartsKey = carts.map(c => c.id).join('-')
+  const itemsKey = flatItems.map(item => item.id).join('-')
+
   return (
     <CartButton showCount count={count}>
       <main className='flex-1 flex-col justify-between overflow-y-auto overflow-x-clip py-4 scrollbar-thin scrollbar-white dark:scrollbar-dark'>
-        <ListOfCarts className='flex-1' carts={carts} />
+        <ListOfCarts key={listOfCartsKey + itemsKey} className='flex-1' carts={carts} />
       </main>
     </CartButton>
   )
