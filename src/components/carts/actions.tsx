@@ -1,33 +1,49 @@
 'use client'
 
+import { deletedAllCarts } from '@/actions/cart'
 import Button from '@/components/buttons/button'
-import { useState } from 'react'
+import { useAppContext } from '@/context/utils'
+import { toast } from 'sonner'
 
 interface CleanCartButtonProps {
   className?: string
   children?: React.ReactNode
   disabled?: boolean
+  cleanCart?: () => void
 }
 
-export function CleanCartButton ({ className, children, disabled }: CleanCartButtonProps) {
-  const [isLoading, setIsLoading] = useState(false)
+export function CleanCartButton ({ className, children, disabled, cleanCart }: CleanCartButtonProps) {
+  const { isCartActionLoading, setIsCartActionLoading } = useAppContext()
 
   const handleClick = async () => {
-    if (isLoading) return
+    if (isCartActionLoading) return
 
-    setIsLoading(true)
+    setIsCartActionLoading(true)
 
-    // TODO: Implement CLEAN CART ACTION
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setIsLoading(false)
+    try {
+      const response = await deletedAllCarts()
+      console.log(response)
+
+      if (!response.success) {
+        console.error('Error al vaciar el carrito')
+        toast.error('Error al vaciar el carrito')
+      }
+
+      cleanCart?.()
+    } catch (error) {
+      toast.error('Error al vaciar el carrito')
+      console.error(error)
+    } finally {
+      setIsCartActionLoading(false)
+    }
   }
 
   return (
     <Button
       onClick={handleClick}
-      loading={isLoading}
+      loading={isCartActionLoading}
       variant='alternative'
-      disabled={disabled}
+      disabled={isCartActionLoading || disabled}
       className={className}
     >
       {children}
