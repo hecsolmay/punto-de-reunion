@@ -1,4 +1,5 @@
 import { SORT_OPTIONS } from '@/constants'
+import { type BUILDING_KEY, UTM_LOCATIONS } from '@/constants/locations'
 import { type SearchParams, type OrderType, type SortOptions } from '@/types'
 import { type StatusResponse, type ErrorResponse, type StatusCode } from '@/types/response'
 import { type Prisma } from '@prisma/client'
@@ -185,4 +186,8 @@ export function getOrderByCarts ({
   }
 
   return { createdAt: reverseOrder }
+}
+
+export function getUtmLocations (key: BUILDING_KEY) {
+  return UTM_LOCATIONS[key] ?? UTM_LOCATIONS.c
 }
