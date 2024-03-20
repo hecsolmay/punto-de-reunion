@@ -67,3 +67,5 @@ export const NAVIGATION_PAYMENT_STEPS: StepsType[] = [
     icon: Check
   }
 ]
+
+export const NAVIGATION_PAYMENT_STEPS_COMPLETE = NAVIGATION_PAYMENT_STEPS.map(n => ({ ...n, isCompleted: true }))
