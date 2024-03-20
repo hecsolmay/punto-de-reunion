@@ -1,3 +1,5 @@
+import { type LucideIcon } from 'lucide-react'
+
 export interface LinkDropdownItem {
   title: string
   href: string
@@ -51,4 +53,11 @@ export interface ServerPageProps {
 
 export interface ServerContext {
   params: Params
+}
+
+export interface StepsType {
+  id: string
+  name: string
+  isCompleted: boolean
+  icon: LucideIcon
 }

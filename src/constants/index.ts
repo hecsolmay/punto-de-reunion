@@ -1,4 +1,5 @@
-import { type SortOptions } from '@/types'
+import { type StepsType, type SortOptions } from '@/types'
+import { Check, MapPin, ShoppingCart } from 'lucide-react'
 
 export const DEFAULT_PAGINATION = {
   page: 1,
@@ -45,3 +46,24 @@ export const SORT_OPTIONS: Record<SortOptions, SortOptionsType> = {
 export const IMAGE_MAX_SIZE = 1024 * 1024 * 3 // 3MB
 export const MAX_ORGANIZATIONS_NUMBER = 8
 export const MAX_QUANTITY_ADD_TO_CART = 10
+
+export const NAVIGATION_PAYMENT_STEPS: StepsType[] = [
+  {
+    id: 'map',
+    name: 'Ubicación',
+    isCompleted: false,
+    icon: MapPin
+  },
+  {
+    id: 'checkout',
+    name: 'Checkout',
+    isCompleted: false,
+    icon: ShoppingCart
+  },
+  {
+    id: 'complete',
+    name: 'Completado',
+    isCompleted: false,
+    icon: Check
+  }
+]
