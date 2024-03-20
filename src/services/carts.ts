@@ -13,15 +13,6 @@ interface Params
   organizationId?: string
 }
 
-const DEFAULT_INCLUDE: Prisma.CartsInclude = {
-  organization: true,
-  items: {
-    include: {
-      product: true
-    }
-  }
-}
-
 export async function getCarts (params: Params): Promise<getCartsType> {
   const {
     limit = 10,
@@ -125,12 +116,54 @@ export async function getOneCart (where: GetOneCartParams) {
   try {
     const cart = await prisma.carts.findFirst({
       include: {
-        ...DEFAULT_INCLUDE
+        organization: true,
+        items: {
+          include: {
+            product: {
+              include: {
+                images: true
+              }
+            }
+          }
+        }
       },
       where
     })
 
-    return cart
+    if (cart === null) return null
+
+    const { items, ...rest } = cart
+
+    const mappedItems = items.map((item) => {
+      const { product, originalPrice, ...rest } = item
+
+      const mappedProduct = {
+        ...product,
+        price: product.price.toNumber(),
+        rating: product.rating.toNumber()
+      }
+
+      return {
+        ...rest,
+        originalPrice: originalPrice.toNumber(),
+        product: mappedProduct
+      }
+    })
+
+    // Sort items By localCompare
+    const sortedItems = mappedItems.sort((a, b) => {
+      const { name: nameB } = b.product
+      const { name: nameA } = a.product
+
+      return nameA.localeCompare(nameB)
+    })
+
+    const mappedCarts = {
+      ...rest,
+      items: sortedItems
+    }
+
+    return mappedCarts
   } catch (error) {
     console.error(error)
     return null
