@@ -69,6 +69,7 @@ export const config = {
   matcher: [
     // I need a matchers for all the account routes and subsequent also for my-organizations route
     '/account/:path*',
-    '/my-organizations/:path*'
+    '/my-organizations/:path*',
+    '/checkout/:path*'
   ]
 }
