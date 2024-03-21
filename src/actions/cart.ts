@@ -63,7 +63,7 @@ export async function addToCart ({ productId, quantity }: addToCartParams): Prom
         return generateErrorResponse(400, maxQuantityReachedMessage)
       }
 
-      const createItem = await services.createCartItem({ cartId, productId, quantity, originalPrice: existedProduct.price })
+      const createItem = await services.createCartItem({ cartId, productId, quantity })
 
       revalidateTag('carts')
       return {

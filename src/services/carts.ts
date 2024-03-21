@@ -68,7 +68,7 @@ export async function getCarts (params: Params): Promise<getCartsType> {
       const { items, ...rest } = cart
 
       const mappedItems = items.map((item) => {
-        const { product, originalPrice, ...rest } = item
+        const { product, ...rest } = item
 
         const mappedProduct = {
           ...product,
@@ -78,7 +78,6 @@ export async function getCarts (params: Params): Promise<getCartsType> {
 
         return {
           ...rest,
-          originalPrice: originalPrice.toNumber(),
           product: mappedProduct
         }
       })
@@ -135,7 +134,7 @@ export async function getOneCart (where: GetOneCartParams) {
     const { items, ...rest } = cart
 
     const mappedItems = items.map((item) => {
-      const { product, originalPrice, ...rest } = item
+      const { product, ...rest } = item
 
       const mappedProduct = {
         ...product,
@@ -145,7 +144,6 @@ export async function getOneCart (where: GetOneCartParams) {
 
       return {
         ...rest,
-        originalPrice: originalPrice.toNumber(),
         product: mappedProduct
       }
     })
@@ -190,7 +188,7 @@ export async function findManyCarts () {
     const { items, ...rest } = cart
 
     const mappedItems = items.map((item) => {
-      const { product, originalPrice, ...rest } = item
+      const { product, ...rest } = item
 
       const mappedProduct = {
         ...product,
@@ -200,7 +198,6 @@ export async function findManyCarts () {
 
       return {
         ...rest,
-        originalPrice: originalPrice.toNumber(),
         product: mappedProduct
       }
     })
@@ -226,7 +223,6 @@ interface CreateCartParams {
   organizationId: string
   productId: string
   quantity: number
-  originalPrice?: number
 }
 
 export async function createCart (data: CreateCartParams) {
@@ -234,8 +230,7 @@ export async function createCart (data: CreateCartParams) {
     userId,
     organizationId,
     productId,
-    quantity,
-    originalPrice = 0
+    quantity
   } = data
 
   const cartCreated = await prisma.carts.create({
@@ -245,8 +240,7 @@ export async function createCart (data: CreateCartParams) {
       items: {
         create: {
           productId,
-          quantity,
-          originalPrice
+          quantity
         }
       }
     }
@@ -262,15 +256,13 @@ interface CartItem extends Omit<CreateCartParams, 'userId' | 'organizationId'> {
 export async function createCartItem ({
   cartId,
   productId,
-  quantity,
-  originalPrice = 0
+  quantity
 }: CartItem) {
   return await prisma.cartItems.create({
     data: {
       cartId,
       productId,
-      quantity,
-      originalPrice
+      quantity
     }
   })
 }
@@ -283,14 +275,12 @@ interface UpdateCartItem extends Omit<CartItem, 'cartId'> {
 export async function updateCartItem ({
   itemId,
   quantity,
-  productId,
-  originalPrice
+  productId
 }: Partial<UpdateCartItem>) {
   return await prisma.cartItems.update({
     data: {
       quantity,
-      productId,
-      originalPrice
+      productId
     },
     where: {
       id: itemId
