@@ -191,3 +191,26 @@ export function getOrderByCarts ({
 export function getUtmLocations (key: BUILDING_KEY) {
   return UTM_LOCATIONS[key] ?? UTM_LOCATIONS.c
 }
+
+export function getWhereProductsInputFromParams (params: SearchParams): Prisma.ProductsWhereInput {
+  const where: Prisma.ProductsWhereInput = {
+    organization: {
+      deletedAt: null
+    },
+    deletedAt: null
+  }
+
+  if (params.categoryId !== undefined) {
+    where.categories = { some: { id: params.categoryId } }
+  }
+
+  if (params.organizationId !== undefined) {
+    where.organizationId = params.organizationId
+  }
+
+  if (params.search !== undefined) {
+    where.name = { startsWith: params.search, mode: 'insensitive' }
+  }
+
+  return where
+}

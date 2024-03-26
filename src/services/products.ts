@@ -1,6 +1,6 @@
 import { getPaginationInfo } from '@/libs/pagination'
 import prisma from '@/libs/prisma'
-import { getOrderBy } from '@/libs/utils'
+import { getOrderBy, getWhereProductsInputFromParams } from '@/libs/utils'
 import { parsePagination } from '@/libs/validations'
 import { type SearchParams } from '@/types'
 import { type Prisma } from '@prisma/client'
@@ -9,32 +9,14 @@ export async function getProducts (params: SearchParams = {}) {
   const {
     limit = 10,
     page = 1,
-    search = '',
     sort = 'created',
-    order = 'asc',
-    categoryId,
-    organizationId
+    order = 'asc'
   } = params
   const pagination = parsePagination({ limit, page })
 
   const orderBy = getOrderBy({ order, sort })
 
-  const where: Prisma.ProductsWhereInput = {
-    name: {
-      startsWith: search,
-      mode: 'insensitive'
-    },
-    categories: {
-      some: {
-        categoryId
-      }
-    },
-    organizationId,
-    organization: {
-      deletedAt: null
-    },
-    deletedAt: null
-  }
+  const where: Prisma.ProductsWhereInput = getWhereProductsInputFromParams(params)
 
   const productsPromise = prisma.products.findMany({
     skip: pagination.skip,
