@@ -2,7 +2,7 @@ import { cn } from '@/libs/cn'
 
 const VARIANTS = {
   default: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400 border border-gray-500',
-  primary: 'bg-primary text-white dark:bg-primary-dark dark:text-white',
+  primary: 'bg-primary-600 text-white dark:bg-primary-400 dark:text-white',
   warning: 'dark:bg-amber-500 bg-amber-400 text-white',
   danger: 'dark:bg-red-600 bg-red-500 text-white'
 }

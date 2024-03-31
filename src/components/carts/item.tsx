@@ -95,7 +95,7 @@ export function CartItem ({
           <h1 className='text-lg font-bold'>{organization.name}</h1>
           <CardSidebarLink
             href={`/organizations/${organization.id}`}
-            className='text-sm text-primary dark:text-primary-dark'
+            className='text-sm text-primary-400 dark:text-primary-600'
           >
             Volver a la tienda
           </CardSidebarLink>

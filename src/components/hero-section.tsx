@@ -4,7 +4,7 @@ export default function HeroSection () {
   return (
     <section className='flex min-h-[80dvh] flex-col gap-x-4 md:flex-row'>
       <div className='order-2 w-full py-6 md:order-1 md:w-1/2'>
-        <h1 className='mb-6 text-balance text-5xl font-bold text-primary'>
+        <h1 className='mb-6 text-balance text-5xl font-bold text-primary-600 dark:text-primary-500'>
           <span className='dark:text-white'>¡Bienvenido a</span> punto de reunion!
         </h1>
 
