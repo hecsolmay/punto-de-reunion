@@ -15,11 +15,13 @@ export default async function CheckoutCartPage ({ params }: ServerPageProps) {
 
   const cart = await getOneCart({ id, userId: session.id, isAlreadyPaid: false })
 
-  console.log(cart)
+  if (cart === null) {
+    redirect('/not-found')
+  }
 
   return (
     <MainContainer className='flex h-auto min-h-[80vh] flex-col gap-y-8 overflow-x-hidden pb-8'>
-      <PaymentSteps />
+      <PaymentSteps cart={cart} />
 
     </MainContainer>
   )

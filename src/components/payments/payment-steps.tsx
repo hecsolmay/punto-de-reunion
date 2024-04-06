@@ -8,9 +8,14 @@ import Stepper from '@/components/payments/steps'
 import SuccessPayment from '@/components/payments/success'
 import { NAVIGATION_PAYMENT_STEPS } from '@/constants'
 import { BUILDING_KEY_ARRAY } from '@/constants/locations'
+import { type CartType } from '@/types/services'
 import { useState } from 'react'
 
-export default function PaymentSteps () {
+interface Props {
+  cart: CartType
+}
+
+export default function PaymentSteps ({ cart }: Props) {
   const [steps, setSteps] = useState(NAVIGATION_PAYMENT_STEPS)
   const [selectedStep, setSelectedStep] = useState(0)
   const [previousStep, setPreviousStep] = useState(0)
@@ -83,7 +88,7 @@ export default function PaymentSteps () {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
-          <Checkout />
+          <Checkout cart={cart} />
         </MotionDiv>
       )}
 
@@ -97,10 +102,6 @@ export default function PaymentSteps () {
         </MotionDiv>
       )}
 
-      <div className='flex items-center justify-center gap-8'>
-        {selectedStep > 0 && selectedStep < steps.length - 1 && <button onClick={handleChangeStep('back')}>Anterior</button>}
-        {selectedStep !== 0 && selectedStep < steps.length - 1 && <button onClick={handleChangeStep('next')}>Siguiente</button>}
-      </div>
     </>
   )
 }
