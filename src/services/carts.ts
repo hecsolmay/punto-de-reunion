@@ -156,12 +156,18 @@ export async function getOneCart (where: GetOneCartParams) {
       return nameA.localeCompare(nameB)
     })
 
-    const mappedCarts = {
+    const totalToPay = sortedItems.reduce((acc, item) => {
+      const { product: { price }, quantity } = item
+      return acc + (price * quantity)
+    }, 0)
+
+    const mappedCart = {
       ...rest,
-      items: sortedItems
+      items: sortedItems,
+      totalToPay
     }
 
-    return mappedCarts
+    return mappedCart
   } catch (error) {
     console.error(error)
     return null

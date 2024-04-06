@@ -1,7 +1,7 @@
 import type { Categories } from '@prisma/client'
 import type { Info } from '@/libs/pagination'
 import { type Response } from '@/types/response'
-import { type findManyCarts } from '@/services/carts'
+import type { getOneCart, findManyCarts } from '@/services/carts'
 
 type ElementType<T extends Iterable<any>> = T extends Iterable<infer E> ? E : never
 
@@ -21,3 +21,4 @@ export interface CartsResponse {
 export type getCartsType = Response<CartsResponse>
 export type CartItem = ElementType<FindManyCarts>
 export type ProductCartType = CartItem['items'][0]['product']
+export type CartType = NonNullable<Awaited<ReturnType <typeof getOneCart>>>
