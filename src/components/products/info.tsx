@@ -9,6 +9,7 @@ import InfoHeader from '@/components/products/info-header'
 import RatingInfo from '@/components/rating-info'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import { type UserSession, getUserSession } from '@/libs/auth'
+import { formatPriceNumber } from '@/libs/format'
 import { getProductById } from '@/services/products'
 import Link from 'next/link'
 
@@ -70,10 +71,7 @@ export default async function ProductInfo ({
               </h3>
             </div>
             <p className='text-start text-base font-bold opacity-85'>
-              {price.toLocaleString('es-MX', {
-                style: 'currency',
-                currency: 'MXN'
-              })}
+              {formatPriceNumber(price)}
             </p>
             <CategoriesBadges categories={categories} />
             <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>
@@ -171,10 +169,7 @@ export async function ProductInfoPage ({
             </h3>
           </div>
           <p className='text-start text-base font-bold opacity-85'>
-            {price.toLocaleString('es-MX', {
-              style: 'currency',
-              currency: 'MXN'
-            })}
+            {formatPriceNumber(price)}
           </p>
           <CategoriesBadges categories={categories} />
           <p className='text-pretty text-base font-normal text-gray-600 dark:text-gray-300'>

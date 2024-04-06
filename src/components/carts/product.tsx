@@ -3,6 +3,7 @@
 import { deleteCartItem, updateCartItemQuantity } from '@/actions/items'
 import { useAppContext } from '@/context/utils'
 import { cn } from '@/libs/cn'
+import { formatPriceNumber } from '@/libs/format'
 import { toast } from '@/libs/sonner'
 import { type ProductCartType } from '@/types/services'
 import { Minus, Plus, Trash } from 'lucide-react'
@@ -140,12 +141,8 @@ export function ProductCartItem ({
 
         <div className='flex w-full justify-between py-3'>
           <div className='flex justify-start'>
-            {/* TO LOCAL PESOS mexicanos PRICE */}
             <h1 className='text-base font-semibold'>
-              {price.toLocaleString('es-MX', {
-                style: 'currency',
-                currency: 'MXN'
-              })}
+              {formatPriceNumber(price)}
             </h1>
           </div>
 

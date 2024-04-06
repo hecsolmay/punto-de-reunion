@@ -1,5 +1,6 @@
 import StarIcon from '@/components/icons/star'
 import ProductRedirect from '@/components/products/Link-redirect'
+import { formatPriceNumber } from '@/libs/format'
 import { type Organizations, type ProductStatus } from '@prisma/client'
 
 interface Props {
@@ -51,7 +52,7 @@ export default function ProductCard ({
         </div>
         <div className='h-8'>
           <p className='text-end font-semibold'>
-            {price.toLocaleString('mx', { style: 'currency', currency: 'MXN' })}{' '}
+            {formatPriceNumber(price)}{' '}
           </p>
         </div>
       </div>

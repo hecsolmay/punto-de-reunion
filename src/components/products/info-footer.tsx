@@ -6,6 +6,7 @@ import LinkButton from '@/components/buttons/link-button'
 import { MAX_QUANTITY_ADD_TO_CART } from '@/constants'
 import useModalProduct from '@/hooks/use-modal-product'
 import { cn } from '@/libs/cn'
+import { formatPriceNumber } from '@/libs/format'
 import { toast } from '@/libs/sonner'
 import { Minus, Plus } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -73,10 +74,7 @@ export default function InfoFooter ({
   const totalToPay = price * count
 
   // Formatear como precio mx
-  const formattedTotalToPay = totalToPay.toLocaleString('es-MX', {
-    style: 'currency',
-    currency: 'MXN'
-  })
+  const formattedTotalToPay = formatPriceNumber(totalToPay)
 
   const handleAddToCart = async () => {
     if (disabled || count === 0 || isLoading) return

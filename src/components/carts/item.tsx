@@ -5,6 +5,7 @@ import { ProductCartItem } from '@/components/carts/product'
 import { CardSidebarLink } from '@/components/links'
 import { useAppContext } from '@/context/utils'
 import { cn } from '@/libs/cn'
+import { formatPriceNumber } from '@/libs/format'
 import { toast } from '@/libs/sonner'
 import { type CartItem as CartItemType } from '@/types/services'
 import { ChevronDown, Trash } from 'lucide-react'
@@ -165,11 +166,8 @@ export function CartItem ({
           <p>
             Subtotal:{' '}
             <span className='inline-block font-bold'>
-              {totalToPay.toLocaleString('es-MX', {
-                style: 'currency',
-                currency: 'MXN'
-              })}
-            </span>{' '}
+              {formatPriceNumber(totalToPay)}
+            </span>
           </p>
         </CardSidebarLink>
       </div>

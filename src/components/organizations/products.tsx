@@ -3,6 +3,7 @@ import {
   DeleteProductButton,
   EditProductButton
 } from '@/components/products/buttons'
+import { formatPriceNumber } from '@/libs/format'
 import { getProducts } from '@/services/products'
 import { type SearchParams } from '@/types'
 import { type Category } from '@/types/actions'
@@ -90,10 +91,7 @@ function ProductCard ({ product, allCategories }: CardProps) {
           </div>
           <div className='h-8'>
             <p className='text-end font-semibold'>
-              {price.toLocaleString('mx', {
-                style: 'currency',
-                currency: 'MXN'
-              })}{' '}
+              {formatPriceNumber(price)}{' '}
             </p>
           </div>
         </div>
