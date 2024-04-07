@@ -1,4 +1,5 @@
 import { type LucideIcon } from 'lucide-react'
+import type Stripe from 'stripe'
 
 export interface LinkDropdownItem {
   title: string
@@ -27,6 +28,7 @@ export interface SearchParams {
   categoryId?: string
   userId?: string
   organizationId?: string
+  sessionId?: string
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'
@@ -61,3 +63,14 @@ export interface StepsType {
   isCompleted: boolean
   icon: LucideIcon
 }
+
+export interface RawProduct {
+  price: number
+  name: string
+  description: string
+  images: string[]
+  quantity: number
+}
+
+export type LineItem = Stripe.Checkout.SessionCreateParams.LineItem
+export type Currency = 'mxn' | 'usd' | 'cad'

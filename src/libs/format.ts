@@ -1,3 +1,4 @@
+import type { Currency, LineItem, RawProduct } from '@/types'
 type Locales = 'en-US' | 'es-ES' | 'es-MX'
 
 const CURRENCY_LOCALES: Record<Locales, string> = {
@@ -12,4 +13,21 @@ export function formatPriceNumber (number: number, locales?: Locales) {
 
   // Return to locale string Mexican currency
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(number)
+}
+
+export function formatStripeLineProduct (product: RawProduct, currency: Currency): LineItem {
+  const { description, images, name, price, quantity } = product
+
+  return {
+    price_data: {
+      currency,
+      product_data: {
+        name,
+        description,
+        images
+      },
+      unit_amount: price * 100
+    },
+    quantity
+  }
 }
