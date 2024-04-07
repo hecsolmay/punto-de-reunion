@@ -1,5 +1,5 @@
-import Button from '@/components/buttons/button'
 import StarIcon from '@/components/icons/star'
+import { GoToPayButton } from '@/components/payments/actions'
 import { formatPriceNumber } from '@/libs/format'
 import type { CartType } from '@/types/services'
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Checkout ({ cart }: Props) {
-  const { totalToPay, items } = cart
+  const { totalToPay, items, id: cartId } = cart
 
   return (
     <section className='flex h-full w-full flex-col items-start gap-4 md:flex-row'>
@@ -66,8 +66,9 @@ export default function Checkout ({ cart }: Props) {
             total={totalToPay}
           />
         </div>
-
-        <Button className='mt-4 w-full'>Ir a pagar</Button>
+        <GoToPayButton cartId={cartId} className='mt-4 w-full'>
+          Ir a pagar
+        </GoToPayButton>
       </div>
     </section>
   )
