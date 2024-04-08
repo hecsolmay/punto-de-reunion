@@ -1,8 +1,8 @@
 'use server'
 
-import { getOneCart } from '@/services/carts'
-import { createPaymentIntent } from '@/services/payments'
-import { type RawProduct } from '@/types'
+import { getOneCart, updateCart } from '@/services/carts'
+import { createPaymentIntent, getPayment, savePayment } from '@/services/payments'
+import { type Transaction, type RawProduct } from '@/types'
 
 export async function handlePayment (cartId?: string) {
   try {
@@ -34,5 +34,26 @@ export async function handlePayment (cartId?: string) {
   } catch (error) {
     console.error(error)
     throw new Error('Error al procesar el pago')
+  }
+}
+
+export async function getPaymentDetails (sessionId?: string) {
+  try {
+    const data = await getPayment(sessionId)
+    return data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export async function savePaymentRegister (data: Transaction) {
+  try {
+    await Promise.allSettled([
+      savePayment(data),
+      updateCart(data.cartId, { isAlreadyPaid: true })
+    ])
+  } catch (error) {
+    console.error(error)
   }
 }

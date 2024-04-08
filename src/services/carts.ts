@@ -317,3 +317,18 @@ export async function deletedManyCarts ({ userId }: DeleteCartItemParams) {
 
   return deletedCarts.count
 }
+
+interface UpdateCartType {
+  isAlreadyPaid: boolean
+}
+
+export async function updateCart (cartId: string, data: Partial<UpdateCartType>) {
+  const updatedCart = await prisma.carts.update({
+    data,
+    where: {
+      id: cartId
+    }
+  })
+
+  return updatedCart
+}

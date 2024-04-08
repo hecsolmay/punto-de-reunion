@@ -1,3 +1,4 @@
+import { type TransactionService } from '@prisma/client'
 import { type LucideIcon } from 'lucide-react'
 import type Stripe from 'stripe'
 
@@ -74,3 +75,9 @@ export interface RawProduct {
 
 export type LineItem = Stripe.Checkout.SessionCreateParams.LineItem
 export type Currency = 'mxn' | 'usd' | 'cad'
+
+export interface Transaction {
+  cartId: string
+  transactionId: string
+  transactionService: TransactionService
+}
