@@ -24,7 +24,7 @@ export default async function CartSideBar () {
     )
   }
 
-  const response = await getCarts({ userId: session.id })
+  const response = await getCarts({ userId: session.id, isAlreadyPaid: false })
 
   if (!response.success) {
     // TODO: handle error
