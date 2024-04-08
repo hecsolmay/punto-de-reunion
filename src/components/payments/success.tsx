@@ -18,7 +18,7 @@ export default function SuccessPayment ({ text = 'Compra realizada con éxito' }
       <span className="text-9xl">
         🎉
       </span>
-      <h1 className="text-2xl font-bold">{text}</h1>
+      <h1 className="text-pretty text-2xl font-bold">{text}</h1>
       <LinkButton href="/">Volver a la tienda</LinkButton>
     </div>
   )
