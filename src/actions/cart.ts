@@ -147,3 +147,11 @@ export async function deleteCartById (cartId: string): Promise<DeleteOneCartResp
     return generateErrorResponse(500, 'Something went wrong')
   }
 }
+
+export async function updateMeetingPoint (cartId: string, meetingPoint?: string) {
+  try {
+    await services.updateCart(cartId, { meetingPoint })
+  } catch (error) {
+    console.error(error)
+  }
+}

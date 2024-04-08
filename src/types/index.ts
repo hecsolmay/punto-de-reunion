@@ -81,3 +81,8 @@ export interface Transaction {
   transactionId: string
   transactionService: TransactionService
 }
+
+export interface UpdateCartType {
+  isAlreadyPaid: boolean
+  meetingPoint: string
+}

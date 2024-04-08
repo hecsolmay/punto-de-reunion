@@ -2,7 +2,7 @@ import { getPaginationInfo } from '@/libs/pagination'
 import prisma from '@/libs/prisma'
 import { generateErrorResponse, getOrderByCarts } from '@/libs/utils'
 import { parsePagination } from '@/libs/validations'
-import { type SearchParams } from '@/types'
+import { type UpdateCartType, type SearchParams } from '@/types'
 import { type getCartsType } from '@/types/services'
 import { type Prisma } from '@prisma/client'
 
@@ -316,10 +316,6 @@ export async function deletedManyCarts ({ userId }: DeleteCartItemParams) {
   })
 
   return deletedCarts.count
-}
-
-interface UpdateCartType {
-  isAlreadyPaid: boolean
 }
 
 export async function updateCart (cartId: string, data: Partial<UpdateCartType>) {

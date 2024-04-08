@@ -1,5 +1,6 @@
 'use client'
 
+import { updateMeetingPoint } from '@/actions/cart'
 import { type OptionType } from '@/components/inputs/select'
 import { MotionDiv } from '@/components/motion'
 import Checkout from '@/components/payments/checkout'
@@ -65,8 +66,9 @@ export default function PaymentSteps ({ cart }: Props) {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           <Location
-            onChange={value => {
+            onChange={async value => {
               setLocation(value)
+              await updateMeetingPoint(cart.id, value)
             }}
             onContinue={handleChangeStep('next')}
             location={location}
