@@ -1,5 +1,6 @@
 import { getPaymentDetails, savePaymentRegister } from '@/actions/payments'
 import MainContainer from '@/components/main-container'
+import { ErrorContent } from '@/components/payments/error'
 import Stepper from '@/components/payments/steps'
 import SuccessPayment from '@/components/payments/success'
 import { NAVIGATION_PAYMENT_STEPS_COMPLETE } from '@/constants'
@@ -20,7 +21,7 @@ export default async function SuccessPage ({
   const paymentDetailsProducts = await getPaymentDetails(sessionId)
 
   if (cart === null || paymentDetailsProducts === null) {
-    return null
+    return <ErrorContent />
   }
 
   if (!cart.isAlreadyPaid) {
