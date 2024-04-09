@@ -7,7 +7,7 @@ import { type Prisma } from '@prisma/client'
 
 export async function getProducts (params: SearchParams = {}) {
   const {
-    limit = 10,
+    limit = 12,
     page = 1,
     sort = 'created',
     order = 'asc'
