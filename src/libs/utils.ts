@@ -201,7 +201,7 @@ export function getWhereProductsInputFromParams (params: SearchParams): Prisma.P
   }
 
   if (params.categoryId !== undefined) {
-    where.categories = { some: { id: params.categoryId } }
+    where.categories = { some: { categoryId: params.categoryId } }
   }
 
   if (params.organizationId !== undefined) {
