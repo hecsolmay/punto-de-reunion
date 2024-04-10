@@ -93,8 +93,7 @@ export async function getPayments (params: SearchParams) {
     include: {
       cart: {
         include: {
-          organization: true,
-          items: true
+          organization: true
         }
       }
     },
@@ -112,14 +111,12 @@ export async function getPayments (params: SearchParams) {
   ])
 
   const mappedPayments = payments.map(payment => {
-    const { cart: { items, organization }, ...rest } = payment
-
-    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0)
+    const { cart: { organization }, totalPaymentAmount, ...rest } = payment
 
     return {
       ...rest,
       organization,
-      totalItems
+      totalPaymentAmount: totalPaymentAmount.toNumber()
     }
   })
 
