@@ -1,8 +1,11 @@
 'use server'
 
+import { getUserSession } from '@/libs/auth'
+import { generateErrorResponse } from '@/libs/utils'
 import { getOneCart, updateCart } from '@/services/carts'
-import { createPaymentIntent, getPayment, savePayment } from '@/services/payments'
-import { type Transaction, type RawProduct } from '@/types'
+import { createPaymentIntent, getPayment, getPayments, savePayment } from '@/services/payments'
+import { type RawProduct, type SearchParams, type Transaction } from '@/types'
+import { type GetPaymentsResponse } from '@/types/actions'
 
 export async function handlePayment (cartId?: string) {
   try {
@@ -55,5 +58,27 @@ export async function savePaymentRegister (data: Transaction) {
     ])
   } catch (error) {
     console.error(error)
+  }
+}
+
+export async function getUserPayments (searchParams?: SearchParams): Promise<GetPaymentsResponse> {
+  try {
+    const session = await getUserSession()
+
+    if (session === null) {
+      return generateErrorResponse(401, 'Error de autenticación')
+    }
+
+    const userPayments = await getPayments({ ...searchParams, userId: session?.id })
+
+    return {
+      success: true,
+      data: userPayments,
+      code: 200,
+      message: 'Operación exitosa'
+    }
+  } catch (error) {
+    console.error(error)
+    return generateErrorResponse(500, 'Something went wrong')
   }
 }

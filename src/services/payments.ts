@@ -1,7 +1,11 @@
 import { formatStripeLineProduct } from '@/libs/format'
+import { getPaginationInfo } from '@/libs/pagination'
 import { getStripe } from '@/libs/payments'
 import prisma from '@/libs/prisma'
-import type { RawProduct, Transaction } from '@/types'
+import { getOrderByCommon, getWherePaymentsInputFromParams } from '@/libs/utils'
+import { parsePagination } from '@/libs/validations'
+import type { RawProduct, SearchParams, Transaction } from '@/types'
+import { type Prisma } from '@prisma/client'
 
 export async function createPaymentIntent (cartId: string, rawItems: RawProduct[], redirectUrl?: string) {
   const stripe = getStripe()
@@ -67,4 +71,64 @@ export async function savePayment (data: Transaction) {
   })
 
   return createdPayment
+}
+
+export async function getPayments (params: SearchParams) {
+  const {
+    limit = 12,
+    page = 1,
+    order = 'asc'
+  } = params
+  const pagination = parsePagination({ limit, page })
+
+  const orderBy = getOrderByCommon({ order })
+
+  const where: Prisma.PaymentsWhereInput = getWherePaymentsInputFromParams(params)
+
+  const paymentsPromise = prisma.payments.findMany({
+    skip: pagination.skip,
+    take: pagination.limit,
+    include: {
+      cart: {
+        include: {
+          organization: true,
+          items: true
+        }
+      }
+    },
+    orderBy,
+    where
+  })
+
+  const countPromise = prisma.payments.count({
+    where
+  })
+
+  const [payments, count] = await prisma.$transaction([
+    paymentsPromise,
+    countPromise
+  ])
+
+  const mappedPayments = payments.map(payment => {
+    const { cart: { items, organization }, ...rest } = payment
+
+    const totalItems = items.reduce((acc, item) => acc + item.quantity, 0)
+
+    return {
+      ...rest,
+      organization,
+      totalItems
+    }
+  })
+
+  const info = getPaginationInfo({
+    limit: pagination.limit,
+    page: pagination.page,
+    total: count
+  })
+
+  return {
+    payments: mappedPayments,
+    info
+  }
 }

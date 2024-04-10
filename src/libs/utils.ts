@@ -123,6 +123,15 @@ export function getOrderByOrganization ({
   return { createdAt: reverseOrder }
 }
 
+export function getOrderByCommon ({
+  order = 'asc'
+}: getOrderByParams): Prisma.CartsOrderByWithRelationInput {
+  const orderType = getOrderType(order)
+  const reverseOrder = orderType === 'asc' ? 'desc' : 'asc'
+
+  return { createdAt: reverseOrder }
+}
+
 type SearchParamsKeys = keyof SearchParams
 
 export function parseSearchParams (urlSearch: URLSearchParams): SearchParams {
@@ -210,6 +219,16 @@ export function getWhereProductsInputFromParams (params: SearchParams): Prisma.P
 
   if (params.search !== undefined) {
     where.name = { startsWith: params.search, mode: 'insensitive' }
+  }
+
+  return where
+}
+
+export function getWherePaymentsInputFromParams (params: SearchParams): Prisma.PaymentsWhereInput {
+  const where: Prisma.PaymentsWhereInput = {}
+
+  if (params.userId !== undefined) {
+    where.cart = { userId: params.userId }
   }
 
   return where
