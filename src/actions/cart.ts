@@ -28,7 +28,7 @@ export async function addToCart ({ productId, quantity }: addToCartParams): Prom
 
     const maxQuantityReachedMessage = `La cantidad maxima de productos por carrito es ${existedProduct.maxQuantityByCart}, por favor disminuya la cantidad o cambie el producto`
 
-    const cart = await services.getOneCart({ userId: session.id, organizationId: existedProduct.organizationId })
+    const cart = await services.getOneCart({ userId: session.id, organizationId: existedProduct.organizationId, isAlreadyPaid: false })
 
     const payload = {
       userId: session.id,
