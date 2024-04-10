@@ -134,13 +134,16 @@ export async function ProductInfoPage ({
     rating,
     reviewCount,
     organization,
-    maxQuantityByCart
+    maxQuantityByCart,
+    status
   } = product
 
   const categories = categoriesProducts.map(({ category }) => ({
     id: category.id,
     name: category.name
   }))
+
+  const isAvailable = status === 'AVAILABLE'
 
   return (
     <>
@@ -183,6 +186,7 @@ export async function ProductInfoPage ({
             maxQuantity={maxQuantityByCart}
             price={price}
             userId={session?.id}
+            disabled={!isAvailable}
             className='fixed bottom-0 left-0 z-[9] mt-2 w-full bg-white px-4 py-2 dark:bg-accent-dark md:relative md:w-fit md:bg-transparent md:p-0 md:dark:bg-transparent'
           />
           {/* TODO: Add review */}
