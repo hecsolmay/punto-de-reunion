@@ -2,6 +2,7 @@ import StarIcon from '@/components/icons/star'
 import ProductRedirect from '@/components/products/Link-redirect'
 import { formatPriceNumber } from '@/libs/format'
 import { type Organizations, type ProductStatus } from '@prisma/client'
+import { Frown } from 'lucide-react'
 
 interface Props {
   description: string
@@ -32,14 +33,16 @@ export default function ProductCard ({
       productId={id}
       className='relative z-0 h-80 max-h-[20rem] w-72 cursor-pointer rounded-xl bg-white shadow-md dark:bg-accent-dark'
       scroll={scroll}
-      // disabled={!isAvailable}
+      disabled={!isAvailable}
     >
-      {!isAvailable && <NoAvailableProduct />}
-      <img
-        src={imageUrl}
-        className='mb-2 h-32 w-full rounded-md object-cover'
-        alt=''
-      />
+      <div className='relative'>
+        {!isAvailable && <NoAvailableProduct />}
+        <img
+          src={imageUrl}
+          className='mb-2 h-32 w-full rounded-md object-cover'
+          alt=''
+        />
+      </div>
       <div className='flex h-48 flex-col gap-3 px-4 py-2'>
         <div className='flex items-center justify-between'>
           <h3 className='line-clamp-2 text-lg font-bold'>{name}</h3>
@@ -65,11 +68,10 @@ export default function ProductCard ({
 }
 
 function NoAvailableProduct () {
-  // TODO: Implementar un empty state de no disponible
-
-  //   <div className='absolute inset-0 rounded-b-xl bg-black/40 dark:bg-black/30'>
-  //   <p>Producto No disponible</p>
-  // </div>
-
-  return null
+  return (
+    <div className='absolute inset-0 flex h-full flex-col items-center justify-center gap-1 bg-black/40 text-white dark:bg-black/50'>
+      <Frown size={32} />
+      <p className='text-normal font-bold'>No disponible</p>
+    </div>
+  )
 }
