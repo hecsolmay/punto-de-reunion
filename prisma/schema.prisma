@@ -252,6 +252,8 @@ model Payments {
   id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   cartId             String             @unique @map("cart_id") @db.Uuid
   transactionId      String             @map("transaction_id")
+  totalPaymentAmount Decimal            @default(0) @map("total_payment_amount") @db.Decimal
+  totalQuantity      Int                @default(0) @map("total_quantity")
   transactionService TransactionService @default(STRIPE) @map("transaction_service")
   createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime           @default(now()) @map("updated_at") @db.Timestamp(6)

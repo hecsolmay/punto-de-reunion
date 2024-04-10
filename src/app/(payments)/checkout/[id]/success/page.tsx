@@ -25,10 +25,19 @@ export default async function SuccessPage ({
   }
 
   if (!cart.isAlreadyPaid) {
+    const totalPaymentAmount = paymentDetailsProducts.reduce((acc, item) => {
+      const total = item.quantity * item.unitAmount
+      return acc + total
+    }, 0)
+
+    const totalQuantity = paymentDetailsProducts.reduce((acc, item) => acc + (item.quantity), 0)
+
     await savePaymentRegister({
       cartId: cart.id,
       transactionId: sessionId ?? '',
-      transactionService: 'STRIPE'
+      transactionService: 'STRIPE',
+      totalPaymentAmount,
+      totalQuantity
     })
   }
 

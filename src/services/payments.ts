@@ -12,6 +12,7 @@ export async function createPaymentIntent (cartId: string, rawItems: RawProduct[
   const url = redirectUrl ?? process.env.NEXT_PUBLIC_APP_URL
 
   const formattedLineItems = rawItems.map(item => formatStripeLineProduct(item, 'mxn'))
+  const totalQuantity = rawItems.reduce((acc, item) => acc + item.quantity, 0)
 
   const session = await stripe.checkout.sessions.create({
     line_items: formattedLineItems,
@@ -19,7 +20,8 @@ export async function createPaymentIntent (cartId: string, rawItems: RawProduct[
     success_url: `${url}/checkout/${cartId}/success?sessionId={CHECKOUT_SESSION_ID}`,
     cancel_url: `${url}/checkout/${cartId}`,
     metadata: {
-      cartId
+      cartId,
+      totalQuantity
     }
   })
 

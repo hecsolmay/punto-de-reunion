@@ -23,11 +23,20 @@ export async function POST (request: NextRequest) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
-    const { id, metadata } = session
+
+    const { id, metadata, amount_total: amountTotal } = session
     const cartId = metadata?.cartId ?? ''
+    const rawTotalQuantity = metadata?.totalQuantity ?? 0
+    const totalQuantity = Number(rawTotalQuantity)
 
     try {
-      await savePayment({ transactionId: id, cartId, transactionService: 'STRIPE' })
+      await savePayment({
+        transactionId: id,
+        cartId,
+        transactionService: 'STRIPE',
+        totalPaymentAmount: (amountTotal ?? 0) / 100,
+        totalQuantity
+      })
       revalidateTag('carts')
     } catch (error) {
       console.error(error)

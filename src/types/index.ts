@@ -80,6 +80,8 @@ export interface Transaction {
   cartId: string
   transactionId: string
   transactionService: TransactionService
+  totalPaymentAmount: number
+  totalQuantity: number
 }
 
 export interface UpdateCartType {
