@@ -1,4 +1,4 @@
-import ChatBubbleIcon from '@/components/icons/chat-bubble'
+// import ChatBubbleIcon from '@/components/icons/chat-bubble'
 import ClockIcon from '@/components/icons/clock'
 import ConfigIcon from '@/components/icons/config'
 import HomeIcon from '@/components/icons/home'
@@ -20,8 +20,8 @@ export const userDropdownLinks: LinkDropdownItem[] = [
 
 export const accountProfileLinks = [
   { href: '/account/profile', title: 'Ajustes de cuenta', icon: ConfigIcon },
-  { href: '/account/history', title: 'Ultimas compras', icon: ClockIcon },
-  { href: '/account/reviews', title: 'Mis reseñas', icon: ChatBubbleIcon }
+  { href: '/account/history', title: 'Ultimas compras', icon: ClockIcon }
+  // { href: '/account/reviews', title: 'Mis reseñas', icon: ChatBubbleIcon }
 ]
 
 export const SidebarLinks = [
