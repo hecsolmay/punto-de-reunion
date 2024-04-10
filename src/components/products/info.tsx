@@ -40,7 +40,8 @@ export default async function ProductInfo ({
     rating,
     reviewCount,
     organization,
-    maxQuantityByCart
+    maxQuantityByCart,
+    status
   } = product
 
   const categories = categoriesProducts.map(({ category }) => ({
@@ -86,6 +87,7 @@ export default async function ProductInfo ({
         productId={productId}
         maxQuantity={maxQuantityByCart ?? MAX_QUANTITY_ADD_TO_CART}
         price={price}
+        disabled={status === 'UNAVAILABLE'}
         className='border-t border-slate-300 p-5 px-4 dark:border-slate-700'
       />
     </ProductInfoContainer>

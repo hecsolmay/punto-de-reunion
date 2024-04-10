@@ -2,6 +2,7 @@
 
 import { useAppContext } from '@/context/utils'
 import useModalProduct from '@/hooks/use-modal-product'
+import { cn } from '@/libs/cn'
 import Link from 'next/link'
 
 interface Props {
@@ -9,19 +10,21 @@ interface Props {
   className?: string
   children?: React.ReactNode
   scroll?: boolean
+  disabled?: boolean
 }
 
 export default function ProductRedirect (
-  { children, className, productId, scroll }: Props
+  { children, className, productId, scroll, disabled = false }: Props
 ) {
   const { open } = useModalProduct()
 
   const handleClick = () => {
+    if (disabled) return
     open(productId, { scroll })
   }
 
   return (
-    <div className={className} onClick={handleClick}>
+    <div className={cn(className, disabled && 'pointer-events-none')} onClick={handleClick}>
       {children}
     </div>
   )

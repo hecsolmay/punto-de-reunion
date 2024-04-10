@@ -25,12 +25,16 @@ export default function ProductCard ({
   scroll,
   status
 }: Props) {
+  const isAvailable = status === 'AVAILABLE'
+
   return (
     <ProductRedirect
       productId={id}
       className='relative z-0 h-80 max-h-[20rem] w-72 cursor-pointer rounded-xl bg-white shadow-md dark:bg-accent-dark'
       scroll={scroll}
+      // disabled={!isAvailable}
     >
+      {!isAvailable && <NoAvailableProduct />}
       <img
         src={imageUrl}
         className='mb-2 h-32 w-full rounded-md object-cover'
@@ -58,4 +62,14 @@ export default function ProductCard ({
       </div>
     </ProductRedirect>
   )
+}
+
+function NoAvailableProduct () {
+  // TODO: Implementar un empty state de no disponible
+
+  //   <div className='absolute inset-0 rounded-b-xl bg-black/40 dark:bg-black/30'>
+  //   <p>Producto No disponible</p>
+  // </div>
+
+  return null
 }

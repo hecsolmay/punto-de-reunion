@@ -96,21 +96,30 @@ export default function InfoFooter ({
     }
   }
 
+  if (disabled) {
+    return (
+      <footer className={cn('flex h-20 flex-row items-center justify-center text-red-500 dark:text-red-700', className)}>
+        <h3 className='text-xl font-medium'>Producto no disponible por el momento</h3>
+      </footer>
+    )
+  }
+
   return (
     <footer className={cn('flex h-20 flex-row items-center justify-end gap-4', className)}>
       {/* COUNTER */}
-      <div className='flex items-center gap-2 rounded-lg border border-neutral-400 p-2 text-accent-dark dark:border-white dark:text-white '>
-        <button onClick={handleRemove} className='px-0.5 md:px-1' type='button'>
+      <div className={cn('flex items-center gap-2 rounded-lg border border-neutral-400 p-2 text-accent-dark dark:border-white dark:text-white', disabled && 'opacity-80')}>
+        <button disabled={disabled} onClick={handleRemove} className='px-0.5 md:px-1' type='button'>
           <Minus />
         </button>
         <span className='inline-block w-8 select-none text-center text-xl md:w-12'>{count}</span>
-        <button onClick={handleAdd} className='px-0.5 md:px-1' type='button'>
+        <button disabled={disabled} onClick={handleAdd} className='px-0.5 md:px-1' type='button'>
           <Plus />
         </button>
       </div>
 
       <div className='flex flex-1 flex-row items-center justify-end gap-4'>
-        <Button loading={isLoading} onClick={handleAddToCart} disabled={count === 0} className='inline-flex h-11 w-full flex-1 justify-between py-2 font-medium md:w-fit md:flex-none'>
+        <Button loading={isLoading} onClick={handleAddToCart} disabled={count === 0 || disabled} className='inline-flex h-11 w-full flex-1 justify-between py-2 font-medium md:w-fit md:flex-none'>
+
           <span className='inline-block'>Agregar <span className='mr-3 hidden md:inline'>al carrito</span></span>
           <span className='inline-block'>{formattedTotalToPay}</span>
         </Button>
