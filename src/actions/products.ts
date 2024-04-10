@@ -27,6 +27,7 @@ export async function searchProducts ({ limit = 10, search = '' }: FilterProduct
         contains: search,
         mode: 'insensitive'
       },
+      status: 'AVAILABLE',
       organization: {
         deletedAt: null
       },
