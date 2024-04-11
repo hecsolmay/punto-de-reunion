@@ -251,7 +251,7 @@ model ProductImages {
 model Payments {
   id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   cartId             String             @unique @map("cart_id") @db.Uuid
-  transactionId      String             @map("transaction_id")
+  transactionId      String             @map("transaction_id") @unique
   totalPaymentAmount Decimal            @default(0) @map("total_payment_amount") @db.Decimal
   totalQuantity      Int                @default(0) @map("total_quantity")
   transactionService TransactionService @default(STRIPE) @map("transaction_service")
