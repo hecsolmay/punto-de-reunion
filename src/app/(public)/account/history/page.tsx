@@ -1,4 +1,5 @@
 import { ListOfUserPayments } from '@/components/payments/list'
+import { ListOfPaymentsFallback } from '@/components/skeletons/payments'
 import { type ServerPageProps } from '@/types'
 import { ShoppingCart } from 'lucide-react'
 import { Suspense } from 'react'
@@ -13,7 +14,7 @@ export default function HistoryPaymentsPage ({ searchParams }: ServerPageProps) 
         <h1 className='text-2xl font-bold'>Mis Ultimas compras</h1>
       </div>
 
-      <Suspense key={`history-payments-${page}-${limit}`} fallback={<div>Cargando...</div>}>
+      <Suspense key={`history-payments-${page}-${limit}`} fallback={<ListOfPaymentsFallback />}>
         <ListOfUserPayments searchParams={searchParams}/>
       </Suspense>
     </div>
