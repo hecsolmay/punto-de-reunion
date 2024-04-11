@@ -6,7 +6,6 @@ import { MotionDiv } from '@/components/motion'
 import Checkout from '@/components/payments/checkout'
 import Location from '@/components/payments/location'
 import Stepper from '@/components/payments/steps'
-import SuccessPayment from '@/components/payments/success'
 import { NAVIGATION_PAYMENT_STEPS } from '@/constants'
 import { BUILDING_KEY_ARRAY } from '@/constants/locations'
 import { type CartType } from '@/types/services'
@@ -91,16 +90,6 @@ export default function PaymentSteps ({ cart }: Props) {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
         >
           <Checkout cart={cart} />
-        </MotionDiv>
-      )}
-
-      {selectedStep === 2 && (
-        <MotionDiv
-          initial={{ x: delta >= 0 ? '50%' : '-50%', opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.3, ease: 'easeInOut' }}
-        >
-          <SuccessPayment />
         </MotionDiv>
       )}
 
