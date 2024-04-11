@@ -25,3 +25,4 @@ type DeleteCart = Awaited<ReturnType<typeof deleteCart>>
 export type DeleteOneCartResponse = Response<DeleteCart>
 type GetPayments = Awaited<ReturnType<typeof getPayments>>
 export type GetPaymentsResponse = Response<GetPayments>
+export type PaymentElement = ElementType<GetPayments['payments']>
