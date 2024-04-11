@@ -1,16 +1,24 @@
 'use client'
 
+import { savePaymentRegister } from '@/actions/payments'
 import LinkButton from '@/components/buttons/link-button'
+import { type Transaction } from '@/types'
 import CanvasConfetti from 'canvas-confetti'
 import { useEffect } from 'react'
 
 interface Props {
   text?: string
+  transaction: Transaction
+  executeAction?: boolean
 }
 
-export default function SuccessPayment ({ text = 'Compra realizada con éxito' }: Props) {
+export default function SuccessPayment ({ text = 'Compra realizada con éxito', transaction, executeAction = false }: Props) {
   useEffect(() => {
     CanvasConfetti()
+
+    if (executeAction) {
+      savePaymentRegister(transaction)
+    }
   }, [])
 
   return (

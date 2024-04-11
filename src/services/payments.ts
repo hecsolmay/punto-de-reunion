@@ -68,8 +68,12 @@ export async function getPayment (sessionId?: string) {
 }
 
 export async function savePayment (data: Transaction) {
-  const createdPayment = await prisma.payments.create({
-    data
+  const createdPayment = await prisma.payments.upsert({
+    create: data,
+    update: data,
+    where: {
+      transactionId: data.transactionId
+    }
   })
 
   return createdPayment

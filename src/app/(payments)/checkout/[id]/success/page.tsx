@@ -1,11 +1,11 @@
-import { getPaymentDetails, savePaymentRegister } from '@/actions/payments'
+import { getPaymentDetails } from '@/actions/payments'
 import MainContainer from '@/components/main-container'
 import { ErrorContent } from '@/components/payments/error'
 import Stepper from '@/components/payments/steps'
 import SuccessPayment from '@/components/payments/success'
 import { NAVIGATION_PAYMENT_STEPS_COMPLETE } from '@/constants'
 import { getOneCart } from '@/services/carts'
-import { type ServerPageProps } from '@/types'
+import type { ServerPageProps, Transaction } from '@/types'
 
 const MAX_MINUTES_TO_SHOW = 5
 const MINUTE = 60000
@@ -24,31 +24,27 @@ export default async function SuccessPage ({
     return <ErrorContent />
   }
 
-  if (!cart.isAlreadyPaid) {
-    const totalPaymentAmount = paymentDetailsProducts.reduce((acc, item) => {
-      const total = item.quantity * item.unitAmount
-      return acc + total
-    }, 0)
-
-    const totalQuantity = paymentDetailsProducts.reduce((acc, item) => acc + (item.quantity), 0)
-
-    await savePaymentRegister({
-      cartId: cart.id,
-      transactionId: sessionId ?? '',
-      transactionService: 'STRIPE',
-      totalPaymentAmount,
-      totalQuantity
-    })
-  }
-
-  let text = 'Compra realizada con éxito'
-
   const now = new Date()
   const difference = now.getTime() - cart.updatedAt.getTime()
   const minutesPassed = Math.floor(difference / MINUTE)
 
-  if (minutesPassed >= MAX_MINUTES_TO_SHOW) {
-    text = 'Esta compra fue un éxito revisa tu historial para ver mas detalles'
+  const hasPassedMaxTime = minutesPassed >= MAX_MINUTES_TO_SHOW
+
+  const text = !hasPassedMaxTime ? 'Compra realizada con éxito' : 'Esta compra fue un éxito revisa tu historial para ver mas detalles'
+
+  const totalPaymentAmount = paymentDetailsProducts.reduce((acc, item) => {
+    const total = item.quantity * item.unitAmount
+    return acc + total
+  }, 0)
+
+  const totalQuantity = paymentDetailsProducts.reduce((acc, item) => acc + (item.quantity), 0)
+
+  const transaction: Transaction = {
+    cartId: cart.id,
+    transactionId: sessionId ?? '',
+    transactionService: 'STRIPE',
+    totalPaymentAmount,
+    totalQuantity
   }
 
   return (
@@ -57,7 +53,7 @@ export default async function SuccessPage ({
         steps={NAVIGATION_PAYMENT_STEPS_COMPLETE}
         selectedIndex={NAVIGATION_PAYMENT_STEPS_COMPLETE.length - 1}
       />
-      <SuccessPayment text={text} />
+      <SuccessPayment text={text} transaction={transaction} executeAction={!hasPassedMaxTime} />
     </MainContainer>
   )
 }
