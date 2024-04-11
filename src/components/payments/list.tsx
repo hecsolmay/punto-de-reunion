@@ -1,7 +1,8 @@
 import { getUserPayments } from '@/actions/payments'
+import { EmptyListOfPayments } from '@/components/empty-states/payments'
 import Pagination from '@/components/pagination'
 import { PaymentDetailCard } from '@/components/payments/card'
-import { type SearchParams } from '@/types'
+import type { SearchParams } from '@/types'
 
 interface Props {
   searchParams: SearchParams
@@ -16,6 +17,10 @@ export async function ListOfUserPayments ({ searchParams }: Props) {
   }
 
   const { payments, info } = response.data
+
+  if (payments.length === 0) {
+    return <EmptyListOfPayments />
+  }
 
   return (
     <section className='flex flex-1 flex-col gap-4'>
