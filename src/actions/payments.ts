@@ -3,7 +3,7 @@
 import { getUserSession } from '@/libs/auth'
 import { generateErrorResponse } from '@/libs/utils'
 import { getOneCart, updateCart } from '@/services/carts'
-import { createPaymentIntent, getPayment, getPayments, savePayment } from '@/services/payments'
+import { createPaymentIntent, getStripePayment, getPayments, savePayment } from '@/services/payments'
 import { type RawProduct, type SearchParams, type Transaction } from '@/types'
 import { type GetPaymentsResponse } from '@/types/actions'
 
@@ -42,7 +42,7 @@ export async function handlePayment (cartId?: string) {
 
 export async function getPaymentDetails (sessionId?: string) {
   try {
-    const data = await getPayment(sessionId)
+    const data = await getStripePayment(sessionId)
     return data
   } catch (error) {
     console.error(error)

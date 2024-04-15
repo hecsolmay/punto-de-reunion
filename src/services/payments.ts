@@ -31,7 +31,7 @@ export async function createPaymentIntent (cartId: string, rawItems: RawProduct[
   }
 }
 
-export async function getPayment (sessionId?: string) {
+export async function getStripePayment (sessionId?: string) {
   const stripe = getStripe()
 
   const foundPayment = await stripe.checkout.sessions.listLineItems(sessionId ?? '', {
@@ -77,6 +77,34 @@ export async function savePayment (data: Transaction) {
   })
 
   return createdPayment
+}
+
+interface GetOnePaymentParams {
+  id?: string
+}
+
+export async function getOnePayment (params: GetOnePaymentParams) {
+  const foundPayment = await prisma.payments.findFirst({
+    include: {
+      cart: {
+        include: {
+          organization: true
+        }
+      }
+    },
+    where: params
+  })
+
+  if (foundPayment === null) return null
+
+  const { cart: { organization }, totalPaymentAmount, ...rest } = foundPayment
+  const mappedPayments = {
+    ...rest,
+    organization,
+    totalPaymentAmount: totalPaymentAmount.toNumber()
+  }
+
+  return mappedPayments
 }
 
 export async function getPayments (params: SearchParams) {
