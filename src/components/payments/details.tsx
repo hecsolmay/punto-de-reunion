@@ -21,7 +21,7 @@ export async function ListItemsStripe ({
         Lista de los productos comprados
       </h2>
 
-      <ul className='mt-4 flex flex-col gap-8 pb-8 md:gap-6'>
+      <ul className='mt-8 flex flex-col gap-8 pb-8 md:mt-4 md:gap-6'>
         {items.map(
           ({ images, name, id, description, quantity, total, unitAmount }) => (
             <StripePaymentItem
