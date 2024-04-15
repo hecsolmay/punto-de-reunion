@@ -71,9 +71,9 @@ function StripePaymentItem ({
           <span>{formatPriceNumber(total)} MXN</span>
         </div>
 
-        <p className='text-balance text-sm text-slate-400'>{description}</p>
+        <p className='text-balance text-sm text-slate-400 dark:text-slate-200'>{description}</p>
 
-        <div className='flex flex-row items-start justify-between text-balance text-sm text-slate-400'>
+        <div className='flex flex-row items-start justify-between text-balance text-sm text-slate-400 dark:text-slate-200'>
           <p>Cantidad: {quantity}</p>
           <span>{formatPriceNumber(unitAmount)} MXN unidad</span>
         </div>
