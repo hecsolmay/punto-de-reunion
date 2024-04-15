@@ -1,3 +1,4 @@
+import { ContentContainer } from '@/components/account/container'
 import { ListOfUserPayments } from '@/components/payments/list'
 import { ListOfPaymentsFallback } from '@/components/skeletons/payments'
 import { type ServerPageProps } from '@/types'
@@ -8,7 +9,7 @@ export default function HistoryPaymentsPage ({ searchParams }: ServerPageProps) 
   const { page = '1', limit = '10' } = searchParams
 
   return (
-    <div className='flex h-auto w-full flex-1 flex-col gap-4 bg-zinc-100 p-4 dark:bg-zinc-900 md:px-8'>
+    <ContentContainer >
       <div className='flex flex-row gap-3'>
         <ShoppingCart size={28} />
         <h1 className='text-2xl font-bold'>Mis Ultimas compras</h1>
@@ -17,6 +18,6 @@ export default function HistoryPaymentsPage ({ searchParams }: ServerPageProps) 
       <Suspense key={`history-payments-${page}-${limit}`} fallback={<ListOfPaymentsFallback />}>
         <ListOfUserPayments searchParams={searchParams}/>
       </Suspense>
-    </div>
+    </ContentContainer>
   )
 }
