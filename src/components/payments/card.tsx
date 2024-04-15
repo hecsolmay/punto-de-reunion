@@ -58,7 +58,7 @@ export function PaymentDetailCard ({ payment }: PaymentDetailCardProps) {
           <LinkButton
             className='px-6'
             variant='default'
-            href={`/payments/${payment.id}`}
+            href={`/account/history/${payment.id}`}
           >
             Ver detalles
           </LinkButton>
