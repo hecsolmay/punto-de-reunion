@@ -5,6 +5,8 @@ import { type ServerPageProps } from '@/types'
 import { ShoppingCart } from 'lucide-react'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 export default function HistoryPaymentsPage ({ searchParams }: ServerPageProps) {
   const { page = '1', limit = '10' } = searchParams
 
