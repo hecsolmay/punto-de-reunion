@@ -30,6 +30,7 @@ export interface SearchParams {
   userId?: string
   organizationId?: string
   sessionId?: string
+  next?: string
 }
 
 export type CountryCode = 'MX' | 'US' | 'CA'

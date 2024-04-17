@@ -2,16 +2,11 @@ import RouterBackButton from '@/components/back-arrow'
 import SocialButton from '@/components/buttons/social-button'
 import Arrow from '@/components/icons/arrow'
 import { createServerSupabaseClient } from '@/libs/supabase'
+import type { ServerPageProps } from '@/types'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-interface LoginServerProps {
-  searchParams: {
-    next?: string
-  }
-}
-
-export default async function Login ({ searchParams }: LoginServerProps) {
+export default async function Login ({ searchParams }: ServerPageProps) {
   const supabase = createServerSupabaseClient()
   const { data: { session } } = await supabase.auth.getSession()
 
