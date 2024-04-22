@@ -1,8 +1,8 @@
 import { SORT_OPTIONS } from '@/constants'
-import { type BUILDING_KEY, UTM_LOCATIONS } from '@/constants/locations'
-import { type SearchParams, type OrderType, type SortOptions } from '@/types'
-import { type StatusResponse, type ErrorResponse, type StatusCode } from '@/types/response'
-import { type Prisma } from '@prisma/client'
+import { UTM_LOCATIONS, type BUILDING_KEY } from '@/constants/locations'
+import type { OrderType, SearchParams, SortOptions } from '@/types'
+import type { ErrorResponse, ErrorStatusCode, StatusResponse } from '@/types/response'
+import type { Prisma } from '@prisma/client'
 
 export function generatePagination (currentPage: number, totalPages: number) {
   // If the total number of pages is 7 or less,
@@ -159,10 +159,7 @@ export function parseSearchParams (urlSearch: URLSearchParams): SearchParams {
   return query
 }
 
-const STATUS_RECORD: Record<StatusCode, StatusResponse> = {
-  200: 'ok',
-  201: 'created',
-  204: 'noContent',
+const ERROR_STATUS_RECORD: Record<ErrorStatusCode, StatusResponse> = {
   400: 'badRequest',
   401: 'unauthorized',
   403: 'forbidden',
@@ -170,14 +167,16 @@ const STATUS_RECORD: Record<StatusCode, StatusResponse> = {
   500: 'internalServerError'
 } as const
 
-export function generateErrorResponse (code: StatusCode, error?: string): ErrorResponse {
-  const status = STATUS_RECORD[code] ?? STATUS_RECORD[500]
+const DEFAULT_ERROR_MESSAGE = 'Something went wrong'
+
+export function generateErrorResponse (code: ErrorStatusCode, error?: string): ErrorResponse {
+  const status = ERROR_STATUS_RECORD[code] ?? ERROR_STATUS_RECORD[500]
 
   return {
     success: false,
     status,
     code,
-    error: error ?? 'Something went wrong'
+    error: error ?? DEFAULT_ERROR_MESSAGE
   }
 }
 

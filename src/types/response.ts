@@ -16,12 +16,13 @@ export interface SuccessResponse<T = undefined> {
 
 export type StatusResponse = 'badRequest' | 'unauthorized' | 'forbidden' | 'notFound' | 'internalServerError' | 'ok' | 'created' | 'noContent'
 export type StatusCode = 200 | 201 | 204 | 400 | 401 | 403 | 404 | 500
+export type ErrorStatusCode = Exclude<StatusCode, 200 | 201 | 204>
 
 export interface ErrorResponse {
   success: false
   error: string
   status?: StatusResponse
-  code?: StatusCode
+  code?: ErrorStatusCode
 }
 
 export type Response<T = any> = SuccessResponse<T> | ErrorResponse
