@@ -1,8 +1,10 @@
+import { generateErrorResponse } from '@/libs/api'
+import { mapProductEntity } from '@/libs/maps'
 import { parseSearchParams } from '@/libs/utils'
 import { getOrganizationById } from '@/services/organizations'
 import { getProducts } from '@/services/products'
 import { type ServerContext } from '@/types'
-import { type NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
 export async function GET (req: NextRequest, context: ServerContext) {
   const { id } = context.params
@@ -13,13 +15,21 @@ export async function GET (req: NextRequest, context: ServerContext) {
     const organization = await getOrganizationById(id)
 
     if (organization === null) {
-      return NextResponse.json({ success: false, message: 'Organization not found' }, { status: 404 })
+      return generateErrorResponse(404, 'Organization not found')
     }
 
     const data = await getProducts({ ...searchParams, organizationId: organization.id })
 
-    return NextResponse.json({ success: true, organization, data }, { status: 200 })
+    if (data.error !== undefined) {
+      return generateErrorResponse(500, data.error)
+    }
+
+    const { products: rawProducts, info } = data
+
+    const products = rawProducts.map(mapProductEntity)
+
+    return NextResponse.json({ success: true, info, products }, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ success: false, message: 'Something went wrong' }, { status: 500 })
+    return generateErrorResponse(500)
   }
 }
