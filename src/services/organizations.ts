@@ -88,13 +88,39 @@ export async function getOrganizations (params: SearchParams = {}) {
 export async function getOrganizationById (organizationId?: string) {
   try {
     const organization = await prisma.organizations.findUnique({
+      include: {
+        users: {
+          include: {
+            user: true
+          }
+        }
+      },
       where: {
         id: organizationId,
         deletedAt: null
       }
     })
 
-    return organization
+    if (organization === null) return null
+
+    const { users, ...rest } = organization
+
+    const mappedUsers = users.map((user) => {
+      const { user: sessionUser, ...rest } = user
+
+      const { createdAt, deletedAt, updatedAt, phoneNumber, role, ...userRest } = sessionUser
+
+      return {
+        ...rest,
+        ...userRest
+      }
+    })
+    const mappedOrganization = {
+      ...rest,
+      users: mappedUsers
+    }
+
+    return mappedOrganization
   } catch (error) {
     console.error(error)
     return null
